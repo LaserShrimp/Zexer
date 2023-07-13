@@ -1,8 +1,8 @@
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
+#include "SDL2/SDL.h"
+#include "SDL2/SDL_image.h"
 
 #include "defines.h"
 #include "Ship.hpp"

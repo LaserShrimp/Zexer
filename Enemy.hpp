@@ -1,5 +1,8 @@
 #ifndef __ENEMY_HPP__
 #define __ENEMY_HPP__
+
+#include "SDL2/SDL.h"
+#include "SDL2/SDL_image.h"
 #include "Ship.hpp"
 
 #include "defines.h"

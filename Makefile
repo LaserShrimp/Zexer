@@ -1,7 +1,8 @@
 all: game
 CPP= g++ --std=c++11 -Wall
-LIBS = -lmingw32 -lSDL2main -lSDL2 -lSDL2_image
-#g++ -Wall -o game main.cpp Ship.cpp -lmingw32 -lSDL2main -lSDL2 -lSDL2_image
+LIBS = -lSDL2 -lSDL2_image
+#`sdl2-config --cflags --libs`
+#-lmingw32 -lSDL2main -lSDL2 -lSDL2_image
 	
 Ship.o: Ship.cpp Ship.hpp
 	$(CPP) -c Ship.cpp $(LIBS)
@@ -19,7 +20,7 @@ main.o: main.cpp
 	$(CPP) -c main.cpp $(LIBS)
 	
 game: main.o Ship.o Enemy.o Player.o Missile.o
-	$(CPP) -o zexer.exe Ship.o Enemy.o Player.o Missile.o main.o $(LIBS)
+	$(CPP) -o zexer Ship.o Enemy.o Player.o Missile.o main.o $(LIBS)
 	
 clean:
 	rm -rf *.o

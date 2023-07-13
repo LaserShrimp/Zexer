@@ -1,8 +1,8 @@
 #ifndef __MISSILE_HPP__
 #define __MISSILE_HPP__
 
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
+#include "SDL2/SDL.h"
+#include "SDL2/SDL_image.h"
 
 #include "Ship.hpp"
 
