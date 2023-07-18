@@ -9,6 +9,7 @@
 #include "Enemy.hpp"
 #include "Player.hpp"
 #include "Missile.hpp"
+#include "InputState.hpp"
 
 using namespace std;
 
@@ -19,7 +20,6 @@ int main(int argc, char **argv){
 		exit(EXIT_FAILURE);
     }
 	srand(time(nullptr));
-	cout << "ici" << endl;
 	SDL_Window *window;
         SDL_Renderer *renderer;
         SDL_Event event;
@@ -64,30 +64,16 @@ int main(int argc, char **argv){
 		vEnemy[i].healCompletely();
 	}
 	for(Enemy &e: vEnemy){
-		e.setTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("Enemy.png")));
+		e.setTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("enemy.png")));
 	}
 	
-	while (ship.getHealth() >= 0) {
+	InputState inputs;
+	
+	while (ship.getHealth() >= 0  && !inputs.getquit()) {
 		if(SDL_GetTicks() >= prevTime + 20){
 			SDL_PollEvent(&event);
-			if(event.type == SDL_QUIT){
-				break;
-			}
-			else if(event.type == SDL_KEYDOWN){
-				switch(event.key.keysym.sym){
-					case SDLK_LEFT:
-						ship.goLeft();
-						break;
-					case SDLK_RIGHT:
-						ship.goRight();
-						break;
-					case SDLK_SPACE:
-						ship.shoot();
-						break;
-					default:
-						break;
-				}
-			}
+			inputs.setState(event);
+			ship.doActions(inputs);
 			ship.updateAmmos();
 			
 			for(Enemy &e: vEnemy){

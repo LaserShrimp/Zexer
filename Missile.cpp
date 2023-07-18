@@ -53,7 +53,7 @@ void Missile::takeDamage(int d){
 		this->setToStack();
 		//cout << "restacked missile" << endl;
 	}
-	cout << this->getX() << " " << this->getY() <<endl;
+	//cout << this->getX() << " " << this->getY() <<endl;
 }
 
 

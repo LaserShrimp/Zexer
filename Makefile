@@ -16,11 +16,14 @@ Player.o: Player.cpp Player.hpp
 Missile.o: Missile.cpp Missile.hpp
 	$(CPP) -c Missile.cpp $(LIBS)
 	
+InputState.o: InputState.cpp InputState.hpp
+	$(CPP) -c InputState.cpp $(LIBS)
+	
 main.o: main.cpp
 	$(CPP) -c main.cpp $(LIBS)
 	
-game: main.o Ship.o Enemy.o Player.o Missile.o
-	$(CPP) -o zexer Ship.o Enemy.o Player.o Missile.o main.o $(LIBS)
+game: main.o Ship.o Enemy.o Player.o Missile.o InputState.o
+	$(CPP) -o zexer Ship.o Enemy.o Player.o Missile.o InputState.o main.o $(LIBS)
 	
 clean:
 	rm -rf *.o

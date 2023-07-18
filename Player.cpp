@@ -1,8 +1,10 @@
 #include "Player.hpp"
 
-Player::Player(SDL_Texture *t):Ship{t}, nbAmmo{0}, stackSize{0}, ammo{vector<Missile>{}}{}
+Player::Player(SDL_Texture *t):Ship{t}, nbAmmo{0}, stackSize{0}, ammo{vector<Missile>{}}, mvState{STATIONNARY}{}
 
-Player::~Player(){}
+Player::~Player(){
+	SDL_DestroyTexture(this->texture);
+}
 
 int Player::getNbAmmo(){return this->nbAmmo;}
 int Player::getStackSize(){return this->stackSize;}
@@ -57,6 +59,55 @@ void Player::shoot(){
 				break;
 			}
 		}
+}
+
+void Player::move(){
+	switch(this->mvState){
+		case RIGHT:
+			this->goRight();
+			break;
+		case LEFT:
+			this->goLeft();
+			break;
+		case STATIONNARY:
+			break;
+		default:
+			break;
+	}
+}
+
+void Player::setMoveState(const InputState &is){
+	if(is.getq()||is.getleft()){
+		this->mvState = LEFT;
+	}
+	else if(is.getd()||is.getright()){
+		this->mvState = RIGHT;
+	}
+	else{
+		this->mvState = STATIONNARY;
+	}
+}
+
+/**
+ * This method will allow the player to do everything he is meant to do (move, shoot, etc...)
+ */
+void Player::doActions(const InputState &is){
+	this->setMoveState(is);
+	switch(this->mvState){
+		case RIGHT:
+			this->goRight();
+			break;
+		case LEFT:
+			this->goLeft();
+			break;
+		case STATIONNARY:
+			break;
+		default:
+			break;
+	}
+	if(is.getspacebar()){
+		this->shoot();
+	}
 }
 
 void Player::updateAmmos(){
