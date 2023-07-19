@@ -58,7 +58,9 @@ void Missile::takeDamage(int d){
 
 
 Missile::~Missile(){
-	SDL_DestroyTexture(this->texture);
+	if(this->texture != NULL){
+		SDL_DestroyTexture(this->texture);
+	}
 }
 
 ostream& operator<<(ostream& out, Missile &m){

@@ -108,7 +108,9 @@ void Ship::rerack(){
 }
 
 Ship::~Ship(){
-	SDL_DestroyTexture(this->texture);
+	if(this->texture != NULL){
+		SDL_DestroyTexture(this->texture);
+	}
 }
 
 ostream& operator<<(ostream& out, Ship &s){

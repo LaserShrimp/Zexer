@@ -1,14 +1,21 @@
 #include "Player.hpp"
 
-Player::Player(SDL_Texture *t):Ship{t}, nbAmmo{0}, stackSize{0}, ammo{vector<Missile>{}}, mvState{STATIONNARY}{}
+Player::Player(SDL_Texture *t):Ship{t}, nbAmmo{0}, stackSize{0}, ammo{vector<Missile>{}}, mvState{STATIONNARY}, shootCooldown{100}, startShootCooldown{0}{}
 
-Player::~Player(){
-	SDL_DestroyTexture(this->texture);
+Player::Player(const Player& p){
+	this->texture = NULL;
 }
 
-int Player::getNbAmmo(){return this->nbAmmo;}
-int Player::getStackSize(){return this->stackSize;}
-Missile &Player::getMissile(int index) {
+Player::~Player(){
+	if(this->texture != NULL)
+		SDL_DestroyTexture(this->texture);
+}
+
+int Player::getNbAmmo() const {return this->nbAmmo;}
+int Player::getStackSize() const {return this->stackSize;}
+Uint32 Player::getShootCooldown() const {return this->shootCooldown;}
+Uint32 Player::getStartShootCooldown() const {return this->startShootCooldown;}
+Missile &Player::getMissile (int index) {
 	return this->ammo[index];
 }
 vector<Missile> &Player::getAmmo() {
@@ -34,6 +41,12 @@ void Player::setAmmo(vector<Missile> &mVector){
 		i.setToStack();
 	}
 }
+void Player::setShootCooldown(Uint32 cooldown){
+	this->shootCooldown = cooldown;
+}
+void Player::setStartShootCooldown(){
+	this->startShootCooldown = SDL_GetTicks();
+}
 void Player::init(int x, int y, int speed, int ammo, int stackSize){
 	this->coo.x = x;
 	this->coo.y = y;
@@ -52,6 +65,7 @@ void Player::init(SDL_Texture *missileTexture){
  * Shoots the first available ammo
  */
 void Player::shoot(){
+	if(SDL_GetTicks() - this->startShootCooldown >= this->shootCooldown){
 		for(Missile &i : this->ammo){
 			if(i.isReady()){
 				//We set the next ammo in front of the ship and let it go
@@ -59,15 +73,51 @@ void Player::shoot(){
 				break;
 			}
 		}
+		this->startShootCooldown = SDL_GetTicks();
+	}
 }
 
 void Player::move(){
 	switch(this->mvState){
 		case RIGHT:
-			this->goRight();
+			if(this->coo.x+this->coo.w < WIN_WIDTH)
+				this->goRight();
 			break;
 		case LEFT:
-			this->goLeft();
+			if(this->coo.x > 0)
+				this->goLeft();
+			break;
+		case UP:
+			if(this->coo.y > 0)
+				this->goUp();
+			break;
+		case DOWN:
+			if(this->coo.y+this->coo.h < WIN_HEIGHT)
+				this->goDown();
+			break;
+		case UPRIGHT:
+			if(this->coo.y > 0)
+				this->goUp();
+			if(this->coo.x+this->coo.w < WIN_WIDTH)
+				this->goRight();
+			break;
+		case UPLEFT:
+			if(this->coo.y > 0)
+				this->goUp();
+			if(this->coo.x > 0)
+				this->goLeft();
+			break;
+		case DOWNRIGHT:
+			if(this->coo.y+this->coo.h < WIN_HEIGHT)
+				this->goDown();
+			if(this->coo.x+this->coo.w < WIN_WIDTH)
+				this->goRight();
+			break;
+		case DOWNLEFT:
+			if(this->coo.y+this->coo.h < WIN_HEIGHT)
+				this->goDown();
+			if(this->coo.x > 0)
+				this->goLeft();
 			break;
 		case STATIONNARY:
 			break;
@@ -78,10 +128,32 @@ void Player::move(){
 
 void Player::setMoveState(const InputState &is){
 	if(is.getq()||is.getleft()){
-		this->mvState = LEFT;
+		if(is.getz()||is.getup()){
+			this->mvState = UPLEFT;
+		}
+		else if(is.gets()||is.getdown()){
+			this->mvState = DOWNLEFT;
+		}
+		else{
+			this->mvState = LEFT;
+		}
 	}
 	else if(is.getd()||is.getright()){
-		this->mvState = RIGHT;
+		if(is.getz()||is.getup()){
+			this->mvState = UPRIGHT;
+		}
+		else if(is.gets()||is.getdown()){
+			this->mvState = DOWNRIGHT;
+		}
+		else{
+			this->mvState = RIGHT;
+		}
+	}
+	else if(is.getz()||is.getup()){
+		this->mvState = UP;
+	}
+	else if(is.gets()||is.getdown()){
+		this->mvState = DOWN;
 	}
 	else{
 		this->mvState = STATIONNARY;
@@ -93,30 +165,23 @@ void Player::setMoveState(const InputState &is){
  */
 void Player::doActions(const InputState &is){
 	this->setMoveState(is);
-	switch(this->mvState){
-		case RIGHT:
-			this->goRight();
-			break;
-		case LEFT:
-			this->goLeft();
-			break;
-		case STATIONNARY:
-			break;
-		default:
-			break;
-	}
+	this->move();
 	if(is.getspacebar()){
 		this->shoot();
 	}
 }
 
 void Player::updateAmmos(){
+	int count = 0;
 	for(Missile &i : this->ammo){
 		//If the ammo is launched or waiting in the stack
 		if(!i.isReady()){
 			i.move();
+		} else {
+			count++;
 		}
 	}
+	this->nbAmmo = count;
 }
 
 void Player::renderShip(SDL_Renderer *r){

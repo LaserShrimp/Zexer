@@ -16,7 +16,7 @@ class Enemy : public Ship {
 		
 		virtual void move();
 		virtual void rerack();
-		virtual void takeDamage(int damage);
+		virtual bool takeDamage(int damage);
 		
 		virtual ~Enemy();
 };

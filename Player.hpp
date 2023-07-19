@@ -10,7 +10,7 @@
 #include "InputState.hpp"
 
 typedef enum movestate{
-	RIGHT, LEFT, STATIONNARY
+	RIGHT, UPRIGHT, DOWNRIGHT, LEFT, UPLEFT, DOWNLEFT, UP, DOWN, STATIONNARY
 }movestate;
 
 class Player: public Ship{
@@ -19,13 +19,18 @@ class Player: public Ship{
 		int stackSize;
 		vector<Missile> ammo;
 		movestate mvState;
+		Uint32 shootCooldown; //in milliseconds
+		Uint32 startShootCooldown; //in millis
 		
 	protected:
 	public:
 		Player(SDL_Texture *t);
+		Player(const Player& p);
 		
-		int getNbAmmo();
-		int getStackSize();
+		int getNbAmmo() const;
+		int getStackSize() const;
+		Uint32 getShootCooldown() const;
+		Uint32 getStartShootCooldown() const;
 		Missile& getMissile(int index);
 		vector<Missile>& getAmmo();
 		
@@ -34,6 +39,8 @@ class Player: public Ship{
 		void setNbAmmo(int n);
 		void setStackSize(int stackSize);
 		void setMoveState(const InputState &is);
+		void setShootCooldown(Uint32 cooldown);
+		void setStartShootCooldown();
 		void doActions(const InputState &is);
 		void init(int x, int y, int speed, int ammo, int stackSize);
 		virtual void init();

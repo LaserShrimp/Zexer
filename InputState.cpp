@@ -100,6 +100,12 @@ bool InputState::getright() const{
 bool InputState::getleft() const{
 	return this->left;
 }
+bool InputState::getup() const{
+	return this->up;
+}
+bool InputState::getdown() const{
+	return this->down;
+}
 bool InputState::getspacebar() const{
 	return this->spacebar;
 }

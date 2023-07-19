@@ -1,6 +1,6 @@
 all: game
 CPP= g++ --std=c++11 -Wall
-LIBS = -lSDL2 -lSDL2_image
+LIBS = -lSDL2 -lSDL2_image -lSDL2_ttf
 #`sdl2-config --cflags --libs`
 #-lmingw32 -lSDL2main -lSDL2 -lSDL2_image
 	
@@ -19,11 +19,14 @@ Missile.o: Missile.cpp Missile.hpp
 InputState.o: InputState.cpp InputState.hpp
 	$(CPP) -c InputState.cpp $(LIBS)
 	
+GameInterface.o: GameInterface.cpp GameInterface.hpp
+	$(CPP) -c GameInterface.cpp  $(LIBS)
+	
 main.o: main.cpp
 	$(CPP) -c main.cpp $(LIBS)
 	
-game: main.o Ship.o Enemy.o Player.o Missile.o InputState.o
-	$(CPP) -o zexer Ship.o Enemy.o Player.o Missile.o InputState.o main.o $(LIBS)
+game: main.o Ship.o Enemy.o Player.o Missile.o InputState.o GameInterface.o
+	$(CPP) -o zexer Ship.o Enemy.o Player.o Missile.o InputState.o GameInterface.o main.o $(LIBS)
 	
 clean:
 	rm -rf *.o

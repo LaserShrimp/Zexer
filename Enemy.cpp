@@ -30,13 +30,22 @@ void Enemy::rerack(){
 	//cout << "enemy reracked : x, y, w, h " << this->getX()  << " " << this->getY() << " " << this->coo.w << " " << this->coo.h << endl;
 }
 
-void Enemy::takeDamage(int damage){
+/**
+ * returns true if the enemy's dead, false if not
+ */
+bool Enemy::takeDamage(int damage){
 	//cout << "enemy takes damage " << endl << "ennemy health before : " << this->health << endl;
 	this->health-= damage;
 	if(this->health <= 0){
 		this->rerack();
+		return true;
 	}
 	//cout << "enemy's health : " << this->health << endl;
+	return false;
 }
 
-Enemy::~Enemy(){}
+Enemy::~Enemy(){
+	if(this->texture != NULL){
+		SDL_DestroyTexture(this->texture);
+	}
+}

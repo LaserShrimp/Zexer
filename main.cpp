@@ -3,6 +3,7 @@
 #include <ctime>
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_image.h"
+#include "SDL2/SDL_ttf.h"
 
 #include "defines.h"
 #include "Ship.hpp"
@@ -10,6 +11,7 @@
 #include "Player.hpp"
 #include "Missile.hpp"
 #include "InputState.hpp"
+#include "GameInterface.hpp"
 
 using namespace std;
 
@@ -19,6 +21,10 @@ int main(int argc, char **argv){
 		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't initialize SDL: %s", SDL_GetError());
 		exit(EXIT_FAILURE);
     }
+    if(TTF_Init() < 0){
+		fprintf(stderr, "Error : %s", TTF_GetError());
+		exit(EXIT_FAILURE);
+	}
 	srand(time(nullptr));
 	SDL_Window *window;
         SDL_Renderer *renderer;
@@ -41,19 +47,19 @@ int main(int argc, char **argv){
 	}
 	
 	Uint32 prevTime = SDL_GetTicks();
-	Player ship(SDL_CreateTextureFromSurface(renderer, IMG_Load("ship.png")));
+	Player *ship = new Player(SDL_CreateTextureFromSurface(renderer, IMG_Load("ship.png")));
 	
-	ship.init();
-	ship.setMaxHealth(100);
-	ship.healCompletely();
+	ship->init();
+	ship->setMaxHealth(100);
+	ship->healCompletely();
 	vector<Missile> vAmmo;
 	for(int i = 0; i < 3; i++){
 		//Missile m = Missile(SDL_CreateTextureFromSurface(renderer, IMG_Load("missile.png")));
 		cout << "missile created" << endl;
 		vAmmo.push_back(Missile(SDL_CreateTextureFromSurface(renderer, IMG_Load("missile.png"))));
 	}
-	ship.setAmmo(vAmmo);
-	for(Missile &mi: ship.getAmmo()){
+	ship->setAmmo(vAmmo);
+	for(Missile &mi: ship->getAmmo()){
 		mi.setTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("missile.png")));
 	}
 	//SDL_Texture *texe1 = SDL_CreateTextureFromSurface(renderer, IMG_Load("enemy.png"));
@@ -67,40 +73,53 @@ int main(int argc, char **argv){
 		e.setTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("enemy.png")));
 	}
 	
-	InputState inputs;
+	GameInterface *gameInterface = new GameInterface;
 	
-	while (ship.getHealth() >= 0  && !inputs.getquit()) {
-		if(SDL_GetTicks() >= prevTime + 20){
+	InputState inputs;
+	int fps = FPS;
+	int frameTime = 1000/fps; //1000 milliseconds/FPS
+	
+	while (ship->getHealth() >= 0  && !inputs.getquit()) {
+		if(SDL_GetTicks() >= prevTime + frameTime){
 			SDL_PollEvent(&event);
 			inputs.setState(event);
-			ship.doActions(inputs);
-			ship.updateAmmos();
+			ship->doActions(inputs);
+			ship->updateAmmos();
 			
 			for(Enemy &e: vEnemy){
 				e.move();
-				if(ship.hitShip(e.getCoo())){
-					ship.takeDamage(e.getMaxHealth());
-					e.takeDamage(ship.getMaxHealth());
+				if(ship->hitShip(e.getCoo())){
+					ship->takeDamage(e.getMaxHealth());
+					if(e.takeDamage(ship->getMaxHealth())){
+						gameInterface->increaseScore();
+					}
 				}
-				int indexCollision = ship.missileCollidesWith(e.getCoo());
+				int indexCollision = ship->missileCollidesWith(e.getCoo());
 				if(indexCollision > -1){
-					e.takeDamage(ship.getMissile(indexCollision).getMaxHealth());
-					ship.damageMissile(indexCollision, e.getMaxHealth());
+					if(e.takeDamage(ship->getMissile(indexCollision).getMaxHealth())){
+						gameInterface->increaseScore();
+					}
+					ship->damageMissile(indexCollision, e.getMaxHealth());
 				}
 			}
 			
 			//RENDERING
-			ship.renderShip(renderer);
+			ship->renderShip(renderer);
 			for(Enemy &e: vEnemy){
 				e.renderShip(renderer);
 			}
+			gameInterface->loadStatsFromPlayer(*ship);
+			gameInterface->render(renderer);
 			SDL_RenderPresent(renderer);
 			SDL_RenderClear(renderer);
 			prevTime = SDL_GetTicks();
 		}
 	}
+	delete gameInterface;
+	delete ship;
     SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
+	TTF_Quit();
 	SDL_Quit();
 	
 	return 0;
