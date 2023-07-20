@@ -20,6 +20,7 @@ void Missile::setToStack(){
 	this->coo.y = WIN_HEIGHT;
 	this->healCompletely();
 	this->setReady(true);
+	this->updateHitbox();
 }
 
 bool Missile::isReady(){return ready;}
@@ -32,6 +33,7 @@ bool Missile::launch(int startX, int startY){
 		this->ready = false;
 		this->coo.x = startX;
 		this->coo.y = startY;
+		this->updateHitbox();
 		return true;
 	} else {
 		return false;
@@ -44,7 +46,6 @@ void Missile::move(){
 		this->setToStack();
 	} else {
 		this->goUp();
-		//cout << this->coo.y << endl;
 	}
 	this->updateHitbox();
 }

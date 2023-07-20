@@ -24,8 +24,8 @@ void GameInterface::loadStatsFromPlayer(Player& p){
 	this->munitions = p.getNbAmmo();
 	
 	//coordinates
-	this->hmcoo.w = p.getMaxHealth()*2;
-	this->hcoo.w = p.getHealth()*2;
+	this->hmcoo.w = p.getMaxHealth()*4;
+	this->hcoo.w = p.getHealth()*4;
 	this->hmcoo.x = WIN_WIDTH/2 - this->hmcoo.w/2;
 	this->hcoo.x = this->hmcoo.x;
 }
