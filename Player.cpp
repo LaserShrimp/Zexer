@@ -1,6 +1,6 @@
 #include "Player.hpp"
 
-Player::Player(SDL_Texture *t):Ship{t}, nbAmmo{0}, stackSize{0}, ammo{vector<Missile>{}}, mvState{STATIONNARY}, shootCooldown{100}, startShootCooldown{0}{}
+Player::Player(SDL_Texture *t):Ship{t}, nbAmmo{0}, stackSize{0}, ammo{vector<Missile>{}}, mvState{STATIONNARY}, shootCooldown{175}, startShootCooldown{0}{}
 
 Player::Player(const Player& p){
 	this->texture = NULL;
@@ -166,6 +166,7 @@ void Player::setMoveState(const InputState &is){
 void Player::doActions(const InputState &is){
 	this->setMoveState(is);
 	this->move();
+	this->updateHitbox();
 	if(is.getspacebar()){
 		this->shoot();
 	}

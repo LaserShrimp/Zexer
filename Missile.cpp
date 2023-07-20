@@ -46,6 +46,7 @@ void Missile::move(){
 		this->goUp();
 		//cout << this->coo.y << endl;
 	}
+	this->updateHitbox();
 }
 void Missile::takeDamage(int d){
 	this->health-= d;

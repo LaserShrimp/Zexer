@@ -17,10 +17,16 @@ class GameInterface{
 		
 		TTF_Font *font;
 		SDL_Rect coo;
+		SDL_Rect hcoo;
+		SDL_Rect hmcoo;
+		SDL_Rect scoo;
+		SDL_Rect mcoo;
 	protected:
 	public:
 		GameInterface();
 		GameInterface(const GameInterface &gi);
+		
+		int getScore();
 		
 		void loadStatsFromPlayer(Player& p);
 		void increaseScore();

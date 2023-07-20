@@ -17,7 +17,7 @@ void Enemy::move(){
 		this->goDown();
 		//cout << "enemy goes down" << endl;
 	}
-	
+	this->updateHitbox();
 }
 
 /**

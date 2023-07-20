@@ -22,7 +22,7 @@ InputState.o: InputState.cpp InputState.hpp
 GameInterface.o: GameInterface.cpp GameInterface.hpp
 	$(CPP) -c GameInterface.cpp  $(LIBS)
 	
-main.o: main.cpp
+main.o: main.cpp defines.h
 	$(CPP) -c main.cpp $(LIBS)
 	
 game: main.o Ship.o Enemy.o Player.o Missile.o InputState.o GameInterface.o

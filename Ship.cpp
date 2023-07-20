@@ -1,9 +1,9 @@
 #include "Ship.hpp"
 
-Ship::Ship(): texture{NULL}, coo({.x = 0, .y = 0, .w = WIDTH, .h = HEIGHT}), speed{SPEED}, health{1}, maxHealth{1}{
+Ship::Ship(): texture{NULL}, coo({.x = 0, .y = 0, .w = WIDTH, .h = HEIGHT}), hitbox({.x = 0, .y = 0, .w = WIDTH, .h = HEIGHT}), speed{SPEED}, health{1}, maxHealth{1}, hitboxRatio{1.0}{
 }
 
-Ship::Ship(SDL_Texture *t): texture{t}, coo({0, 0, WIDTH, HEIGHT}), speed{SPEED}, health{1}, maxHealth{1}{
+Ship::Ship(SDL_Texture *t): texture{t}, coo({0, 0, WIDTH, HEIGHT}), speed{SPEED}, health{1}, maxHealth{1}, hitboxRatio{1.0}{
 }
 Ship::Ship(SDL_Texture *t, int x, int y){
 	this->texture = t;
@@ -11,9 +11,11 @@ Ship::Ship(SDL_Texture *t, int x, int y){
 	this->coo.y = y;
 	this->coo.w = WIDTH;
 	this->coo.h = HEIGHT;
+	this->hitbox = this->coo;
+	this->hitboxRatio = 1.0;
 	this->speed = SPEED;
 }
-Ship::Ship(SDL_Texture *t, SDL_Rect coo, int speed):texture{t}, coo{coo}, speed{speed}{
+Ship::Ship(SDL_Texture *t, SDL_Rect coo, int speed):texture{t}, coo{coo}, hitbox{coo}, speed{speed}, hitboxRatio{100}{
 }
 
 SDL_Texture *Ship::getTexture(){
@@ -22,11 +24,20 @@ SDL_Texture *Ship::getTexture(){
 SDL_Rect Ship::getCoo(){
 	return this->coo;
 }
+SDL_Rect Ship::getHitbox(){
+	return this->hitbox;
+}
 int Ship::getX(){
 	return this->coo.x;
 }
 int Ship::getY(){
 	return this->coo.y;
+}
+int Ship::getW(){
+	return this->coo.w;
+}
+int Ship::getH(){
+	return this->coo.h;
 }
 int Ship::getSpeed(){
 	return this->speed;
@@ -44,11 +55,20 @@ void Ship::setTexture(SDL_Texture *t){
 void Ship::setCoo(SDL_Rect n){
 	this->coo = n;
 }
+void Ship::setHitbox(SDL_Rect b){
+	this->hitbox = b;
+}
 void Ship::setX(int x){
 	this->coo.x = x;
 }
 void Ship::setY(int y){
 	this->coo.y = y;
+}
+void Ship::setW(int w){
+	this->coo.w = w;
+}
+void Ship::setH(int h){
+	this->coo.h = h;
 }
 void Ship::setSpeed(int s){
 	this->speed = s;
@@ -58,6 +78,9 @@ void Ship::setHealth(int h){
 }
 void Ship::setMaxHealth(int m){
 	this->maxHealth = m;
+}
+void Ship::setHitboxRatio(float hr){
+	this->hitboxRatio = hr;
 }
 
 void Ship::init(){}
@@ -83,7 +106,7 @@ void Ship::renderShip(SDL_Renderer *r){
 
 bool Ship::hitShip(SDL_Rect s){
 	SDL_Rect r;
-	return SDL_IntersectRect(&(this->coo), &s, &r) == SDL_TRUE;
+	return SDL_IntersectRect(&(this->hitbox), &s, &r) == SDL_TRUE;
 }
 
 void Ship::heal(){
@@ -101,6 +124,16 @@ void Ship::takeDamage(){
 void Ship::takeDamage(int d){
 	this->health-= d;
 	cout << "Ship takes damage " << endl;
+}
+
+/**
+ * This function moves the hitbox to the right place
+ */
+void Ship::updateHitbox(){
+	this->hitbox.w = (int) (this->hitboxRatio * this->coo.w);
+	this->hitbox.h = (int) (this->hitboxRatio * this->coo.h);
+	this->hitbox.x = this->coo.x + this->coo.w/2 - this->hitbox.w/2;
+	this->hitbox.y = this->coo.y + this->coo.h/2 - this->hitbox.h/2;
 }
 
 void Ship::rerack(){

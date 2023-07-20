@@ -13,9 +13,11 @@ class Ship{
 	protected:
 		SDL_Texture *texture;
 		SDL_Rect coo;
+		SDL_Rect hitbox;
 		int speed;
 		int health;
 		int maxHealth;
+		float hitboxRatio; //to set the size of the hitbox (a a percentage of the whole sprite centered in the middle of the ship)
 	private :
 		
 	public:
@@ -26,19 +28,26 @@ class Ship{
 		
 		SDL_Texture *getTexture();
 		SDL_Rect getCoo();
+		SDL_Rect getHitbox();
 		int getX();
 		int getY();
+		int getW();
+		int getH();
 		int getSpeed();
 		int getHealth();
 		int getMaxHealth();
 		
 		void setTexture(SDL_Texture *t);
-		void setCoo(SDL_Rect nc);
+		void setCoo(SDL_Rect n);
+		void setHitbox(SDL_Rect b);
 		void setX(int x);
 		void setY(int y);
+		void setW(int w);
+		void setH(int h);
 		void setSpeed(int s);
 		void setHealth(int h);
 		void setMaxHealth(int m);
+		void setHitboxRatio(float hr);
 		
 		void init();
 		
@@ -52,6 +61,7 @@ class Ship{
 		void healCompletely();
 		void takeDamage();
 		void takeDamage(int d);
+		void updateHitbox();
 		
 		void rerack();
 		

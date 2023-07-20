@@ -50,12 +50,15 @@ int main(int argc, char **argv){
 	Player *ship = new Player(SDL_CreateTextureFromSurface(renderer, IMG_Load("ship.png")));
 	
 	ship->init();
+	ship->setW(75);
+	ship->setH(75);
+	ship->setHitboxRatio(.5);
+	ship->updateHitbox();
 	ship->setMaxHealth(100);
 	ship->healCompletely();
 	vector<Missile> vAmmo;
 	for(int i = 0; i < 3; i++){
 		//Missile m = Missile(SDL_CreateTextureFromSurface(renderer, IMG_Load("missile.png")));
-		cout << "missile created" << endl;
 		vAmmo.push_back(Missile(SDL_CreateTextureFromSurface(renderer, IMG_Load("missile.png"))));
 	}
 	ship->setAmmo(vAmmo);
@@ -71,6 +74,7 @@ int main(int argc, char **argv){
 	}
 	for(Enemy &e: vEnemy){
 		e.setTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("enemy.png")));
+		e.setHitboxRatio(1.0);
 	}
 	
 	GameInterface *gameInterface = new GameInterface;
@@ -88,13 +92,13 @@ int main(int argc, char **argv){
 			
 			for(Enemy &e: vEnemy){
 				e.move();
-				if(ship->hitShip(e.getCoo())){
+				if(ship->hitShip(e.getHitbox())){
 					ship->takeDamage(e.getMaxHealth());
 					if(e.takeDamage(ship->getMaxHealth())){
 						gameInterface->increaseScore();
 					}
 				}
-				int indexCollision = ship->missileCollidesWith(e.getCoo());
+				int indexCollision = ship->missileCollidesWith(e.getHitbox());
 				if(indexCollision > -1){
 					if(e.takeDamage(ship->getMissile(indexCollision).getMaxHealth())){
 						gameInterface->increaseScore();
@@ -115,6 +119,7 @@ int main(int argc, char **argv){
 			prevTime = SDL_GetTicks();
 		}
 	}
+	cout << "Final score : " << gameInterface->getScore() << endl;
 	delete gameInterface;
 	delete ship;
     SDL_DestroyRenderer(renderer);
