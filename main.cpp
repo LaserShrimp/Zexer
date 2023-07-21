@@ -83,6 +83,9 @@ int main(int argc, char **argv){
 	int fps = FPS;
 	int frameTime = 1000/fps; //1000 milliseconds/FPS
 	
+	Uint32 timeStampIncrease = SDL_GetTicks();
+	Uint32 timeEnemyIncrease = SDL_GetTicks();
+	
 	while (ship->getHealth() >= 0  && !inputs.getquit()) {
 		if(SDL_GetTicks() >= prevTime + frameTime){
 			SDL_PollEvent(&event);
@@ -105,6 +108,23 @@ int main(int argc, char **argv){
 					}
 					ship->damageMissile(indexCollision, e->getMaxHealth());
 				}
+			}
+			//Adding some difficulty over the time
+			if(SDL_GetTicks() - timeEnemyIncrease >= 20000){
+				Enemy* n = new Enemy;
+				n->setMaxHealth(30);
+				n->healCompletely();
+				n->setTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("enemy.png")));
+				n->setHitboxRatio(1.0);
+				vEnemy.push_back(n);
+				cout << "new enemy : " << vEnemy.size() << " enemies" << endl; 
+				timeEnemyIncrease = SDL_GetTicks();
+			}
+			if(SDL_GetTicks() - timeStampIncrease >= 10000){
+				int elem{rand()%(int)vEnemy.size()};
+				vEnemy[elem]->setSpeed(vEnemy[elem]->getSpeed()+2);
+				cout << "speed increased" << endl;
+				timeStampIncrease = SDL_GetTicks();
 			}
 			
 			//RENDERING
