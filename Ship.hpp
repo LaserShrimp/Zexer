@@ -18,6 +18,9 @@ class Ship{
 		int health;
 		int maxHealth;
 		float hitboxRatio; //to set the size of the hitbox (a a percentage of the whole sprite centered in the middle of the ship)
+		
+		short frameNb;//number of the current frame (for animation)
+		SDL_Rect framePos;
 	private :
 		
 	public:

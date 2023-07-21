@@ -185,7 +185,12 @@ void Player::updateAmmos(){
 }
 
 void Player::renderShip(SDL_Renderer *r){
-	SDL_RenderCopy(r, this->texture, NULL, &(this->coo));
+	this->framePos.x = WIDTH*this->frameNb;
+	SDL_RenderCopy(r, this->texture, &(this->framePos), &(this->coo));
+	this->frameNb++;
+	if(this->frameNb == 10){
+		this->frameNb = 0;
+	}
 	for(Missile* i : this->ammo){
 		if(!i->isReady()){
 			i->renderShip(r);

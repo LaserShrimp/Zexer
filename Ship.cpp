@@ -1,9 +1,9 @@
 #include "Ship.hpp"
 
-Ship::Ship(): texture{NULL}, coo({.x = 0, .y = 0, .w = WIDTH, .h = HEIGHT}), hitbox({.x = 0, .y = 0, .w = WIDTH, .h = HEIGHT}), speed{SPEED}, health{1}, maxHealth{1}, hitboxRatio{1.0}{
+Ship::Ship(): texture{NULL}, coo({.x = 0, .y = 0, .w = WIDTH, .h = HEIGHT}), hitbox({.x = 0, .y = 0, .w = WIDTH, .h = HEIGHT}), speed{SPEED}, health{1}, maxHealth{1}, hitboxRatio{1.0}, frameNb{0}, framePos({.x = 0, .y = 0, .w = WIDTH, .h = HEIGHT}){
 }
 
-Ship::Ship(SDL_Texture *t): texture{t}, coo({0, 0, WIDTH, HEIGHT}), speed{SPEED}, health{1}, maxHealth{1}, hitboxRatio{1.0}{
+Ship::Ship(SDL_Texture *t): texture{t}, coo({0, 0, WIDTH, HEIGHT}), speed{SPEED}, health{1}, maxHealth{1}, hitboxRatio{1.0}, frameNb{0}, framePos({.x = 0, .y = 0, .w = WIDTH, .h = HEIGHT}){
 }
 Ship::Ship(SDL_Texture *t, int x, int y){
 	this->texture = t;
@@ -14,6 +14,10 @@ Ship::Ship(SDL_Texture *t, int x, int y){
 	this->hitbox = this->coo;
 	this->hitboxRatio = 1.0;
 	this->speed = SPEED;
+	this->framePos.x = 0;
+	this->framePos.y = 0;
+	this->framePos.w = WIDTH;
+	this->framePos.h = HEIGHT;
 }
 Ship::Ship(SDL_Texture *t, SDL_Rect coo, int speed):texture{t}, coo{coo}, hitbox{coo}, speed{speed}, hitboxRatio{100}{
 }
@@ -101,6 +105,7 @@ void Ship::goDown(){
 
 void Ship::renderShip(SDL_Renderer *r){
 	if(this->texture == NULL){cout << "NULL texture..." << endl;}
+	
 	SDL_RenderCopy(r, this->texture, NULL, &(this->coo));
 }
 

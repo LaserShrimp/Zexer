@@ -47,7 +47,7 @@ int main(int argc, char **argv){
 	}
 	
 	Uint32 prevTime = SDL_GetTicks();
-	Player *ship = new Player(SDL_CreateTextureFromSurface(renderer, IMG_Load("ship.png")));
+	Player *ship = new Player(SDL_CreateTextureFromSurface(renderer, IMG_Load("assets/playerShipTest.png")));
 	
 	ship->init();
 	ship->setW(75);
