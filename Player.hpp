@@ -17,7 +17,7 @@ class Player: public Ship{
 	private:
 		int nbAmmo;
 		int stackSize;
-		vector<Missile> ammo;
+		vector<Missile*> ammo;
 		movestate mvState;
 		Uint32 shootCooldown; //in milliseconds
 		Uint32 startShootCooldown; //in millis
@@ -31,11 +31,11 @@ class Player: public Ship{
 		int getStackSize() const;
 		Uint32 getShootCooldown() const;
 		Uint32 getStartShootCooldown() const;
-		Missile& getMissile(int index);
-		vector<Missile>& getAmmo();
+		Missile* getMissile(int index);
+		vector<Missile*>& getAmmo();
 		
 		void setMissileTexture(int missileId, SDL_Texture *t);
-		void setAmmo(vector<Missile> &mVector);
+		void setAmmo(vector<Missile*> &mVector);
 		void setNbAmmo(int n);
 		void setStackSize(int stackSize);
 		void setMoveState(const InputState &is);

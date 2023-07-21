@@ -1,9 +1,8 @@
 #include "Player.hpp"
 
-Player::Player(SDL_Texture *t):Ship{t}, nbAmmo{0}, stackSize{0}, ammo{vector<Missile>{}}, mvState{STATIONNARY}, shootCooldown{175}, startShootCooldown{0}{}
+Player::Player(SDL_Texture *t):Ship{t}, nbAmmo{0}, stackSize{0}, ammo{vector<Missile*>{}}, mvState{STATIONNARY}, shootCooldown{225}, startShootCooldown{0}{}
 
-Player::Player(const Player& p){
-	this->texture = NULL;
+Player::Player(const Player& p): Ship{NULL}, nbAmmo{p.getNbAmmo()}, stackSize{p.getStackSize()}, ammo{vector<Missile*>{}}, mvState{STATIONNARY}, shootCooldown{255}, startShootCooldown{0}{
 }
 
 Player::~Player(){
@@ -15,10 +14,10 @@ int Player::getNbAmmo() const {return this->nbAmmo;}
 int Player::getStackSize() const {return this->stackSize;}
 Uint32 Player::getShootCooldown() const {return this->shootCooldown;}
 Uint32 Player::getStartShootCooldown() const {return this->startShootCooldown;}
-Missile &Player::getMissile (int index) {
+Missile* Player::getMissile (int index) {
 	return this->ammo[index];
 }
-vector<Missile> &Player::getAmmo() {
+vector<Missile*> &Player::getAmmo() {
 	return this->ammo;
 }
 
@@ -29,16 +28,16 @@ void Player::setStackSize(int stackSize){
 	this->stackSize = stackSize;
 }
 void Player::setMissileTexture(int missileId, SDL_Texture *t){
-	this->ammo[missileId].setTexture(t);
+	this->ammo[missileId]->setTexture(t);
 }
-void Player::setAmmo(vector<Missile> &mVector){
+void Player::setAmmo(vector<Missile*> &mVector){
 	this->nbAmmo = mVector.size();
 	this->stackSize = mVector.size();
 	this->ammo = mVector;
-	for(Missile &i : this->ammo){
-		i.setCoo({.x=0, .y=0, .w=10, .h=10});
-		i.setMaxHealth(10);
-		i.setToStack();
+	for(Missile* i : this->ammo){
+		i->setCoo({.x=0, .y=0, .w=10, .h=10});
+		i->setMaxHealth(10);
+		i->setToStack();
 	}
 }
 void Player::setShootCooldown(Uint32 cooldown){
@@ -66,10 +65,10 @@ void Player::init(SDL_Texture *missileTexture){
  */
 void Player::shoot(){
 	if(SDL_GetTicks() - this->startShootCooldown >= this->shootCooldown){
-		for(Missile &i : this->ammo){
-			if(i.isReady()){
+		for(Missile* i : this->ammo){
+			if(i->isReady()){
 				//We set the next ammo in front of the ship and let it go
-				i.launch(this->coo.x + this->coo.w/2 - 2, this->coo.y);
+				i->launch(this->coo.x + this->coo.w/2 - 2, this->coo.y);
 				break;
 			}
 		}
@@ -174,10 +173,10 @@ void Player::doActions(const InputState &is){
 
 void Player::updateAmmos(){
 	int count = 0;
-	for(Missile &i : this->ammo){
+	for(Missile* i : this->ammo){
 		//If the ammo is launched or waiting in the stack
-		if(!i.isReady()){
-			i.move();
+		if(!i->isReady()){
+			i->move();
 		} else {
 			count++;
 		}
@@ -187,9 +186,9 @@ void Player::updateAmmos(){
 
 void Player::renderShip(SDL_Renderer *r){
 	SDL_RenderCopy(r, this->texture, NULL, &(this->coo));
-	for(Missile &i : this->ammo){
-		if(!i.isReady()){
-			i.renderShip(r);
+	for(Missile* i : this->ammo){
+		if(!i->isReady()){
+			i->renderShip(r);
 		}
 	}
 }
@@ -199,18 +198,18 @@ void Player::renderShip(SDL_Renderer *r){
  */
 int Player::missileCollidesWith(SDL_Rect target){
 	int count{0};
-	for(Missile &i : this->ammo){
-		if(i.hitShip(target))
+	for(Missile* i : this->ammo){
+		if(i->hitShip(target))
 			return count;
 		count++;
 	}
 	return -1;
 }
 void Player::restackMissile(int index){
-	this->ammo[index].setToStack();
+	this->ammo[index]->setToStack();
 }
 void Player::damageMissile(int index, int damage){
-	this->ammo[index].takeDamage(damage);
+	this->ammo[index]->takeDamage(damage);
 }
 void Player::takeDamage(int d){
 	this->health-= d;
