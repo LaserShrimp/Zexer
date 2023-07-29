@@ -6,8 +6,6 @@ Player::Player(const Player& p): Ship{NULL}, nbAmmo{p.getNbAmmo()}, stackSize{p.
 }
 
 Player::~Player(){
-	if(this->texture != NULL)
-		SDL_DestroyTexture(this->texture);
 }
 
 int Player::getNbAmmo() const {return this->nbAmmo;}
@@ -45,6 +43,16 @@ void Player::setShootCooldown(Uint32 cooldown){
 }
 void Player::setStartShootCooldown(){
 	this->startShootCooldown = SDL_GetTicks();
+}
+void Player::setAnimationNeutral(SDL_Renderer *r){
+	this->animNeutral.setFrameSize(WIDTH, HEIGHT);
+	this->animNeutral.setNumberOfFrames(10);
+	this->animNeutral.setTexture(r, (char*)"assets/playerShipTest.png");
+}
+void Player::setAnimationUp(SDL_Renderer *r){
+	this->animUp.setFrameSize(WIDTH, HEIGHT);
+	this->animUp.setNumberOfFrames(10);
+	this->animUp.setTexture(r, (char*)"assets/playerUpTest.png");
 }
 void Player::init(int x, int y, int speed, int ammo, int stackSize){
 	this->coo.x = x;
@@ -185,12 +193,27 @@ void Player::updateAmmos(){
 }
 
 void Player::renderShip(SDL_Renderer *r){
-	this->framePos.x = WIDTH*this->frameNb;
-	SDL_RenderCopy(r, this->texture, &(this->framePos), &(this->coo));
-	this->frameNb++;
-	if(this->frameNb == 10){
-		this->frameNb = 0;
+// 	this->framePos.x = WIDTH*this->frameNb;
+// 	SDL_RenderCopy(r, this->texture, &(this->framePos), &(this->coo));
+	switch(this->mvState){
+		case STATIONNARY:
+			this->animNeutral.renderImage(r, this->coo);
+			this->animNeutral.nextFrame();
+			break;
+			
+		case UP:
+			this->animUp.renderImage(r, this->coo);
+			this->animUp.nextFrame();
+			break;
+		default:
+			this->animNeutral.renderImage(r, this->coo);
+			this->animNeutral.nextFrame();
+			break;
 	}
+// 	this->frameNb++;
+// 	if(this->frameNb == 10){
+// 		this->frameNb = 0;
+// 	}
 	for(Missile* i : this->ammo){
 		if(!i->isReady()){
 			i->renderShip(r);

@@ -6,6 +6,7 @@
 #include "SDL2/SDL_image.h"
 
 #include "defines.h"
+#include "Animation.hpp"
 
 using namespace std;
 

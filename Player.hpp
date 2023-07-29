@@ -22,6 +22,12 @@ class Player: public Ship{
 		Uint32 shootCooldown; //in milliseconds
 		Uint32 startShootCooldown; //in millis
 		
+		Animation animRight;
+		Animation animLeft;
+		Animation animUp;
+		Animation animDown;
+		Animation animNeutral;
+		
 	protected:
 	public:
 		Player(SDL_Texture *t);
@@ -41,6 +47,8 @@ class Player: public Ship{
 		void setMoveState(const InputState &is);
 		void setShootCooldown(Uint32 cooldown);
 		void setStartShootCooldown();
+		void setAnimationNeutral(SDL_Renderer *r);
+		void setAnimationUp(SDL_Renderer *r);
 		void doActions(const InputState &is);
 		void init(int x, int y, int speed, int ammo, int stackSize);
 		virtual void init();
