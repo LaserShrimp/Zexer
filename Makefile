@@ -25,11 +25,14 @@ GameInterface.o: GameInterface.cpp GameInterface.hpp
 Animation: Animation.cpp Animation.hpp
 	$(CPP) -c Animation.cpp  $(LIBS)
 	
+Unit1.o: Unit1.cpp Unit1.hpp
+	$(CPP) -c Unit1.cpp  $(LIBS)
+	
 main.o: main.cpp defines.h
 	$(CPP) -c main.cpp $(LIBS)
 	
-game: main.o Ship.o Enemy.o Player.o Missile.o InputState.o GameInterface.o Animation.o
-	$(CPP) -o zexer Ship.o Enemy.o Player.o Missile.o InputState.o GameInterface.o Animation.o main.o $(LIBS)
+game: main.o Ship.o Enemy.o Player.o Missile.o InputState.o GameInterface.o Animation.o Unit1.o
+	$(CPP) -o zexer Ship.o Enemy.o Player.o Missile.o InputState.o GameInterface.o Animation.o Unit1.o main.o $(LIBS)
 	
 clean:
 	rm -rf *.o

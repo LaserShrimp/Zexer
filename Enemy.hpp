@@ -9,14 +9,17 @@
 
 class Enemy : public Ship {
 	private:
-		
+		Animation animation;
 	public:
 		Enemy(SDL_Texture *t);
 		Enemy();
 		
+		void setAnimation(SDL_Renderer *r);
+		virtual void init(SDL_Renderer *r);
 		virtual void move();
 		virtual void rerack();
 		virtual bool takeDamage(int damage);
+		void renderShip(SDL_Renderer *r);
 		
 		virtual ~Enemy();
 };

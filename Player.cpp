@@ -2,7 +2,7 @@
 
 Player::Player(SDL_Texture *t):Ship{t}, nbAmmo{0}, stackSize{0}, ammo{vector<Missile*>{}}, mvState{STATIONNARY}, shootCooldown{225}, startShootCooldown{0}{}
 
-Player::Player(const Player& p): Ship{NULL}, nbAmmo{p.getNbAmmo()}, stackSize{p.getStackSize()}, ammo{vector<Missile*>{}}, mvState{STATIONNARY}, shootCooldown{255}, startShootCooldown{0}{
+Player::Player(const Player& p): Ship{NULL}, nbAmmo{p.getNbAmmo()}, stackSize{p.getStackSize()}, ammo{vector<Missile*>{}}, mvState{STATIONNARY}, shootCooldown{p.shootCooldown}, startShootCooldown{0}{
 }
 
 Player::~Player(){
@@ -54,6 +54,21 @@ void Player::setAnimationUp(SDL_Renderer *r){
 	this->animUp.setNumberOfFrames(10);
 	this->animUp.setTexture(r, (char*)"assets/playerUpTest.png");
 }
+void Player::setAnimationDown(SDL_Renderer *r){
+	this->animDown.setFrameSize(WIDTH, HEIGHT);
+	this->animDown.setNumberOfFrames(10);
+	this->animDown.setTexture(r, (char*)"assets/playerDownTest.png");
+}
+void Player::setAnimationRight(SDL_Renderer *r){
+	this->animRight.setFrameSize(WIDTH, HEIGHT);
+	this->animRight.setNumberOfFrames(10);
+	this->animRight.setTexture(r, (char*)"assets/playerRightTest.png");
+}
+void Player::setAnimationLeft(SDL_Renderer *r){
+	this->animLeft.setFrameSize(WIDTH, HEIGHT);
+	this->animLeft.setNumberOfFrames(10);
+	this->animLeft.setTexture(r, (char*)"assets/playerLeftTest.png");
+}
 void Player::init(int x, int y, int speed, int ammo, int stackSize){
 	this->coo.x = x;
 	this->coo.y = y;
@@ -66,6 +81,21 @@ void Player::init(){
 }
 void Player::init(SDL_Texture *missileTexture){
 	this->init(WIN_WIDTH/2 - WIDTH/2, WIN_HEIGHT - 1.5*HEIGHT, SPEED, 3, 3);//3, 3 are random
+}
+void Player::init(SDL_Renderer *r){
+	this->init();
+	this->setAnimationUp(r);
+	this->setAnimationDown(r);
+	this->setAnimationRight(r);
+	this->setAnimationLeft(r);
+	this->setAnimationNeutral(r);
+	
+	this->setW(75);
+	this->setH(75);
+	this->setHitboxRatio(.5);
+	this->updateHitbox();
+	this->setMaxHealth(100);
+	this->healCompletely();
 }
 
 /**
@@ -193,8 +223,6 @@ void Player::updateAmmos(){
 }
 
 void Player::renderShip(SDL_Renderer *r){
-// 	this->framePos.x = WIDTH*this->frameNb;
-// 	SDL_RenderCopy(r, this->texture, &(this->framePos), &(this->coo));
 	switch(this->mvState){
 		case STATIONNARY:
 			this->animNeutral.renderImage(r, this->coo);
@@ -202,18 +230,30 @@ void Player::renderShip(SDL_Renderer *r){
 			break;
 			
 		case UP:
+		case UPRIGHT:
+		case UPLEFT:
 			this->animUp.renderImage(r, this->coo);
 			this->animUp.nextFrame();
+			break;
+		case DOWN:
+			this->animDown.renderImage(r, this->coo);
+			this->animDown.nextFrame();
+			break;
+		case LEFT:
+		case DOWNLEFT:
+			this->animLeft.renderImage(r, this->coo);
+			this->animLeft.nextFrame();
+			break;
+		case RIGHT:
+		case DOWNRIGHT:
+			this->animRight.renderImage(r, this->coo);
+			this->animRight.nextFrame();
 			break;
 		default:
 			this->animNeutral.renderImage(r, this->coo);
 			this->animNeutral.nextFrame();
 			break;
 	}
-// 	this->frameNb++;
-// 	if(this->frameNb == 10){
-// 		this->frameNb = 0;
-// 	}
 	for(Missile* i : this->ammo){
 		if(!i->isReady()){
 			i->renderShip(r);

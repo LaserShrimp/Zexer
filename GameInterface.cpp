@@ -1,6 +1,6 @@
 #include "GameInterface.hpp"
 
-GameInterface::GameInterface():health{0}, maxHealth{0}, score{0}, munitions{0}, font{TTF_OpenFont("Hybrid_b.ttf", 15)}, coo{.x = 0, .y = 0, .w = 500, .h = 20}, hcoo{.x = 0, .y = WIN_HEIGHT - 100, .w = 500, .h = 20}, hmcoo{.x = 0, .y = WIN_HEIGHT - 100, .w = 500, .h = 20}, scoo{.x = 0, .y = WIN_HEIGHT - 75, .w = 250, .h = 30}, mcoo{.x = 0, .y = WIN_HEIGHT - 100, .w = 250, .h = 30}{
+GameInterface::GameInterface():health{0}, maxHealth{0}, score{0}, munitions{0}, font{TTF_OpenFont("Hybrid_b.ttf", 15)}, coo{.x = 0, .y = 0, .w = 500, .h = 20}, hcoo{.x = 0, .y = WIN_HEIGHT - 100, .w = 500, .h = 20}, hmcoo{.x = 0, .y = WIN_HEIGHT - 100, .w = 500, .h = 20}, scoo{.x = WIN_WIDTH/4, .y = WIN_HEIGHT - 55, .w = 150, .h = 30}, mcoo{.x = WIN_WIDTH/4, .y = WIN_HEIGHT - 75, .w = 150, .h = 30}{
 }
 
 GameInterface::GameInterface(const GameInterface& gi){
@@ -8,7 +8,7 @@ GameInterface::GameInterface(const GameInterface& gi){
 	this->maxHealth = gi.maxHealth;
 	this->score = gi.score;
 	this->munitions = gi.munitions;
-	this->font = TTF_OpenFont("Hybrid_b.ttf", 15);
+	this->font = TTF_OpenFont("Hybrid_o.ttf", 30);
 	this->coo = gi.coo;
 	this->hcoo = gi.hcoo;
 	this->hmcoo = gi.hmcoo;
@@ -50,8 +50,15 @@ void GameInterface::render(SDL_Renderer *r){
 	SDL_RenderCopy(r, tm, NULL, &(this->mcoo));
 	
 	//Drawing health bar
-	SDL_SetRenderDrawColor(r, 255, 125, 50, 255);
+	if(this->health == this->maxHealth){
+		SDL_SetRenderDrawColor(r, 0, 255, 0, 255);
+	} else if(this->health*1.0/this->maxHealth*1.0 > 20.0/100.0){
+		SDL_SetRenderDrawColor(r, 255, 125, 50, 255);
+	} else {
+		SDL_SetRenderDrawColor(r, 255, 0, 0, 0);
+	}
 	SDL_RenderFillRect(r, &(this->hcoo));
+	SDL_SetRenderDrawColor(r, 255, 255, 255, 255);
 	SDL_RenderDrawRect(r, &(this->hmcoo));
 	
 	SDL_SetRenderDrawColor(r, 0, 0, 0, 0);

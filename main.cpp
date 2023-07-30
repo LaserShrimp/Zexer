@@ -48,16 +48,8 @@ int main(int argc, char **argv){
 	
 	Uint32 prevTime = SDL_GetTicks();
 	Player *ship = new Player(NULL);
-	ship->setAnimationNeutral(renderer);
-	ship->setAnimationUp(renderer);
 	
-	ship->init();
-	ship->setW(75);
-	ship->setH(75);
-	ship->setHitboxRatio(.5);
-	ship->updateHitbox();
-	ship->setMaxHealth(100);
-	ship->healCompletely();
+	ship->init(renderer);
 	vector<Missile*> vAmmo;
 	for(int i = 0; i < 3; i++){
 		//Missile m = Missile(SDL_CreateTextureFromSurface(renderer, IMG_Load("missile.png")));
@@ -71,13 +63,13 @@ int main(int argc, char **argv){
     vector<Enemy*> vEnemy;
 	for(int i = 0; i < 5; i++){
 		vEnemy.push_back(new Enemy());
-		vEnemy[i]->setMaxHealth(30);
-		vEnemy[i]->healCompletely();
+// 		vEnemy[i]->setMaxHealth(30);
+// 		vEnemy[i]->healCompletely();
+		vEnemy[i]->init(renderer);
 	}
-	for(Enemy* e: vEnemy){
-		e->setTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("enemy.png")));
-		e->setHitboxRatio(1.0);
-	}
+// 	for(Enemy* e: vEnemy){
+// 		e->setTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("enemy.png")));
+// 	}
 	
 	GameInterface *gameInterface = new GameInterface;
 	
@@ -87,6 +79,7 @@ int main(int argc, char **argv){
 	
 	Uint32 timeStampIncrease = SDL_GetTicks();
 	Uint32 timeEnemyIncrease = SDL_GetTicks();
+	Uint32 timeHealthIncrease = SDL_GetTicks();
 	
 	while (ship->getHealth() >= 0  && !inputs.getquit()) {
 		if(SDL_GetTicks() >= prevTime + frameTime){
@@ -114,10 +107,7 @@ int main(int argc, char **argv){
 			//Adding some difficulty over the time
 			if(SDL_GetTicks() - timeEnemyIncrease >= 20000){
 				Enemy* n = new Enemy;
-				n->setMaxHealth(30);
-				n->healCompletely();
-				n->setTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("enemy.png")));
-				n->setHitboxRatio(1.0);
+				n->init(renderer);
 				vEnemy.push_back(n);
 				cout << "new enemy : " << vEnemy.size() << " enemies" << endl; 
 				timeEnemyIncrease = SDL_GetTicks();
@@ -127,6 +117,12 @@ int main(int argc, char **argv){
 				vEnemy[elem]->setSpeed(vEnemy[elem]->getSpeed()+2);
 				cout << "speed increased" << endl;
 				timeStampIncrease = SDL_GetTicks();
+			}
+			if(SDL_GetTicks() - timeHealthIncrease >= 15000){
+				int elem{rand()%(int)vEnemy.size()};
+				vEnemy[elem]->setMaxHealth(vEnemy[elem]->getMaxHealth()+50);
+				cout << "health increased" << endl;
+				timeHealthIncrease = SDL_GetTicks();
 			}
 			
 			//RENDERING

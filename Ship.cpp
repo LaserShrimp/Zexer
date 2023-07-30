@@ -106,6 +106,26 @@ void Ship::goDown(){
 void Ship::renderShip(SDL_Renderer *r){
 	if(this->texture == NULL){cout << "NULL texture..." << endl;}
 	
+	SDL_Rect hmcoo = this->coo;
+	hmcoo.y = this->coo.y - 4;
+	hmcoo.h = 4;
+	SDL_Rect hcoo = hmcoo;
+	hcoo.h = 2;
+	hcoo.y = hmcoo.y+1;
+	hcoo.w = this->health*1.0/this->maxHealth*1.0 * hcoo.w;
+	//Drawing health bar only if the ship is damaged
+	if(this->health*1.0/this->maxHealth*1.0 > 20.0/100.0){
+		SDL_SetRenderDrawColor(r, 255, 200, 50, 255);
+	} else {
+		SDL_SetRenderDrawColor(r, 255, 0, 0, 0);
+	}
+	if(this->health < this->maxHealth){
+		SDL_RenderFillRect(r, &hcoo);
+		SDL_SetRenderDrawColor(r, 255, 255, 255, 255);
+		SDL_RenderDrawRect(r, &hmcoo);
+	}
+	
+	SDL_SetRenderDrawColor(r, 0, 0, 0, 0);
 	SDL_RenderCopy(r, this->texture, NULL, &(this->coo));
 }
 

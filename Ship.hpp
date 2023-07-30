@@ -53,13 +53,13 @@ class Ship{
 		void setMaxHealth(int m);
 		void setHitboxRatio(float hr);
 		
-		void init();
+		virtual void init();
 		
 		void goLeft();
 		void goRight();
 		void goUp();
 		void goDown();
-		void renderShip(SDL_Renderer *r);
+		virtual void renderShip(SDL_Renderer *r);
 		void heal();
 		void heal(int a);
 		void healCompletely();
