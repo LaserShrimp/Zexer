@@ -72,6 +72,7 @@ int main(int argc, char **argv){
 // 	}
 	
 	GameInterface *gameInterface = new GameInterface;
+	gameInterface->initBackground(renderer);
 	
 	InputState inputs;
 	int fps = FPS;

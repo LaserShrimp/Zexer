@@ -8,6 +8,9 @@
 #include "defines.h"
 #include "Player.hpp"
 
+#define INT_W	750
+#define INT_H	100
+
 class GameInterface{
 	private:
 		int health;
@@ -16,6 +19,8 @@ class GameInterface{
 		int munitions;
 		
 		TTF_Font *font;
+		SDL_Texture *renderTexture;
+		SDL_Texture *backgroundTexture;
 		SDL_Rect coo;
 		SDL_Rect hcoo;
 		SDL_Rect hmcoo;
@@ -25,6 +30,8 @@ class GameInterface{
 	public:
 		GameInterface();
 		GameInterface(const GameInterface &gi);
+		
+		void initBackground(SDL_Renderer *r);
 		
 		int getScore();
 		
