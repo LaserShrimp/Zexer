@@ -47,29 +47,22 @@ int main(int argc, char **argv){
 	}
 	
 	Uint32 prevTime = SDL_GetTicks();
-	Player *ship = new Player(NULL);
+	Player *ship = new Player();
 	
 	ship->init(renderer);
 	vector<Missile*> vAmmo;
 	for(int i = 0; i < 3; i++){
-		//Missile m = Missile(SDL_CreateTextureFromSurface(renderer, IMG_Load("missile.png")));
-		vAmmo.push_back(new Missile(SDL_CreateTextureFromSurface(renderer, IMG_Load("missile.png"))));
+		vAmmo.push_back(new Missile());
 	}
 	ship->setAmmo(vAmmo);
 	for(Missile* mi: ship->getAmmo()){
-		mi->setTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("missile.png")));
+		mi->setAnimationNeutral(renderer);
 	}
-	//SDL_Texture *texe1 = SDL_CreateTextureFromSurface(renderer, IMG_Load("enemy.png"));
     vector<Enemy*> vEnemy;
 	for(int i = 0; i < 5; i++){
 		vEnemy.push_back(new Enemy());
-// 		vEnemy[i]->setMaxHealth(30);
-// 		vEnemy[i]->healCompletely();
 		vEnemy[i]->init(renderer);
 	}
-// 	for(Enemy* e: vEnemy){
-// 		e->setTexture(SDL_CreateTextureFromSurface(renderer, IMG_Load("enemy.png")));
-// 	}
 	
 	GameInterface *gameInterface = new GameInterface;
 	gameInterface->initBackground(renderer);
@@ -82,7 +75,7 @@ int main(int argc, char **argv){
 	Uint32 timeEnemyIncrease = SDL_GetTicks();
 	Uint32 timeHealthIncrease = SDL_GetTicks();
 	
-	while (ship->getHealth() >= 0  && !inputs.getquit()) {
+	while (ship->getHealth() > 0  && !inputs.getquit()) {
 		if(SDL_GetTicks() >= prevTime + frameTime){
 			SDL_PollEvent(&event);
 			inputs.setState(event);
@@ -92,17 +85,17 @@ int main(int argc, char **argv){
 			for(Enemy* e: vEnemy){
 				e->move();
 				if(ship->hitShip(e->getHitbox())){
-					ship->takeDamage(e->getMaxHealth());
-					if(e->takeDamage(ship->getMaxHealth())){
+					ship->takeDamage(e->getAtk());
+					if(e->takeDamage(INF)){
 						gameInterface->increaseScore();
 					}
 				}
 				int indexCollision = ship->missileCollidesWith(e->getHitbox());
 				if(indexCollision > -1){
-					if(e->takeDamage(ship->getMissile(indexCollision)->getMaxHealth())){
+					if(e->takeDamage(ship->getMissile(indexCollision)->getAtk())){
 						gameInterface->increaseScore();
 					}
-					ship->damageMissile(indexCollision, e->getMaxHealth());
+					ship->damageMissile(indexCollision, e->getAtk());
 				}
 			}
 			//Adding some difficulty over the time
@@ -115,7 +108,7 @@ int main(int argc, char **argv){
 			}
 			if(SDL_GetTicks() - timeStampIncrease >= 10000){
 				int elem{rand()%(int)vEnemy.size()};
-				vEnemy[elem]->setSpeed(vEnemy[elem]->getSpeed()+2);
+				vEnemy[elem]->setYSpeed(vEnemy[elem]->getYSpeed()+2);
 				cout << "speed increased" << endl;
 				timeStampIncrease = SDL_GetTicks();
 			}

@@ -1,12 +1,9 @@
 #include "Ship.hpp"
 
-Ship::Ship(): texture{NULL}, coo({.x = 0, .y = 0, .w = WIDTH, .h = HEIGHT}), hitbox({.x = 0, .y = 0, .w = WIDTH, .h = HEIGHT}), speed{SPEED}, health{1}, maxHealth{1}, hitboxRatio{1.0}, frameNb{0}, framePos({.x = 0, .y = 0, .w = WIDTH, .h = HEIGHT}){
+Ship::Ship():cooVect{Vect(0, 0)}, speedVect{Vect(0, 0)}, coo({.x = 0, .y = 0, .w = WIDTH, .h = HEIGHT}), hitbox({.x = 0, .y = 0, .w = WIDTH, .h = HEIGHT}), speed{SPEED}, health{1}, maxHealth{1}, atk{1}, hitboxRatio{1.0}, frameNb{0}, framePos({.x = 0, .y = 0, .w = WIDTH, .h = HEIGHT}){
 }
 
-Ship::Ship(SDL_Texture *t): texture{t}, coo({0, 0, WIDTH, HEIGHT}), speed{SPEED}, health{1}, maxHealth{1}, hitboxRatio{1.0}, frameNb{0}, framePos({.x = 0, .y = 0, .w = WIDTH, .h = HEIGHT}){
-}
-Ship::Ship(SDL_Texture *t, int x, int y){
-	this->texture = t;
+Ship::Ship(int x, int y){
 	this->coo.x = x;
 	this->coo.y = y;
 	this->coo.w = WIDTH;
@@ -19,14 +16,22 @@ Ship::Ship(SDL_Texture *t, int x, int y){
 	this->framePos.w = WIDTH;
 	this->framePos.h = HEIGHT;
 }
-Ship::Ship(SDL_Texture *t, SDL_Rect coo, int speed):texture{t}, coo{coo}, hitbox{coo}, speed{speed}, hitboxRatio{100}{
-}
-
-SDL_Texture *Ship::getTexture(){
-	return this->texture;
+Ship::Ship(SDL_Rect coo, float speed):coo{coo}, hitbox{coo}, speed{speed}, hitboxRatio{100}{
 }
 SDL_Rect Ship::getCoo(){
 	return this->coo;
+}
+Vect& Ship::getCooVect() const{
+	Vect *v = new Vect();
+	v->setX(this->cooVect.getX());
+	v->setY(this->cooVect.getY());
+	return *v;
+}
+Vect& Ship::getSpeedVect() const{
+	Vect *v = new Vect();
+	v->setX(this->speedVect.getX());
+	v->setY(this->speedVect.getY());
+	return *v;
 }
 SDL_Rect Ship::getHitbox(){
 	return this->hitbox;
@@ -43,7 +48,7 @@ int Ship::getW(){
 int Ship::getH(){
 	return this->coo.h;
 }
-int Ship::getSpeed(){
+float Ship::getSpeed(){
 	return this->speed;
 }
 int Ship::getHealth(){
@@ -52,12 +57,26 @@ int Ship::getHealth(){
 int Ship::getMaxHealth(){
 	return this->maxHealth;
 }
-
-void Ship::setTexture(SDL_Texture *t){
-	this->texture = t;
+int Ship::getAtk(){
+	return this->atk;
 }
+float Ship::getXSpeed(){
+	return this->speedVect.getX();
+}
+float Ship::getYSpeed(){
+	return this->speedVect.getY();
+}
+
 void Ship::setCoo(SDL_Rect n){
 	this->coo = n;
+}
+void Ship::setCooVect(float x, float y){
+	this->cooVect.setX(x);
+	this->cooVect.setY(y);
+}
+void Ship::setSpeedVect(float x, float y){
+	this->speedVect.setX(x);
+	this->speedVect.setY(y);
 }
 void Ship::setHitbox(SDL_Rect b){
 	this->hitbox = b;
@@ -74,8 +93,14 @@ void Ship::setW(int w){
 void Ship::setH(int h){
 	this->coo.h = h;
 }
-void Ship::setSpeed(int s){
+void Ship::setSpeed(float s){
 	this->speed = s;
+}
+void Ship::setXSpeed(const float x){
+	this->speedVect.setX(x);
+}
+void Ship::setYSpeed(const float y){
+	this->speedVect.setY(y);
 }
 void Ship::setHealth(int h){
 	this->health = h;
@@ -85,6 +110,22 @@ void Ship::setMaxHealth(int m){
 }
 void Ship::setHitboxRatio(float hr){
 	this->hitboxRatio = hr;
+}
+void Ship::setAtk(int a){
+	this->atk = a;
+}
+void Ship::setAnimationNeutral(SDL_Renderer *r){
+	this->animNeutral.setFrameSize(WIDTH, HEIGHT);
+	this->animNeutral.setNumberOfFrames(10);
+	this->animNeutral.setTexture(r, (char*)"assets/playerShipTest.png");
+}
+void Ship::setAnimationNeutral(SDL_Renderer *r, char* animName, int nbFrames, int frameW, int frameH){
+	this->animNeutral.setFrameSize(frameW, frameH);
+	this->animNeutral.setNumberOfFrames(nbFrames);
+	this->animNeutral.setTexture(r, animName);
+}
+void Ship::setAnimationNeutral(const Animation& a){
+	this->animNeutral = a;
 }
 
 void Ship::init(){}
@@ -102,9 +143,20 @@ void Ship::goUp(){
 void Ship::goDown(){
 	this->coo.y+= this->speed;
 }
+void Ship::translationMovement(){
+	this->cooVect = this->cooVect+this->speedVect;
+	this->synchronizeCooFromVect();
+}
+void Ship::synchronizeCooFromVect(){
+	this->coo.x = (int) this->cooVect.getX();
+	this->coo.y = (int) this->cooVect.getY();
+}
+void Ship::synchronizeVectFromCoo(){
+	this->cooVect.setX(this->coo.x);
+	this->cooVect.setY(this->coo.y);
+}
 
 void Ship::renderShip(SDL_Renderer *r){
-	if(this->texture == NULL){cout << "NULL texture..." << endl;}
 	
 	SDL_Rect hmcoo = this->coo;
 	hmcoo.y = this->coo.y - 4;
@@ -126,7 +178,9 @@ void Ship::renderShip(SDL_Renderer *r){
 	}
 	
 	SDL_SetRenderDrawColor(r, 0, 0, 0, 0);
-	SDL_RenderCopy(r, this->texture, NULL, &(this->coo));
+// 	SDL_RenderCopy(r, this->texture, NULL, &(this->coo));
+	this->animNeutral.renderImage(r, this->coo);
+	this->animNeutral.nextFrame();
 }
 
 bool Ship::hitShip(SDL_Rect s){
@@ -166,9 +220,6 @@ void Ship::rerack(){
 }
 
 Ship::~Ship(){
-	if(this->texture != NULL){
-		SDL_DestroyTexture(this->texture);
-	}
 }
 
 ostream& operator<<(ostream& out, Ship &s){

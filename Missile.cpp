@@ -1,13 +1,17 @@
 #include "Missile.hpp"
 
-Missile::Missile(SDL_Texture *t): Ship{t}, ready{true}{
+Missile::Missile(): Ship{}, ready{true}{
 	this->speed = MISSILE_SPEED;
+	this->speedVect.setX(0);
+	this->speedVect.setY(-MISSILE_SPEED);
 	this->maxHealth = 10;
+	this->atk = 10;
 }
 
-Missile::Missile(): ready{true}{
-	this->speed = MISSILE_SPEED;
-	this->maxHealth = 10;
+void Missile::setAnimationNeutral(SDL_Renderer *r){
+	this->animNeutral.setFrameSize(10, 10);
+	this->animNeutral.setNumberOfFrames(6);
+	this->animNeutral.setTexture(r, (char*)"assets/missile.png");
 }
 
 void Missile::setReady(bool r){this->ready = r;};
@@ -33,6 +37,7 @@ bool Missile::launch(int startX, int startY){
 		this->ready = false;
 		this->coo.x = startX;
 		this->coo.y = startY;
+		this->synchronizeVectFromCoo();
 		this->updateHitbox();
 		return true;
 	} else {
@@ -45,7 +50,7 @@ void Missile::move(){
 	if(this->coo.y < 0 || this->health <= 0){
 		this->setToStack();
 	} else {
-		this->goUp();
+		this->translationMovement();
 	}
 	this->updateHitbox();
 }
@@ -53,16 +58,11 @@ void Missile::takeDamage(int d){
 	this->health-= d;
 	if(this->health <= 0){
 		this->setToStack();
-		//cout << "restacked missile" << endl;
 	}
-	//cout << this->getX() << " " << this->getY() <<endl;
 }
 
 
 Missile::~Missile(){
-	if(this->texture != NULL){
-		SDL_DestroyTexture(this->texture);
-	}
 }
 
 ostream& operator<<(ostream& out, Missile &m){

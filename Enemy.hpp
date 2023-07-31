@@ -11,8 +11,8 @@ class Enemy : public Ship {
 	private:
 		Animation animation;
 	public:
-		Enemy(SDL_Texture *t);
 		Enemy();
+		Enemy(const Enemy& e);
 		
 		void setAnimation(SDL_Renderer *r);
 		virtual void init(SDL_Renderer *r);

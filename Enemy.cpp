@@ -1,13 +1,18 @@
 #include "Enemy.hpp"
 
-Enemy::Enemy(SDL_Texture *t): Ship{t, 0, -50}{
-	this->speed = ENEMY_SPEED;
-	this->coo.x = rand()%WIN_WIDTH;
-}
 Enemy::Enemy(){
 	this->speed = ENEMY_SPEED;
 	this->coo.x = rand()%WIN_WIDTH;
 	this->coo.y = -50;
+	this->cooVect.setX(rand()%WIN_WIDTH);
+	this->cooVect.setY(-50);
+	this->speedVect.setX(0);
+	this->speedVect.setY(ENEMY_SPEED);
+}
+Enemy::Enemy(const Enemy& e){
+	this->speed = e.speed;
+	this->coo.x = e.coo.x;
+	this->coo.y = e.coo.y;
 }
 
 void Enemy::setAnimation(SDL_Renderer *r){
@@ -20,6 +25,7 @@ void Enemy::init(SDL_Renderer *r){
 	this->setAnimation(r);
 	
 	this->speed = ENEMY_SPEED;
+	this->atk = 20;
 	this->coo.x = rand()%WIN_WIDTH;
 	this->coo.y = -50;
 	this->setMaxHealth(30);
@@ -31,8 +37,7 @@ void Enemy::move(){
 	if(this->coo.y > WIN_HEIGHT){
 		this->rerack();
 	} else {
-		this->goDown();
-		//cout << "enemy goes down" << endl;
+		this->translationMovement();
 	}
 	this->updateHitbox();
 }
@@ -44,29 +49,24 @@ void Enemy::rerack(){
 	this->health = this->maxHealth;
 	this->coo.y = -50;
 	this->coo.x = rand()%(WIN_WIDTH - 100);
-	//cout << "enemy reracked : x, y, w, h " << this->getX()  << " " << this->getY() << " " << this->coo.w << " " << this->coo.h << endl;
+	this->synchronizeVectFromCoo();
 }
 
 /**
  * returns true if the enemy's dead, false if not
  */
 bool Enemy::takeDamage(int damage){
-	//cout << "enemy takes damage " << endl << "ennemy health before : " << this->health << endl;
 	this->health-= damage;
 	if(this->health <= 0){
 		this->rerack();
 		return true;
 	}
-	//cout << "enemy's health : " << this->health << endl;
 	return false;
 }
 
 void Enemy::renderShip(SDL_Renderer *r){
-// 	cout << "begun rendering animation" << endl;
 	this->animation.renderImage(r, this->coo);
-// 	cout << "here" << endl;
 	this->animation.nextFrame();
-	cout << "finished rendering animation" << endl;
 	
 	//Drawing health bar only if the ship is damaged
 	SDL_Rect hmcoo = this->coo;
@@ -75,9 +75,7 @@ void Enemy::renderShip(SDL_Renderer *r){
 	SDL_Rect hcoo = hmcoo;
 	hcoo.h = 2;
 	hcoo.y = hmcoo.y+1;
-	cout << "it's here";
 	hcoo.w = this->health*1.0/this->maxHealth*1.0 * hmcoo.w;
-	cout << "right here" << endl;
 	if(this->health*1.0/this->maxHealth*1.0 > 20.0/100.0){
 		SDL_SetRenderDrawColor(r, 255, 200, 50, 255);
 	} else {
@@ -93,7 +91,4 @@ void Enemy::renderShip(SDL_Renderer *r){
 }
 
 Enemy::~Enemy(){
-	if(this->texture != NULL){
-		SDL_DestroyTexture(this->texture);
-	}
 }

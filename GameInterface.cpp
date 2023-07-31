@@ -72,7 +72,7 @@ void GameInterface::render(SDL_Renderer *r){
 	} else if(this->health*1.0/this->maxHealth*1.0 > 20.0/100.0){
 		SDL_SetRenderDrawColor(r, 255, 125, 50, 255);
 	} else {
-		SDL_SetRenderDrawColor(r, 255, 0, 0, 0);
+		SDL_SetRenderDrawColor(r, 255, 0, 0, 255);
 	}
 	SDL_RenderFillRect(r, &(this->hcoo));
 	SDL_SetRenderDrawColor(r, 255, 255, 255, 255);

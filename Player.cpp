@@ -1,8 +1,8 @@
 #include "Player.hpp"
 
-Player::Player(SDL_Texture *t):Ship{t}, nbAmmo{0}, stackSize{0}, ammo{vector<Missile*>{}}, mvState{STATIONNARY}, shootCooldown{225}, startShootCooldown{0}{}
+Player::Player():Ship{}, nbAmmo{0}, stackSize{0}, ammo{vector<Missile*>{}}, mvState{STATIONNARY}, shootCooldown{225}, startShootCooldown{0}{}
 
-Player::Player(const Player& p): Ship{NULL}, nbAmmo{p.getNbAmmo()}, stackSize{p.getStackSize()}, ammo{vector<Missile*>{}}, mvState{STATIONNARY}, shootCooldown{p.shootCooldown}, startShootCooldown{0}{
+Player::Player(const Player& p): Ship{}, nbAmmo{p.getNbAmmo()}, stackSize{p.getStackSize()}, ammo{vector<Missile*>{}}, mvState{STATIONNARY}, shootCooldown{p.shootCooldown}, startShootCooldown{0}{
 }
 
 Player::~Player(){
@@ -25,8 +25,8 @@ void Player::setNbAmmo(int n){
 void Player::setStackSize(int stackSize){
 	this->stackSize = stackSize;
 }
-void Player::setMissileTexture(int missileId, SDL_Texture *t){
-	this->ammo[missileId]->setTexture(t);
+void Player::setMissileTexture(int missileId, const Animation& a){
+	this->ammo[missileId]->Ship::setAnimationNeutral(a);
 }
 void Player::setAmmo(vector<Missile*> &mVector){
 	this->nbAmmo = mVector.size();
@@ -72,6 +72,7 @@ void Player::setAnimationLeft(SDL_Renderer *r){
 void Player::init(int x, int y, int speed, int ammo, int stackSize){
 	this->coo.x = x;
 	this->coo.y = y;
+	this->synchronizeVectFromCoo();
 	this->speed = speed;
 	this->nbAmmo = ammo;
 	this->stackSize = stackSize;
@@ -96,6 +97,7 @@ void Player::init(SDL_Renderer *r){
 	this->updateHitbox();
 	this->setMaxHealth(100);
 	this->healCompletely();
+	this->setAtk(1);
 }
 
 /**
@@ -117,50 +119,93 @@ void Player::shoot(){
 void Player::move(){
 	switch(this->mvState){
 		case RIGHT:
-			if(this->coo.x+this->coo.w < WIN_WIDTH)
-				this->goRight();
+			if(this->coo.x+this->coo.w < WIN_WIDTH){
+				this->setXSpeed(this->speed);
+				this->setYSpeed(0);
+			} else {
+				this->setXSpeed(0);
+			}
 			break;
 		case LEFT:
-			if(this->coo.x > 0)
-				this->goLeft();
+			if(this->coo.x > 0){
+				this->setXSpeed(-this->speed);
+				this->setYSpeed(0);
+			} else {
+				this->setXSpeed(0);
+			}
 			break;
 		case UP:
-			if(this->coo.y > 0)
-				this->goUp();
+			if(this->coo.y > 0){
+				this->setXSpeed(0);
+				this->setYSpeed(-this->speed);
+			} else {
+				this->setYSpeed(0);
+			}
 			break;
 		case DOWN:
-			if(this->coo.y+this->coo.h < WIN_HEIGHT)
-				this->goDown();
+			if(this->coo.y+this->coo.h < WIN_HEIGHT){
+				this->setXSpeed(0);
+				this->setYSpeed(this->speed);
+			} else {
+				this->setYSpeed(0);
+			}
 			break;
 		case UPRIGHT:
 			if(this->coo.y > 0)
-				this->goUp();
+				this->setYSpeed(-this->speed);
+			else {
+				this->setYSpeed(0);
+			}
 			if(this->coo.x+this->coo.w < WIN_WIDTH)
-				this->goRight();
+				this->setXSpeed(this->speed);
+			else {
+				this->setXSpeed(0);
+			}
 			break;
 		case UPLEFT:
 			if(this->coo.y > 0)
-				this->goUp();
+				this->setYSpeed(-this->speed);
+			else {
+				this->setYSpeed(0);
+			}
 			if(this->coo.x > 0)
-				this->goLeft();
+				this->setXSpeed(-this->speed);
+			else {
+				this->setXSpeed(0);
+			}
 			break;
 		case DOWNRIGHT:
 			if(this->coo.y+this->coo.h < WIN_HEIGHT)
-				this->goDown();
+				this->setYSpeed(this->speed);
+			else {
+				this->setYSpeed(0);
+			}
 			if(this->coo.x+this->coo.w < WIN_WIDTH)
-				this->goRight();
+				this->setXSpeed(this->speed);
+			else {
+				this->setXSpeed(0);
+			}
 			break;
 		case DOWNLEFT:
 			if(this->coo.y+this->coo.h < WIN_HEIGHT)
-				this->goDown();
+				this->setYSpeed(this->speed);
+			else {
+				this->setYSpeed(0);
+			}
 			if(this->coo.x > 0)
-				this->goLeft();
+				this->setXSpeed(-this->speed);
+			else {
+				this->setXSpeed(0);
+			}
 			break;
 		case STATIONNARY:
+			this->setXSpeed(0);
+			this->setYSpeed(0);
 			break;
 		default:
 			break;
 	}
+	this->translationMovement();
 }
 
 void Player::setMoveState(const InputState &is){

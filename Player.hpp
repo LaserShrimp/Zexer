@@ -26,11 +26,10 @@ class Player: public Ship{
 		Animation animLeft;
 		Animation animUp;
 		Animation animDown;
-		Animation animNeutral;
 		
 	protected:
 	public:
-		Player(SDL_Texture *t);
+		Player();
 		Player(const Player& p);
 		
 		int getNbAmmo() const;
@@ -40,7 +39,7 @@ class Player: public Ship{
 		Missile* getMissile(int index);
 		vector<Missile*>& getAmmo();
 		
-		void setMissileTexture(int missileId, SDL_Texture *t);
+		void setMissileTexture(int missileId, const Animation& a);
 		void setAmmo(vector<Missile*> &mVector);
 		void setNbAmmo(int n);
 		void setStackSize(int stackSize);

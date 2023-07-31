@@ -11,9 +11,9 @@ class Missile: public Ship{
 		bool ready; //True if it's in the stack, false otherwise
 	protected:
 	public:
-		Missile(SDL_Texture *t);
 		Missile();
 		
+		void setAnimationNeutral(SDL_Renderer *r);
 		bool isReady();
 		void setReady(bool r);
 		void setToStack();

@@ -7,17 +7,21 @@
 
 #include "defines.h"
 #include "Animation.hpp"
+#include "Vect.hpp"
 
 using namespace std;
 
 class Ship{
 	protected:
-		SDL_Texture *texture;
+		Animation animNeutral;
+		Vect cooVect;
+		Vect speedVect;
 		SDL_Rect coo;
 		SDL_Rect hitbox;
-		int speed;
+		float speed;
 		int health;
 		int maxHealth;
+		int atk;
 		float hitboxRatio; //to set the size of the hitbox (a a percentage of the whole sprite centered in the middle of the ship)
 		
 		short frameNb;//number of the current frame (for animation)
@@ -26,31 +30,41 @@ class Ship{
 		
 	public:
 		Ship();
-		Ship(SDL_Texture *t);
-		Ship(SDL_Texture *t, int x, int y);
-		Ship(SDL_Texture *t, SDL_Rect coo, int speed);
+		Ship(int x, int y);
+		Ship(SDL_Rect coo, float speed);
 		
-		SDL_Texture *getTexture();
 		SDL_Rect getCoo();
+		Vect& getCooVect() const;
+		Vect& getSpeedVect() const;
 		SDL_Rect getHitbox();
 		int getX();
 		int getY();
 		int getW();
 		int getH();
-		int getSpeed();
+		float getSpeed();
 		int getHealth();
 		int getMaxHealth();
+		int getAtk();
+		float getXSpeed();
+		float getYSpeed();
 		
-		void setTexture(SDL_Texture *t);
+		virtual void setAnimationNeutral(SDL_Renderer *r);
+		virtual void setAnimationNeutral(SDL_Renderer *r, char* animName, int nbFrames, int frameW, int frameH);
+		virtual void setAnimationNeutral(const Animation &a);
+		void setCooVect(float x, float y);
+		void setSpeedVect(float x, float y);
 		void setCoo(SDL_Rect n);
 		void setHitbox(SDL_Rect b);
 		void setX(int x);
 		void setY(int y);
 		void setW(int w);
 		void setH(int h);
-		void setSpeed(int s);
+		void setSpeed(float s);
 		void setHealth(int h);
 		void setMaxHealth(int m);
+		void setAtk(int a);
+		void setXSpeed(float x);
+		void setYSpeed(float y);
 		void setHitboxRatio(float hr);
 		
 		virtual void init();
@@ -59,6 +73,9 @@ class Ship{
 		void goRight();
 		void goUp();
 		void goDown();
+		void translationMovement();
+		void synchronizeVectFromCoo();
+		void synchronizeCooFromVect();
 		virtual void renderShip(SDL_Renderer *r);
 		void heal();
 		void heal(int a);

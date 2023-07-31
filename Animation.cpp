@@ -31,7 +31,6 @@ void Animation::setTexture(SDL_Renderer *r, char* texturePath){
  */
 void Animation::nextFrame(){
 	this->currentFrame = (currentFrame+1)%numberOfFrames;
-	std::cout << "current frame : " << currentFrame << std::endl;
 	this->framePos.x = (this->currentFrame * this->framePos.w);
 }
 
