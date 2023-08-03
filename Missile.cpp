@@ -54,11 +54,13 @@ void Missile::move(){
 	}
 	this->updateHitbox();
 }
-void Missile::takeDamage(int d){
+bool Missile::takeDamage(int d){
 	this->health-= d;
 	if(this->health <= 0){
 		this->setToStack();
+		return true;
 	}
+	return false;
 }
 
 

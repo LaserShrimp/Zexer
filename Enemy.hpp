@@ -3,9 +3,10 @@
 
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_image.h"
-#include "Ship.hpp"
 
 #include "defines.h"
+#include "gameAddOns.h"
+#include "Ship.hpp"
 
 class Enemy : public Ship {
 	private:

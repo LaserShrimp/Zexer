@@ -36,7 +36,7 @@ void GameInterface::loadStatsFromPlayer(Player& p){
 	this->hcoo.x = this->hmcoo.x;
 	
 	//We change the transparency if the player is on the lower screen
-	if(p.getCoo().y > this->coo.y - HEIGHT)
+	if(p.getCoo().y + p.getCoo().h > this->coo.y)
 		SDL_SetTextureAlphaMod(this->renderTexture, 0x2F);
 	else{
 		SDL_SetTextureAlphaMod(this->renderTexture, 0xFF);

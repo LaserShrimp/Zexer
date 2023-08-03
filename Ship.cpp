@@ -66,6 +66,9 @@ float Ship::getXSpeed(){
 float Ship::getYSpeed(){
 	return this->speedVect.getY();
 }
+int Ship::getInvincible(){
+	return this->invincible;
+}
 
 void Ship::setCoo(SDL_Rect n){
 	this->coo = n;
@@ -127,6 +130,9 @@ void Ship::setAnimationNeutral(SDL_Renderer *r, char* animName, int nbFrames, in
 void Ship::setAnimationNeutral(const Animation& a){
 	this->animNeutral = a;
 }
+void Ship::setInvincible(int i){
+	this->invincible = i;
+}
 
 void Ship::init(){}
 
@@ -158,6 +164,10 @@ void Ship::synchronizeVectFromCoo(){
 
 void Ship::renderShip(SDL_Renderer *r){
 	
+	if(!isOnCamera(this->coo)){
+		return;
+	}
+	
 	SDL_Rect hmcoo = this->coo;
 	hmcoo.y = this->coo.y - 4;
 	hmcoo.h = 4;
@@ -178,7 +188,15 @@ void Ship::renderShip(SDL_Renderer *r){
 	}
 	
 	SDL_SetRenderDrawColor(r, 0, 0, 0, 0);
-// 	SDL_RenderCopy(r, this->texture, NULL, &(this->coo));
+//	changing the alpha if it took damages
+	if(this->invincible > 0){
+		this->animNeutral.changeAlpha(rand()%255);
+		this->invincible++;
+		if(this->invincible == this->nbFramesInvincible){
+			this->invincible = 0;
+			this->animNeutral.resetAlpha();
+		}
+	}
 	this->animNeutral.renderImage(r, this->coo);
 	this->animNeutral.nextFrame();
 }
@@ -197,12 +215,17 @@ void Ship::heal(int a){
 void Ship::healCompletely(){
 	this->health = this->maxHealth;
 }
-void Ship::takeDamage(){
+bool Ship::takeDamage(){
 	this->health--;
+	if(this->health <= 0)
+		return true;
+	return false;
 }
-void Ship::takeDamage(int d){
+bool Ship::takeDamage(int d){
 	this->health-= d;
-	cout << "Ship takes damage " << endl;
+	if(this->health <= 0)
+		return true;
+	return false;
 }
 
 /**
@@ -217,6 +240,19 @@ void Ship::updateHitbox(){
 
 void Ship::rerack(){
 	this->healCompletely();
+}
+
+/**
+ * starts the counter of the ship to make it scintillate in the renderer
+ */
+void Ship::scintillate(int nbFrames){
+	if(this->invincible == 0)
+		this->invincible = 1;
+	
+	this->nbFramesInvincible = nbFrames;
+}
+void Ship::scintillate(){
+	this->scintillate(120); //during two seconds
 }
 
 Ship::~Ship(){

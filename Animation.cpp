@@ -1,14 +1,14 @@
 #include "Animation.hpp"
 
-Animation::Animation(): texture{NULL}, currentFrame{0}, numberOfFrames{0}, framePos({.x = 0, .y = 0, .w = 0, .h = 0}){
+Animation::Animation(): texture{NULL}, currentFrame{0}, numberOfFrames{0}, framePos({.x = 0, .y = 0, .w = 0, .h = 0}), alphaChanged(false){
 	
 }
 
-Animation::Animation(SDL_Texture *t): texture{t}, currentFrame{0}, numberOfFrames{0}, framePos{}{
+Animation::Animation(SDL_Texture *t): texture{t}, currentFrame{0}, numberOfFrames{0}, framePos{}, alphaChanged{false}{
 	
 }
 
-Animation::Animation(const Animation& a): texture{a.texture}, currentFrame{a.currentFrame}, numberOfFrames{a.numberOfFrames}, framePos{a.framePos}{
+Animation::Animation(const Animation& a): texture{a.texture}, currentFrame{a.currentFrame}, numberOfFrames{a.numberOfFrames}, framePos{a.framePos}, alphaChanged{false}{
 }
 
 void Animation::setNumberOfFrames(int n){
@@ -24,6 +24,7 @@ void Animation::setTexture(SDL_Texture *t){
 }
 void Animation::setTexture(SDL_Renderer *r, char* texturePath){
 	this->texture = SDL_CreateTextureFromSurface(r, IMG_Load(texturePath));
+	SDL_SetTextureBlendMode(this->texture, SDL_BLENDMODE_BLEND);
 }
 
 /**
@@ -32,6 +33,16 @@ void Animation::setTexture(SDL_Renderer *r, char* texturePath){
 void Animation::nextFrame(){
 	this->currentFrame = (currentFrame+1)%numberOfFrames;
 	this->framePos.x = (this->currentFrame * this->framePos.w);
+}
+
+void Animation::changeAlpha(int alpha){
+	SDL_SetTextureAlphaMod(this->texture, alpha);
+	this->alphaChanged = true;
+}
+void Animation::resetAlpha(){
+	if(this->alphaChanged){
+		SDL_SetTextureAlphaMod(this->texture, 0xFF);
+	}
 }
 
 void Animation::renderImage(SDL_Renderer *r, SDL_Rect dest){

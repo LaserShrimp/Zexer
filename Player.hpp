@@ -64,7 +64,10 @@ class Player: public Ship{
 		int missileCollidesWith(SDL_Rect target);
 		void restackMissile(int index);
 		void damageMissile(int index, int damage);
-		virtual void takeDamage(int d);
+		virtual bool takeDamage(int d);
+		
+		void changeAlpha(int alpha);
+		void resetAlpha();
 		
 		virtual ~Player();
 };

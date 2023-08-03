@@ -6,6 +6,7 @@
 #include "SDL2/SDL_image.h"
 
 #include "defines.h"
+#include "gameAddOns.h"
 #include "Animation.hpp"
 #include "Vect.hpp"
 
@@ -26,6 +27,9 @@ class Ship{
 		
 		short frameNb;//number of the current frame (for animation)
 		SDL_Rect framePos;
+		
+		int invincible;
+		int nbFramesInvincible;
 	private :
 		
 	public:
@@ -47,6 +51,7 @@ class Ship{
 		int getAtk();
 		float getXSpeed();
 		float getYSpeed();
+		int getInvincible();
 		
 		virtual void setAnimationNeutral(SDL_Renderer *r);
 		virtual void setAnimationNeutral(SDL_Renderer *r, char* animName, int nbFrames, int frameW, int frameH);
@@ -66,6 +71,7 @@ class Ship{
 		void setXSpeed(float x);
 		void setYSpeed(float y);
 		void setHitboxRatio(float hr);
+		void setInvincible(int i);
 		
 		virtual void init();
 		
@@ -80,13 +86,16 @@ class Ship{
 		void heal();
 		void heal(int a);
 		void healCompletely();
-		void takeDamage();
-		void takeDamage(int d);
+		bool takeDamage();
+		virtual bool takeDamage(int d);
 		void updateHitbox();
 		
 		void rerack();
 		
 		bool hitShip(SDL_Rect s);
+		
+		void scintillate(int nbFrames);
+		void scintillate();
 		
 		virtual ~Ship();
 };

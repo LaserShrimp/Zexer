@@ -31,6 +31,7 @@ void Enemy::init(SDL_Renderer *r){
 	this->setMaxHealth(30);
 	this->healCompletely();
 	this->setHitboxRatio(1.0);
+	this->invincible = 0;
 }
 
 void Enemy::move(){
@@ -65,6 +66,17 @@ bool Enemy::takeDamage(int damage){
 }
 
 void Enemy::renderShip(SDL_Renderer *r){
+	if(!isOnCamera(this->coo))
+		return;
+	//	changing the alpha if it took damages
+	if(this->invincible > 0){
+		this->animation.changeAlpha(rand()%255);
+		this->invincible++;
+		if(this->invincible == this->nbFramesInvincible)
+			this->invincible = 0;
+	} else {
+		this->animation.resetAlpha();
+	}
 	this->animation.renderImage(r, this->coo);
 	this->animation.nextFrame();
 	

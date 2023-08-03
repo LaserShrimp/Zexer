@@ -98,6 +98,8 @@ void Player::init(SDL_Renderer *r){
 	this->setMaxHealth(100);
 	this->healCompletely();
 	this->setAtk(1);
+	
+	this->invincible = 0;
 }
 
 /**
@@ -268,6 +270,15 @@ void Player::updateAmmos(){
 }
 
 void Player::renderShip(SDL_Renderer *r){
+	//	changing the alpha if it took damages
+	if(this->invincible > 0){
+		this->changeAlpha(rand()%255);
+		this->invincible++;
+		if(this->invincible == this->nbFramesInvincible)
+			this->invincible = 0;
+	} else {
+		this->resetAlpha();
+	}
 	switch(this->mvState){
 		case STATIONNARY:
 			this->animNeutral.renderImage(r, this->coo);
@@ -324,8 +335,30 @@ void Player::restackMissile(int index){
 void Player::damageMissile(int index, int damage){
 	this->ammo[index]->takeDamage(damage);
 }
-void Player::takeDamage(int d){
-	this->health-= d;
+bool Player::takeDamage(int d){
+	if(this->invincible == 0){
+		this->health-= d;
+		this->scintillate(60);
+	}
+	if(this->health <= 0)
+		return true;
+	return false;
+}
+
+void Player::changeAlpha(int alpha){
+	this->animUp.changeAlpha(rand()%255);
+	this->animDown.changeAlpha(rand()%255);
+	this->animRight.changeAlpha(rand()%255);
+	this->animLeft.changeAlpha(rand()%255);
+	this->animNeutral.changeAlpha(rand()%255);
+}
+
+void Player::resetAlpha(){
+	this->animUp.resetAlpha();
+	this->animDown.resetAlpha();
+	this->animRight.resetAlpha();
+	this->animNeutral.resetAlpha();
+	this->animLeft.resetAlpha();
 }
 
 ostream& operator<<(ostream& out, Player &p){

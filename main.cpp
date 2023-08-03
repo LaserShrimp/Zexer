@@ -6,6 +6,7 @@
 #include "SDL2/SDL_ttf.h"
 
 #include "defines.h"
+#include "gameAddOns.h"
 #include "Ship.hpp"
 #include "Enemy.hpp"
 #include "Player.hpp"
@@ -86,14 +87,16 @@ int main(int argc, char **argv){
 				e->move();
 				if(ship->hitShip(e->getHitbox())){
 					ship->takeDamage(e->getAtk());
-					if(e->takeDamage(INF)){
-						gameInterface->increaseScore();
-					}
+// 					if(e->takeDamage(INF)){
+// 						gameInterface->increaseScore();
+// 					}
 				}
 				int indexCollision = ship->missileCollidesWith(e->getHitbox());
 				if(indexCollision > -1){
 					if(e->takeDamage(ship->getMissile(indexCollision)->getAtk())){
 						gameInterface->increaseScore();
+					} else {
+						e->scintillate(10);
 					}
 					ship->damageMissile(indexCollision, e->getAtk());
 				}

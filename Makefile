@@ -31,11 +31,14 @@ Unit1.o: Unit1.cpp Unit1.hpp
 Vect.o: Vect.cpp Vect.hpp
 	$(CPP) -c Vect.cpp  $(LIBS)
 	
+gameAddOns.o: gameAddOns.c gameAddOns.h
+	$(CPP) -c gameAddOns.c  $(LIBS)
+	
 main.o: main.cpp defines.h
 	$(CPP) -c main.cpp $(LIBS)
 	
-game: main.o Ship.o Enemy.o Player.o Missile.o InputState.o GameInterface.o Animation.o Unit1.o Vect.o
-	$(CPP) -o zexer Ship.o Enemy.o Player.o Missile.o InputState.o GameInterface.o Animation.o Unit1.o Vect.o main.o $(LIBS)
+game: main.o Ship.o Enemy.o Player.o Missile.o InputState.o GameInterface.o Animation.o Unit1.o Vect.o gameAddOns.o
+	$(CPP) -o zexer Ship.o Enemy.o Player.o Missile.o InputState.o GameInterface.o Animation.o Unit1.o Vect.o gameAddOns.o main.o $(LIBS)
 	
 clean:
 	rm -rf *.o

@@ -14,6 +14,7 @@ private:
 	int currentFrame;//number of the current frame (for animation)
 	int numberOfFrames;
 	SDL_Rect framePos;
+	bool alphaChanged;
 protected:
 public:
 	Animation();
@@ -25,6 +26,8 @@ public:
 	void setTexture(SDL_Texture *t);
 	void setTexture(SDL_Renderer *r, char *texturePath);
 	void nextFrame();
+	void changeAlpha(int alpha);
+	void resetAlpha();
 	void renderImage(SDL_Renderer *r, SDL_Rect dest);
 	
 	virtual ~Animation();

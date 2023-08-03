@@ -20,7 +20,7 @@ class Missile: public Ship{
 		
 		bool launch(int startX, int startY);
 		virtual void move();
-		virtual void takeDamage(int d);
+		virtual bool takeDamage(int d);
 		
 		virtual ~Missile();
 };
