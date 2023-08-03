@@ -35,7 +35,7 @@ int main(int argc, char **argv){
 							SDL_WINDOWPOS_CENTERED,
 							SDL_WINDOWPOS_CENTERED,
 							WIN_WIDTH, WIN_HEIGHT,
-							SDL_WINDOW_SHOWN);
+							SDL_WINDOW_FULLSCREEN_DESKTOP);
 
     renderer = SDL_CreateRenderer(window, -1, 0);
 	if(renderer == NULL){
@@ -76,7 +76,7 @@ int main(int argc, char **argv){
 	Uint32 timeEnemyIncrease = SDL_GetTicks();
 	Uint32 timeHealthIncrease = SDL_GetTicks();
 	
-	while (ship->getHealth() > 0  && !inputs.getquit()) {
+	while (ship->getHealth() > 0  && !inputs.getquit() && !inputs.getescape()) {
 		if(SDL_GetTicks() >= prevTime + frameTime){
 			SDL_PollEvent(&event);
 			inputs.setState(event);

@@ -31,6 +31,7 @@ class InputState{
 		bool getup() const;
 		bool getdown() const;
 		bool getspacebar() const;
+		bool getescape() const;
 		bool getquit() const;
 	
 		virtual ~InputState();

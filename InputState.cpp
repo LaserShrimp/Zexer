@@ -109,6 +109,9 @@ bool InputState::getdown() const{
 bool InputState::getspacebar() const{
 	return this->spacebar;
 }
+bool InputState::getescape() const{
+	return this->escape;
+}
 bool InputState::getquit() const{
 	return this->quit;
 }
