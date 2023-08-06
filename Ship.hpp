@@ -30,6 +30,8 @@ class Ship{
 		
 		int invincible;
 		int nbFramesInvincible;
+		
+		bool stayInScreen;
 	private :
 		
 	public:
@@ -72,13 +74,16 @@ class Ship{
 		void setYSpeed(float y);
 		void setHitboxRatio(float hr);
 		void setInvincible(int i);
+		void setStayInScreen(bool b);
 		
 		virtual void init();
+		virtual void init(SDL_Renderer *r);
 		
 		void goLeft();
 		void goRight();
 		void goUp();
 		void goDown();
+		void move();
 		void translationMovement();
 		void synchronizeVectFromCoo();
 		void synchronizeCooFromVect();

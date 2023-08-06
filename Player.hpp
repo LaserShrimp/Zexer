@@ -52,10 +52,10 @@ class Player: public Ship{
 		void setAnimationLeft(SDL_Renderer *r);
 		void setAnimationRight(SDL_Renderer *r);
 		void doActions(const InputState &is);
-		void init(int x, int y, int speed, int ammo, int stackSize);
+		virtual void init(int x, int y, int speed, int ammo, int stackSize);
 		virtual void init();
-		void init(SDL_Texture *missileTexture);
-		void init(SDL_Renderer *r);
+		virtual void init(SDL_Texture *missileTexture);
+		virtual void init(SDL_Renderer *r);
 		
 		void shoot();
 		void move();

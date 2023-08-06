@@ -5,12 +5,27 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
-#include "Enemy.hpp"
+#include "defines.h"
+#include "Ship.hpp"
 
-class Unit1:public Enemy{
+class Unit1:public Ship{
 private:
+	int shootCooldown;//In frames
+	int shCurr;
+	int moveCooldown;//In frames
+	int mCurr;
+	int staticCooldown;//In frames
+	int stCurr;
 protected:
 public:
+	Unit1();
+	
+	void init(SDL_Renderer *r);
+	void move();
+	
+	void randomDir();
+	
+	virtual ~Unit1();
 };
 
 #endif

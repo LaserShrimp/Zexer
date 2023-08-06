@@ -20,7 +20,7 @@ class Enemy : public Ship {
 		virtual void move();
 		virtual void rerack();
 		virtual bool takeDamage(int damage);
-		void renderShip(SDL_Renderer *r);
+		virtual void renderShip(SDL_Renderer *r);
 		
 		virtual ~Enemy();
 };

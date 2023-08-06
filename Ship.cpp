@@ -1,6 +1,6 @@
 #include "Ship.hpp"
 
-Ship::Ship():cooVect{Vect(0, 0)}, speedVect{Vect(0, 0)}, coo({.x = 0, .y = 0, .w = WIDTH, .h = HEIGHT}), hitbox({.x = 0, .y = 0, .w = WIDTH, .h = HEIGHT}), speed{SPEED}, health{1}, maxHealth{1}, atk{1}, hitboxRatio{1.0}, frameNb{0}, framePos({.x = 0, .y = 0, .w = WIDTH, .h = HEIGHT}){
+Ship::Ship():cooVect{Vect(0, 0)}, speedVect{Vect(0, 0)}, coo({.x = 0, .y = 0, .w = WIDTH, .h = HEIGHT}), hitbox({.x = 0, .y = 0, .w = WIDTH, .h = HEIGHT}), speed{SPEED}, health{1}, maxHealth{1}, atk{1}, hitboxRatio{1.0}, frameNb{0}, framePos({.x = 0, .y = 0, .w = WIDTH, .h = HEIGHT}), invincible{0}, nbFramesInvincible{0}, stayInScreen{false}{
 }
 
 Ship::Ship(int x, int y){
@@ -133,8 +133,12 @@ void Ship::setAnimationNeutral(const Animation& a){
 void Ship::setInvincible(int i){
 	this->invincible = i;
 }
+void Ship::setStayInScreen(bool b){
+	this->stayInScreen = b;
+}
 
 void Ship::init(){}
+void Ship::init(SDL_Renderer *r){}
 
 void Ship::goLeft(){
 	this->coo.x-= this->speed;
@@ -149,9 +153,21 @@ void Ship::goUp(){
 void Ship::goDown(){
 	this->coo.y+= this->speed;
 }
+void Ship::move(){}
 void Ship::translationMovement(){
 	this->cooVect = this->cooVect+this->speedVect;
 	this->synchronizeCooFromVect();
+	//We control if the ship must stay inside the screen or not
+	if(this->stayInScreen){
+		if(this->coo.x + coo.w > WIN_WIDTH){
+			this->coo.x = WIN_WIDTH - this->coo.w;
+			this->cooVect.setX(this->coo.x);
+		}
+		else if(this->coo.x < 0){
+			this->coo.x = 0;
+			this->cooVect.setX(this->coo.x);
+		}
+	}
 }
 void Ship::synchronizeCooFromVect(){
 	this->coo.x = (int) this->cooVect.getX();
@@ -240,6 +256,8 @@ void Ship::updateHitbox(){
 
 void Ship::rerack(){
 	this->healCompletely();
+	this->setY(-this->coo.h);
+	this->synchronizeVectFromCoo();
 }
 
 /**

@@ -6,6 +6,8 @@ Missile::Missile(): Ship{}, ready{true}{
 	this->speedVect.setY(-MISSILE_SPEED);
 	this->maxHealth = 10;
 	this->atk = 10;
+	this->cooVect = Vect(0, 0);
+	this->synchronizeVectFromCoo();
 }
 
 void Missile::setAnimationNeutral(SDL_Renderer *r){
@@ -25,6 +27,7 @@ void Missile::setToStack(){
 	this->healCompletely();
 	this->setReady(true);
 	this->updateHitbox();
+	this->synchronizeVectFromCoo();
 }
 
 bool Missile::isReady(){return ready;}
