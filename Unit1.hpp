@@ -6,9 +6,9 @@
 #include <SDL2/SDL_image.h>
 
 #include "defines.h"
-#include "Ship.hpp"
+#include "Enemy.hpp"
 
-class Unit1:public Ship{
+class Unit1:public Enemy{
 private:
 	int shootCooldown;//In frames
 	int shCurr;

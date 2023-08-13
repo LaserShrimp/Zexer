@@ -60,7 +60,7 @@ class Player: public Ship{
 		void shoot();
 		void move();
 		void updateAmmos();
-		virtual void renderShip(SDL_Renderer *r);
+		virtual void renderShip(SDL_Renderer *r) override;
 		int missileCollidesWith(SDL_Rect target);
 		void restackMissile(int index);
 		void damageMissile(int index, int damage);

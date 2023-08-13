@@ -61,10 +61,14 @@ int main(int argc, char **argv){
 		mi->setAnimationNeutral(renderer);
 		mi->setToStack();
 	}
-    vector<Enemy*> vEnemy;
-	for(int i = 0; i < 5; i++){
+    vector<Ship*> vEnemy;
+	for(int i = 0; i < 6; i++){
 		vEnemy.push_back(new Enemy());
 		vEnemy[i]->init(renderer);
+// 		if(i == 5){
+// 			vEnemy.push_back(new Unit1());
+// 			vEnemy[5]->init(renderer);
+// 		}
 	}
 	Unit1 *u1 = new Unit1();
 	u1->init(renderer);
@@ -87,7 +91,8 @@ int main(int argc, char **argv){
 			player->doActions(inputs);
 			player->updateAmmos();
 			
-			for(Enemy* e: vEnemy){
+			int pos = 0;
+			for(Ship* e: vEnemy){
 				e->move();
 				if(player->hitShip(e->getHitbox())){
 					player->takeDamage(e->getAtk());
@@ -96,11 +101,13 @@ int main(int argc, char **argv){
 				if(indexCollision > -1){
 					if(e->takeDamage(player->getMissile(indexCollision)->getAtk())){
 						gameInterface->increaseScore();
+						//delete e;
 					} else {
 						e->scintillate(10);
 					}
 					player->damageMissile(indexCollision, e->getAtk());
 				}
+				pos++;
 			}
 			u1->move();
 			if(player->hitShip(u1->getHitbox())){
@@ -138,8 +145,9 @@ int main(int argc, char **argv){
 			}
 			
 			//RENDERING
+			//cout << *player << endl;
 			player->renderShip(renderer);
-			for(Enemy* e: vEnemy){
+			for(Ship* e: vEnemy){
 				e->renderShip(renderer);
 			}
 			u1->renderShip(renderer);
@@ -156,7 +164,7 @@ int main(int argc, char **argv){
 	for(Ship* e: vEnemy){
 		delete e;
 	}
-	cout << endl << endl << "HERE !!" << endl << endl;
+	delete u1;
     SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
 	TTF_Quit();

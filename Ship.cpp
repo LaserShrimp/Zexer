@@ -170,8 +170,8 @@ void Ship::translationMovement(){
 	}
 }
 void Ship::synchronizeCooFromVect(){
-	this->coo.x = (int) this->cooVect.getX();
-	this->coo.y = (int) this->cooVect.getY();
+	this->coo.x = static_cast<int>(this->cooVect.getX());
+	this->coo.y = static_cast<int>(this->cooVect.getY());
 }
 void Ship::synchronizeVectFromCoo(){
 	this->cooVect.setX(this->coo.x);
@@ -277,6 +277,6 @@ Ship::~Ship(){
 }
 
 ostream& operator<<(ostream& out, Ship &s){
-	out << "coo.x = " << s.getCoo().x << ", coo.y = " << s.getCoo().y << ", coo.w = " << s.getCoo().w << ", coo.h = " << s.getCoo().h << ", speed = " << s.getSpeed();
+	out << "coo.x = " << s.getCoo().x << ", coo.y = " << s.getCoo().y << ", coo.w = " << s.getCoo().w << ", coo.h = " << s.getCoo().h << ", speed = " << s.getSpeed() << "health = " << s.getHealth() << "/" << s.getMaxHealth();
 	return out;
 }

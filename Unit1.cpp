@@ -1,6 +1,7 @@
 #include "Unit1.hpp"
 
 Unit1::Unit1():shootCooldown{200}, moveCooldown{30}, staticCooldown{120}{
+	
 }
 
 void Unit1::init(SDL_Renderer *r){
@@ -10,17 +11,19 @@ void Unit1::init(SDL_Renderer *r){
 	this->speed = 10.5;
 	this->speedVect.setY(0.4);
 	this->speedVect.setX(0);
-	this->cooVect.setX(rand()%WIN_WIDTH);
-	this->cooVect.setY(0);
+	this->coo.x = rand()%WIN_WIDTH;
+	this->coo.y = -50;
 	this->coo.w = 50;
 	this->coo.h = 50;
-	this->synchronizeCooFromVect();
+	this->setHitboxRatio(1.0);
+	this->synchronizeVectFromCoo();
 	this->setAnimationNeutral(r, (char*) "assets/unit1.png", 27, 50, 50);
 	this->setStayInScreen(true);
 	
 	this->setMaxHealth(150);
 	this->healCompletely();
 	this->atk = 10;
+	this->invincible = 0;
 }
 
 void Unit1::move(){

@@ -7,7 +7,7 @@
 #define WIN_HEIGHT 		720
 #define ENEMY_SPEED 	1.5
 #define MISSILE_SPEED 	20
-#define SPEED 			7.5
+#define SPEED 			8.2
 #define WIDTH 			100
 #define HEIGHT 			100
 #define FPS				60

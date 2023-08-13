@@ -362,6 +362,6 @@ void Player::resetAlpha(){
 }
 
 ostream& operator<<(ostream& out, Player &p){
-	out << "coo.x = " << p.getCoo().x << ", coo.y = " << p.getCoo().y << ", coo.w = " << p.getCoo().w << ", coo.h = " << p.getCoo().h << ", speed = " << p.getSpeed() << endl << ", nbAmmos = " << p.getNbAmmo() << ", stackSize = " << p.getStackSize() << endl ;
+	out << "health = " << p.getHealth() << ", maxHealth = " << p.getMaxHealth() << endl << ", nbAmmos = " << p.getNbAmmo() << ", stackSize = " << p.getStackSize() << endl ;
 	return out;
 }

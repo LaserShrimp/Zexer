@@ -83,7 +83,7 @@ class Ship{
 		void goRight();
 		void goUp();
 		void goDown();
-		void move();
+		virtual void move();
 		void translationMovement();
 		void synchronizeVectFromCoo();
 		void synchronizeCooFromVect();
@@ -91,7 +91,7 @@ class Ship{
 		void heal();
 		void heal(int a);
 		void healCompletely();
-		bool takeDamage();
+		virtual bool takeDamage();
 		virtual bool takeDamage(int d);
 		void updateHitbox();
 		

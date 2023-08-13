@@ -15,14 +15,19 @@ Enemy::Enemy(const Enemy& e){
 	this->coo.y = e.coo.y;
 }
 
-void Enemy::setAnimation(SDL_Renderer *r){
-	this->animation.setFrameSize(WIDTH, HEIGHT);
-	this->animation.setNumberOfFrames(12);
-	this->animation.setTexture(r, (char*)"assets/asteroidAnimation.png");
+void Enemy::setAnimationNeutral(SDL_Renderer *r){
+	this->animNeutral.setFrameSize(WIDTH, HEIGHT);
+	this->animNeutral.setNumberOfFrames(12);
+	this->animNeutral.setTexture(r, (char*)"assets/asteroidAnimation.png");
+}
+void Enemy::setAnimationNeutral(SDL_Renderer *r, char* animName, int nbFrames, int frameW, int frameH){
+	this->animNeutral.setFrameSize(frameW, frameH);
+	this->animNeutral.setNumberOfFrames(nbFrames);
+	this->animNeutral.setTexture(r, animName);
 }
 
 void Enemy::init(SDL_Renderer *r){
-	this->setAnimation(r);
+	this->setAnimationNeutral(r);
 	
 	this->speed = ENEMY_SPEED;
 	this->atk = 20;
@@ -70,15 +75,15 @@ void Enemy::renderShip(SDL_Renderer *r){
 		return;
 	//	changing the alpha if it took damages
 	if(this->invincible > 0){
-		this->animation.changeAlpha(rand()%255);
+		this->animNeutral.changeAlpha(rand()%255);
 		this->invincible++;
 		if(this->invincible == this->nbFramesInvincible)
 			this->invincible = 0;
 	} else {
-		this->animation.resetAlpha();
+		this->animNeutral.resetAlpha();
 	}
-	this->animation.renderImage(r, this->coo);
-	this->animation.nextFrame();
+	this->animNeutral.renderImage(r, this->coo);
+	this->animNeutral.nextFrame();
 	
 	//Drawing health bar only if the ship is damaged
 	SDL_Rect hmcoo = this->coo;
