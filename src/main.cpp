@@ -65,13 +65,12 @@ int main(int argc, char **argv){
 	for(int i = 0; i < 6; i++){
 		vEnemy.push_back(new Enemy());
 		vEnemy[i]->init(renderer);
-// 		if(i == 5){
-// 			vEnemy.push_back(new Unit1());
-// 			vEnemy[5]->init(renderer);
-// 		}
+		if(i == 5){
+			Unit1 *u = new Unit1();
+			u->init(renderer);
+			vEnemy.push_back(u);
+		}
 	}
-	Unit1 *u1 = new Unit1();
-	u1->init(renderer);
 	
 	GameInterface *gameInterface = new GameInterface;
 	gameInterface->initBackground(renderer);
@@ -101,7 +100,6 @@ int main(int argc, char **argv){
 				if(indexCollision > -1){
 					if(e->takeDamage(player->getMissile(indexCollision)->getAtk())){
 						gameInterface->increaseScore();
-						//delete e;
 					} else {
 						e->scintillate(10);
 					}
@@ -109,20 +107,6 @@ int main(int argc, char **argv){
 				}
 				pos++;
 			}
-			u1->move();
-			if(player->hitShip(u1->getHitbox())){
-				player->takeDamage(u1->getAtk());
-			}
-			int indexCollision = player->missileCollidesWith(u1->getHitbox());
-				if(indexCollision > -1){
-					if(u1->takeDamage(player->getMissile(indexCollision)->getAtk())){
-						gameInterface->increaseScore();
-						u1->rerack();
-					} else {
-						u1->scintillate(10);
-					}
-					player->damageMissile(indexCollision, u1->getAtk());
-				}
 			//Adding some difficulty over the time
 			if(SDL_GetTicks() - timeEnemyIncrease >= 20000){
 				Enemy* n = new Enemy;
@@ -145,12 +129,10 @@ int main(int argc, char **argv){
 			}
 			
 			//RENDERING
-			//cout << *player << endl;
 			player->renderShip(renderer);
 			for(Ship* e: vEnemy){
 				e->renderShip(renderer);
 			}
-			u1->renderShip(renderer);
 			gameInterface->loadStatsFromPlayer(*player);
 			gameInterface->render(renderer);
 			SDL_RenderPresent(renderer);
@@ -164,7 +146,6 @@ int main(int argc, char **argv){
 	for(Ship* e: vEnemy){
 		delete e;
 	}
-	delete u1;
     SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
 	TTF_Quit();
