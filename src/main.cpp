@@ -48,7 +48,7 @@ int main(int argc, char **argv){
 		exit(EXIT_FAILURE);
 	}
 	
-	Uint32 prevTime = SDL_GetTicks();
+// 	Uint32 prevTime = SDL_GetTicks();
 	Player *player = new Player();
 	
 	player->init(renderer);
@@ -77,14 +77,16 @@ int main(int argc, char **argv){
 	
 	InputState inputs;
 	int fps = FPS;
-	int frameTime = 1000/fps; //1000 milliseconds/FPS
+	Uint32 frameTime = 1000/fps; //1000 milliseconds/FPS
+	Uint32 tick1 = 0;
+	Uint32 tick2 = 0;
 	
 	Uint32 timeStampIncrease = SDL_GetTicks();
 	Uint32 timeEnemyIncrease = SDL_GetTicks();
 	Uint32 timeHealthIncrease = SDL_GetTicks();
 	
 	while (player->getHealth() > 0  && !inputs.getquit() && !inputs.getescape()) {
-		if(SDL_GetTicks() >= prevTime + frameTime){
+			tick1 = SDL_GetTicks();
 			SDL_PollEvent(&event);
 			inputs.setState(event);
 			player->doActions(inputs);
@@ -137,8 +139,9 @@ int main(int argc, char **argv){
 			gameInterface->render(renderer);
 			SDL_RenderPresent(renderer);
 			SDL_RenderClear(renderer);
-			prevTime = SDL_GetTicks();
-		}
+			tick2 = SDL_GetTicks();
+			if(tick2 - tick1 < frameTime)
+				SDL_Delay(frameTime - (tick2 - tick1));
 	}
 	cout << "Final score : " << gameInterface->getScore() << endl;
 	delete gameInterface;
