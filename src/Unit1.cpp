@@ -5,6 +5,7 @@ Unit1::Unit1():shootCooldown{200}, moveCooldown{30}, staticCooldown{120}{
 }
 
 void Unit1::init(SDL_Renderer *r){
+	this->id = "unit1";
 	shCurr = -1;
 	mCurr = -1;
 	stCurr = 0;

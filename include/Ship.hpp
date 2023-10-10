@@ -14,6 +14,7 @@ using namespace std;
 
 class Ship{
 	protected:
+		string id; 
 		Animation animNeutral;
 		Vect cooVect;
 		Vect speedVect;
@@ -32,13 +33,15 @@ class Ship{
 		int nbFramesInvincible;
 		
 		bool stayInScreen;
+		void setId(string id);
 	private :
 		
 	public:
 		Ship();
-		Ship(int x, int y);
+		Ship(int x, int y, string id);
 		Ship(SDL_Rect coo, float speed);
 		
+		string getId();
 		SDL_Rect getCoo();
 		Vect& getCooVect() const;
 		Vect& getSpeedVect() const;

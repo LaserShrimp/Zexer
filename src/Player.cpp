@@ -85,6 +85,7 @@ void Player::init(SDL_Texture *missileTexture){
 }
 void Player::init(SDL_Renderer *r){
 	this->init();
+	this->id = "player";
 	this->setAnimationUp(r);
 	this->setAnimationDown(r);
 	this->setAnimationRight(r);

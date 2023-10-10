@@ -1,9 +1,10 @@
 #include "Ship.hpp"
 
-Ship::Ship():cooVect{Vect(0, 0)}, speedVect{Vect(0, 0)}, coo({.x = 0, .y = 0, .w = WIDTH, .h = HEIGHT}), hitbox({.x = 0, .y = 0, .w = WIDTH, .h = HEIGHT}), speed{SPEED}, health{1}, maxHealth{1}, atk{1}, hitboxRatio{1.0}, frameNb{0}, framePos({.x = 0, .y = 0, .w = WIDTH, .h = HEIGHT}), invincible{0}, nbFramesInvincible{0}, stayInScreen{false}{
+Ship::Ship():id{"ship"}, cooVect{Vect(0, 0)}, speedVect{Vect(0, 0)}, coo({.x = 0, .y = 0, .w = WIDTH, .h = HEIGHT}), hitbox({.x = 0, .y = 0, .w = WIDTH, .h = HEIGHT}), speed{SPEED}, health{1}, maxHealth{1}, atk{1}, hitboxRatio{1.0}, frameNb{0}, framePos({.x = 0, .y = 0, .w = WIDTH, .h = HEIGHT}), invincible{0}, nbFramesInvincible{0}, stayInScreen{false}{
 }
 
-Ship::Ship(int x, int y){
+Ship::Ship(int x, int y, string id){
+	this->id = id;
 	this->coo.x = x;
 	this->coo.y = y;
 	this->coo.w = WIDTH;
