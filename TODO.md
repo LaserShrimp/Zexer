@@ -13,3 +13,4 @@ The list's order is not important
 - [ ] make a moving background with several layers (3)  
 - [ ] add sound effects  
 - [ ] add some juiciness  
+- [ ] change anmiation prototypes to clean animations__

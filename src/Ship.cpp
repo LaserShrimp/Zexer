@@ -19,6 +19,10 @@ Ship::Ship(int x, int y, string id){
 }
 Ship::Ship(SDL_Rect coo, float speed):coo{coo}, hitbox{coo}, speed{speed}, hitboxRatio{100}{
 }
+
+string Ship::getId(){
+	return this->id;
+}
 SDL_Rect Ship::getCoo(){
 	return this->coo;
 }

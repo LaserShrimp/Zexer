@@ -29,7 +29,7 @@ void Enemy::setAnimationNeutral(SDL_Renderer *r, char* animName, int nbFrames, i
 void Enemy::init(SDL_Renderer *r){
 	this->setAnimationNeutral(r);
 	
-	this->id = "enemy";
+	this->id = "asteroid";
 	this->speed = ENEMY_SPEED;
 	this->atk = 20;
 	this->coo.x = rand()%WIN_WIDTH;

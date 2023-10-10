@@ -8,8 +8,11 @@
 #include "defines.h"
 #include "Animation.hpp"
 
+using namespace std;
+
 class Animation{
 private:
+	string name;
 	SDL_Texture *texture;
 	int currentFrame;//number of the current frame (for animation)
 	int numberOfFrames;
@@ -18,9 +21,10 @@ private:
 protected:
 public:
 	Animation();
-	Animation(SDL_Texture *t);
+	Animation(SDL_Texture *t, string name);
 	Animation(const Animation& a);
 	
+	void setName(string name);
 	void setNumberOfFrames(int n);
 	void setFrameSize(int w, int h);
 	void setTexture(SDL_Texture *t);
@@ -29,6 +33,7 @@ public:
 	void changeAlpha(int alpha);
 	void resetAlpha();
 	void renderImage(SDL_Renderer *r, SDL_Rect dest);
+	SDL_Texture* getTexture();
 	
 	virtual ~Animation();
 };

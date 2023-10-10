@@ -14,6 +14,7 @@
 #include "Unit1.hpp"
 #include "InputState.hpp"
 #include "GameInterface.hpp"
+#include "AnimationHandler.hpp"
 
 using namespace std;
 
@@ -73,6 +74,7 @@ int main(int argc, char **argv){
 	}
 	
 	GameInterface *gameInterface = new GameInterface;
+	AnimationHandler *aHandler = new AnimationHandler(renderer);
 	gameInterface->initBackground(renderer);
 	
 	InputState inputs;
@@ -134,6 +136,7 @@ int main(int argc, char **argv){
 			player->renderShip(renderer);
 			for(Ship* e: vEnemy){
 				e->renderShip(renderer);
+				//aHandler->renderOnScreen(*e);
 			}
 			gameInterface->loadStatsFromPlayer(*player);
 			gameInterface->render(renderer);

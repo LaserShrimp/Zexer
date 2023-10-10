@@ -1,14 +1,18 @@
 #include "Animation.hpp"
 
-Animation::Animation(): texture{NULL}, currentFrame{0}, numberOfFrames{0}, framePos({.x = 0, .y = 0, .w = 0, .h = 0}), alphaChanged(false){
+Animation::Animation(): name{""}, texture{NULL}, currentFrame{0}, numberOfFrames{0}, framePos({.x = 0, .y = 0, .w = 0, .h = 0}), alphaChanged(false){
 	
 }
 
-Animation::Animation(SDL_Texture *t): texture{t}, currentFrame{0}, numberOfFrames{0}, framePos{}, alphaChanged{false}{
+Animation::Animation(SDL_Texture *t ,string name): name{name}, texture{t}, currentFrame{0}, numberOfFrames{0}, framePos{}, alphaChanged{false}{
 	
 }
 
-Animation::Animation(const Animation& a): texture{a.texture}, currentFrame{a.currentFrame}, numberOfFrames{a.numberOfFrames}, framePos{a.framePos}, alphaChanged{false}{
+Animation::Animation(const Animation& a): name{a.name}, texture{a.texture}, currentFrame{a.currentFrame}, numberOfFrames{a.numberOfFrames}, framePos{a.framePos}, alphaChanged{false}{
+}
+
+void Animation::setName(string name){
+	this->name = name;
 }
 
 void Animation::setNumberOfFrames(int n){
@@ -47,6 +51,10 @@ void Animation::resetAlpha(){
 
 void Animation::renderImage(SDL_Renderer *r, SDL_Rect dest){
 	SDL_RenderCopy(r, this->texture, &(this->framePos), &dest);
+}
+
+SDL_Texture* Animation::getTexture(){
+	return this->texture;
 }
 
 Animation::~Animation(){

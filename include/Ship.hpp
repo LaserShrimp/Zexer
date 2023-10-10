@@ -106,6 +106,7 @@ class Ship{
 		void scintillate();
 		
 		virtual ~Ship();
+		friend class AnimationHandler;
 };
 
 ostream& operator<<(ostream& out, Ship &s);
