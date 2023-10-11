@@ -18,16 +18,18 @@ Missile* Player::getMissile (int index) {
 vector<Missile*> &Player::getAmmo() {
 	return this->ammo;
 }
-
+movestate Player::getMvState() const{
+	return this->mvState;
+}
 void Player::setNbAmmo(int n){
 	this->nbAmmo = n;
 }
 void Player::setStackSize(int stackSize){
 	this->stackSize = stackSize;
 }
-void Player::setMissileTexture(int missileId, const Animation& a){
-	this->ammo[missileId]->Ship::setAnimationNeutral(a);
-}
+// void Player::setMissileTexture(int missileId, const Animation& a){
+// 	this->ammo[missileId]->Ship::setAnimationNeutral(a);
+// }
 void Player::setAmmo(vector<Missile*> &mVector){
 	this->nbAmmo = mVector.size();
 	this->stackSize = mVector.size();
@@ -44,31 +46,31 @@ void Player::setShootCooldown(Uint32 cooldown){
 void Player::setStartShootCooldown(){
 	this->startShootCooldown = SDL_GetTicks();
 }
-void Player::setAnimationNeutral(SDL_Renderer *r){
-	this->animNeutral.setFrameSize(WIDTH, HEIGHT);
-	this->animNeutral.setNumberOfFrames(10);
-	this->animNeutral.setTexture(r, (char*)"assets/playerShipTest.png");
-}
-void Player::setAnimationUp(SDL_Renderer *r){
-	this->animUp.setFrameSize(WIDTH, HEIGHT);
-	this->animUp.setNumberOfFrames(10);
-	this->animUp.setTexture(r, (char*)"assets/playerUpTest.png");
-}
-void Player::setAnimationDown(SDL_Renderer *r){
-	this->animDown.setFrameSize(WIDTH, HEIGHT);
-	this->animDown.setNumberOfFrames(10);
-	this->animDown.setTexture(r, (char*)"assets/playerDownTest.png");
-}
-void Player::setAnimationRight(SDL_Renderer *r){
-	this->animRight.setFrameSize(WIDTH, HEIGHT);
-	this->animRight.setNumberOfFrames(10);
-	this->animRight.setTexture(r, (char*)"assets/playerRightTest.png");
-}
-void Player::setAnimationLeft(SDL_Renderer *r){
-	this->animLeft.setFrameSize(WIDTH, HEIGHT);
-	this->animLeft.setNumberOfFrames(10);
-	this->animLeft.setTexture(r, (char*)"assets/playerLeftTest.png");
-}
+// void Player::setAnimationNeutral(SDL_Renderer *r){
+// 	this->animNeutral.setFrameSize(WIDTH, HEIGHT);
+// 	this->animNeutral.setNumberOfFrames(10);
+// 	this->animNeutral.setTexture(r, (char*)"assets/playerShipTest.png");
+// }
+// void Player::setAnimationUp(SDL_Renderer *r){
+// 	this->animUp.setFrameSize(WIDTH, HEIGHT);
+// 	this->animUp.setNumberOfFrames(10);
+// 	this->animUp.setTexture(r, (char*)"assets/playerUpTest.png");
+// }
+// void Player::setAnimationDown(SDL_Renderer *r){
+// 	this->animDown.setFrameSize(WIDTH, HEIGHT);
+// 	this->animDown.setNumberOfFrames(10);
+// 	this->animDown.setTexture(r, (char*)"assets/playerDownTest.png");
+// }
+// void Player::setAnimationRight(SDL_Renderer *r){
+// 	this->animRight.setFrameSize(WIDTH, HEIGHT);
+// 	this->animRight.setNumberOfFrames(10);
+// 	this->animRight.setTexture(r, (char*)"assets/playerRightTest.png");
+// }
+// void Player::setAnimationLeft(SDL_Renderer *r){
+// 	this->animLeft.setFrameSize(WIDTH, HEIGHT);
+// 	this->animLeft.setNumberOfFrames(10);
+// 	this->animLeft.setTexture(r, (char*)"assets/playerLeftTest.png");
+// }
 void Player::init(int x, int y, int speed, int ammo, int stackSize){
 	this->coo.x = x;
 	this->coo.y = y;
@@ -77,20 +79,20 @@ void Player::init(int x, int y, int speed, int ammo, int stackSize){
 	this->nbAmmo = ammo;
 	this->stackSize = stackSize;
 }
-void Player::init(){
+// void Player::init(){
+// 	this->init(WIN_WIDTH/2 - WIDTH/2, WIN_HEIGHT - 1.5*HEIGHT, SPEED, 1, 1); //1, 1 are random
+// }
+// void Player::init(SDL_Texture *missileTexture){
+// 	this->init(WIN_WIDTH/2 - WIDTH/2, WIN_HEIGHT - 1.5*HEIGHT, SPEED, 3, 3);//3, 3 are random
+// }
+void Player::init(/*SDL_Renderer *r*/){
 	this->init(WIN_WIDTH/2 - WIDTH/2, WIN_HEIGHT - 1.5*HEIGHT, SPEED, 1, 1); //1, 1 are random
-}
-void Player::init(SDL_Texture *missileTexture){
-	this->init(WIN_WIDTH/2 - WIDTH/2, WIN_HEIGHT - 1.5*HEIGHT, SPEED, 3, 3);//3, 3 are random
-}
-void Player::init(SDL_Renderer *r){
-	this->init();
 	this->id = "player";
-	this->setAnimationUp(r);
-	this->setAnimationDown(r);
-	this->setAnimationRight(r);
-	this->setAnimationLeft(r);
-	this->setAnimationNeutral(r);
+// 	this->setAnimationUp(r);
+// 	this->setAnimationDown(r);
+// 	this->setAnimationRight(r);
+// 	this->setAnimationLeft(r);
+// 	this->setAnimationNeutral(r);
 	
 	this->setW(75);
 	this->setH(75);
@@ -270,53 +272,53 @@ void Player::updateAmmos(){
 	this->nbAmmo = count;
 }
 
-void Player::renderShip(SDL_Renderer *r){
-	//	changing the alpha if it took damages
-	if(this->invincible > 0){
-		this->changeAlpha(rand()%255);
-		this->invincible++;
-		if(this->invincible == this->nbFramesInvincible)
-			this->invincible = 0;
-	} else {
-		this->resetAlpha();
-	}
-	switch(this->mvState){
-		case STATIONNARY:
-			this->animNeutral.renderImage(r, this->coo);
-			this->animNeutral.nextFrame();
-			break;
-			
-		case UP:
-		case UPRIGHT:
-		case UPLEFT:
-			this->animUp.renderImage(r, this->coo);
-			this->animUp.nextFrame();
-			break;
-		case DOWN:
-			this->animDown.renderImage(r, this->coo);
-			this->animDown.nextFrame();
-			break;
-		case LEFT:
-		case DOWNLEFT:
-			this->animLeft.renderImage(r, this->coo);
-			this->animLeft.nextFrame();
-			break;
-		case RIGHT:
-		case DOWNRIGHT:
-			this->animRight.renderImage(r, this->coo);
-			this->animRight.nextFrame();
-			break;
-		default:
-			this->animNeutral.renderImage(r, this->coo);
-			this->animNeutral.nextFrame();
-			break;
-	}
-	for(Missile* i : this->ammo){
-		if(!i->isReady()){
-			i->renderShip(r);
-		}
-	}
-}
+// void Player::renderShip(SDL_Renderer *r){
+// 	//	changing the alpha if it took damages
+// 	if(this->invincible > 0){
+// 		this->changeAlpha(rand()%255);
+// 		this->invincible++;
+// 		if(this->invincible == this->nbFramesInvincible)
+// 			this->invincible = 0;
+// 	} else {
+// 		this->resetAlpha();
+// 	}
+// 	switch(this->mvState){
+// 		case STATIONNARY:
+// 			this->animNeutral.renderImage(r, this->coo);
+// 			this->animNeutral.nextFrame();
+// 			break;
+// 			
+// 		case UP:
+// 		case UPRIGHT:
+// 		case UPLEFT:
+// 			this->animUp.renderImage(r, this->coo);
+// 			this->animUp.nextFrame();
+// 			break;
+// 		case DOWN:
+// 			this->animDown.renderImage(r, this->coo);
+// 			this->animDown.nextFrame();
+// 			break;
+// 		case LEFT:
+// 		case DOWNLEFT:
+// 			this->animLeft.renderImage(r, this->coo);
+// 			this->animLeft.nextFrame();
+// 			break;
+// 		case RIGHT:
+// 		case DOWNRIGHT:
+// 			this->animRight.renderImage(r, this->coo);
+// 			this->animRight.nextFrame();
+// 			break;
+// 		default:
+// 			this->animNeutral.renderImage(r, this->coo);
+// 			this->animNeutral.nextFrame();
+// 			break;
+// 	}
+// // 	for(Missile* i : this->ammo){
+// // 		if(!i->isReady()){
+// // 			i->renderShip(r);
+// // 		}
+// // 	}
+// }
 
 /**
  * returns the index of colliding missile, -1 of no collision
@@ -346,21 +348,21 @@ bool Player::takeDamage(int d){
 	return false;
 }
 
-void Player::changeAlpha(int alpha){
-	this->animUp.changeAlpha(rand()%255);
-	this->animDown.changeAlpha(rand()%255);
-	this->animRight.changeAlpha(rand()%255);
-	this->animLeft.changeAlpha(rand()%255);
-	this->animNeutral.changeAlpha(rand()%255);
-}
-
-void Player::resetAlpha(){
-	this->animUp.resetAlpha();
-	this->animDown.resetAlpha();
-	this->animRight.resetAlpha();
-	this->animNeutral.resetAlpha();
-	this->animLeft.resetAlpha();
-}
+// void Player::changeAlpha(int alpha){
+// 	this->animUp.changeAlpha(rand()%255);
+// 	this->animDown.changeAlpha(rand()%255);
+// 	this->animRight.changeAlpha(rand()%255);
+// 	this->animLeft.changeAlpha(rand()%255);
+// 	this->animNeutral.changeAlpha(rand()%255);
+// }
+// 
+// void Player::resetAlpha(){
+// 	this->animUp.resetAlpha();
+// 	this->animDown.resetAlpha();
+// 	this->animRight.resetAlpha();
+// 	this->animNeutral.resetAlpha();
+// 	this->animLeft.resetAlpha();
+// }
 
 ostream& operator<<(ostream& out, Player &p){
 	out << "health = " << p.getHealth() << ", maxHealth = " << p.getMaxHealth() << endl << ", nbAmmos = " << p.getNbAmmo() << ", stackSize = " << p.getStackSize() << endl ;

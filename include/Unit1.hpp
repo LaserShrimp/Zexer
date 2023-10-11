@@ -20,7 +20,7 @@ protected:
 public:
 	Unit1();
 	
-	void init(SDL_Renderer *r);
+	void init(/*SDL_Renderer *r*/);
 	void move();
 	
 	void randomDir();

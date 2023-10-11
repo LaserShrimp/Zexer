@@ -7,6 +7,7 @@
 #include "SDL2/SDL_image.h"
 
 #include "Ship.hpp"
+#include "Player.hpp"
 #include "defines.h"
 #include "gameAddOns.h"
 #include "Animation.hpp"
@@ -17,12 +18,16 @@ using namespace std;
 class AnimationHandler{
 private:
 	vector<Animation*> vAnim;
+	vector<Animation*> vAnimPlayer; //animations for the player
 	SDL_Renderer *r;
 protected:
 public:
 	AnimationHandler(SDL_Renderer *r);
 	void renderOnScreen(Ship &s);
+	void renderOnScreen(Player &p);
 	void addAnim(const Animation *a);
+	void resetAlphaPlayer();
+	void changeAlphaPlayer(int alpha);
 	
 	~AnimationHandler();
 };

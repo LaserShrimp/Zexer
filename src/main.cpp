@@ -52,23 +52,23 @@ int main(int argc, char **argv){
 // 	Uint32 prevTime = SDL_GetTicks();
 	Player *player = new Player();
 	
-	player->init(renderer);
+	player->init(/*renderer*/);
 	vector<Missile*> vAmmo;
 	for(int i = 0; i < 3; i++){
 		vAmmo.push_back(new Missile());
 	}
 	player->setAmmo(vAmmo);
 	for(Missile* mi: player->getAmmo()){
-		mi->setAnimationNeutral(renderer);
+// 		mi->setAnimationNeutral(renderer);
 		mi->setToStack();
 	}
     vector<Ship*> vEnemy;
 	for(int i = 0; i < 6; i++){
 		vEnemy.push_back(new Enemy());
-		vEnemy[i]->init(renderer);
+		vEnemy[i]->init(/*renderer*/);
 		if(i == 5){
 			Unit1 *u = new Unit1();
-			u->init(renderer);
+			u->init(/*renderer*/);
 			vEnemy.push_back(u);
 		}
 	}
@@ -88,63 +88,66 @@ int main(int argc, char **argv){
 	Uint32 timeHealthIncrease = SDL_GetTicks();
 	
 	while (player->getHealth() > 0  && !inputs.getquit() && !inputs.getescape()) {
-			tick1 = SDL_GetTicks();
-			SDL_PollEvent(&event);
-			inputs.setState(event);
-			player->doActions(inputs);
-			player->updateAmmos();
-			
-			int pos = 0;
-			for(Ship* e: vEnemy){
-				e->move();
-				if(player->hitShip(e->getHitbox())){
-					player->takeDamage(e->getAtk());
+		tick1 = SDL_GetTicks();
+		SDL_PollEvent(&event);
+		inputs.setState(event);
+		player->doActions(inputs);
+		player->updateAmmos();
+		
+		int pos = 0;
+		for(Ship* e: vEnemy){
+			e->move();
+			if(player->hitShip(e->getHitbox())){
+				player->takeDamage(e->getAtk());
+			}
+			int indexCollision = player->missileCollidesWith(e->getHitbox());
+			if(indexCollision > -1){
+				if(e->takeDamage(player->getMissile(indexCollision)->getAtk())){
+					gameInterface->increaseScore();
+				} else {
+					e->scintillate(10);
 				}
-				int indexCollision = player->missileCollidesWith(e->getHitbox());
-				if(indexCollision > -1){
-					if(e->takeDamage(player->getMissile(indexCollision)->getAtk())){
-						gameInterface->increaseScore();
-					} else {
-						e->scintillate(10);
-					}
-					player->damageMissile(indexCollision, e->getAtk());
-				}
-				pos++;
+				player->damageMissile(indexCollision, e->getAtk());
 			}
-			//Adding some difficulty over the time
-			if(SDL_GetTicks() - timeEnemyIncrease >= 20000){
-				Enemy* n = new Enemy;
-				n->init(renderer);
-				vEnemy.push_back(n);
-				cout << "new enemy : " << vEnemy.size() << " enemies" << endl; 
-				timeEnemyIncrease = SDL_GetTicks();
-			}
-			if(SDL_GetTicks() - timeStampIncrease >= 10000){
-				int elem{rand()%(int)vEnemy.size()};
-				vEnemy[elem]->setYSpeed(vEnemy[elem]->getYSpeed()+2);
-				cout << "speed increased" << endl;
-				timeStampIncrease = SDL_GetTicks();
-			}
-			if(SDL_GetTicks() - timeHealthIncrease >= 15000){
-				int elem{rand()%(int)vEnemy.size()};
-				vEnemy[elem]->setMaxHealth(vEnemy[elem]->getMaxHealth()+50);
-				cout << "health increased" << endl;
-				timeHealthIncrease = SDL_GetTicks();
-			}
-			
-			//RENDERING
-			player->renderShip(renderer);
-			for(Ship* e: vEnemy){
-				e->renderShip(renderer);
-				//aHandler->renderOnScreen(*e);
-			}
-			gameInterface->loadStatsFromPlayer(*player);
-			gameInterface->render(renderer);
-			SDL_RenderPresent(renderer);
-			SDL_RenderClear(renderer);
-			tick2 = SDL_GetTicks();
-			if(tick2 - tick1 < frameTime)
-				SDL_Delay(frameTime - (tick2 - tick1));
+			pos++;
+		}
+		//Adding some difficulty over the time
+		if(SDL_GetTicks() - timeEnemyIncrease >= 20000){
+			Enemy* n = new Enemy;
+			n->init(/*renderer*/);
+			vEnemy.push_back(n);
+			cout << "new enemy : " << vEnemy.size() << " enemies" << endl; 
+			timeEnemyIncrease = SDL_GetTicks();
+		}
+		if(SDL_GetTicks() - timeStampIncrease >= 10000){
+			int elem{rand()%(int)vEnemy.size()};
+			vEnemy[elem]->setYSpeed(vEnemy[elem]->getYSpeed()+2);
+			cout << "speed increased" << endl;
+			timeStampIncrease = SDL_GetTicks();
+		}
+		if(SDL_GetTicks() - timeHealthIncrease >= 15000){
+			int elem{rand()%(int)vEnemy.size()};
+			vEnemy[elem]->setMaxHealth(vEnemy[elem]->getMaxHealth()+50);
+			cout << "health increased" << endl;
+			timeHealthIncrease = SDL_GetTicks();
+		}
+		
+		//RENDERING
+// 		player->renderShip(renderer);
+		aHandler->renderOnScreen(*player);
+		for(int i = 0; i < player->getStackSize(); i++){
+			aHandler->renderOnScreen(*player->getMissile(i));
+		}
+		for(Ship* e: vEnemy){
+			aHandler->renderOnScreen(*e);
+		}
+		gameInterface->loadStatsFromPlayer(*player);
+		gameInterface->render(renderer);
+		SDL_RenderPresent(renderer);
+		SDL_RenderClear(renderer);
+		tick2 = SDL_GetTicks();
+		if(tick2 - tick1 < frameTime)
+			SDL_Delay(frameTime - (tick2 - tick1));
 	}
 	cout << "Final score : " << gameInterface->getScore() << endl;
 	delete gameInterface;

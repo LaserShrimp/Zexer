@@ -30,6 +30,7 @@ public:
 	void setTexture(SDL_Texture *t);
 	void setTexture(SDL_Renderer *r, char *texturePath);
 	void nextFrame();
+	void setToFrame(const int currentFrame);
 	void changeAlpha(int alpha);
 	void resetAlpha();
 	void renderImage(SDL_Renderer *r, SDL_Rect dest);

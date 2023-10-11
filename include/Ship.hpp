@@ -15,7 +15,7 @@ using namespace std;
 class Ship{
 	protected:
 		string id; 
-		Animation animNeutral;
+// 		Animation animNeutral;
 		Vect cooVect;
 		Vect speedVect;
 		SDL_Rect coo;
@@ -26,8 +26,8 @@ class Ship{
 		int atk;
 		float hitboxRatio; //to set the size of the hitbox (a a percentage of the whole sprite centered in the middle of the ship)
 		
-		short frameNb;//number of the current frame (for animation)
-		SDL_Rect framePos;
+		int frame;//number of the current frame (for animation)
+		//SDL_Rect framePos;
 		
 		int invincible;
 		int nbFramesInvincible;
@@ -57,10 +57,12 @@ class Ship{
 		float getXSpeed();
 		float getYSpeed();
 		int getInvincible();
+		int getCurrentFrame();
+		int getCurrentFrameAndIncrease();
 		
-		virtual void setAnimationNeutral(SDL_Renderer *r);
-		virtual void setAnimationNeutral(SDL_Renderer *r, char* animName, int nbFrames, int frameW, int frameH);
-		virtual void setAnimationNeutral(const Animation &a);
+// 		virtual void setAnimationNeutral(SDL_Renderer *r);
+// 		virtual void setAnimationNeutral(SDL_Renderer *r, char* animName, int nbFrames, int frameW, int frameH);
+// 		virtual void setAnimationNeutral(const Animation &a);
 		void setCooVect(float x, float y);
 		void setSpeedVect(float x, float y);
 		void setCoo(SDL_Rect n);
@@ -80,7 +82,7 @@ class Ship{
 		void setStayInScreen(bool b);
 		
 		virtual void init();
-		virtual void init(SDL_Renderer *r);
+// 		virtual void init(SDL_Renderer *r);
 		
 		void goLeft();
 		void goRight();
@@ -90,7 +92,7 @@ class Ship{
 		void translationMovement();
 		void synchronizeVectFromCoo();
 		void synchronizeCooFromVect();
-		virtual void renderShip(SDL_Renderer *r);
+// 		virtual void renderShip(SDL_Renderer *r);
 		void heal();
 		void heal(int a);
 		void healCompletely();

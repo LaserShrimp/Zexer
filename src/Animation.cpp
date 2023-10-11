@@ -39,6 +39,11 @@ void Animation::nextFrame(){
 	this->framePos.x = (this->currentFrame * this->framePos.w);
 }
 
+void Animation::setToFrame(int frame){
+	int currentFrame = frame%numberOfFrames;
+	this->framePos.x = currentFrame * this->framePos.w;
+}
+
 void Animation::changeAlpha(int alpha){
 	SDL_SetTextureAlphaMod(this->texture, alpha);
 	this->alphaChanged = true;

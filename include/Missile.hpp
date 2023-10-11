@@ -13,7 +13,7 @@ class Missile: public Ship{
 	public:
 		Missile();
 		
-		void setAnimationNeutral(SDL_Renderer *r);
+// 		void setAnimationNeutral(SDL_Renderer *r);
 		bool isReady();
 		void setReady(bool r);
 		void setToStack();

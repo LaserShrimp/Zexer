@@ -11,11 +11,11 @@ Missile::Missile(): Ship{}, ready{true}{
 	this->synchronizeVectFromCoo();
 }
 
-void Missile::setAnimationNeutral(SDL_Renderer *r){
-	this->animNeutral.setFrameSize(10, 10);
-	this->animNeutral.setNumberOfFrames(6);
-	this->animNeutral.setTexture(r, (char*)"assets/missile.png");
-}
+// void Missile::setAnimationNeutral(SDL_Renderer *r){
+// 	this->animNeutral.setFrameSize(10, 10);
+// 	this->animNeutral.setNumberOfFrames(6);
+// 	this->animNeutral.setTexture(r, (char*)"assets/missile.png");
+// }
 
 void Missile::setReady(bool r){this->ready = r;};
 
