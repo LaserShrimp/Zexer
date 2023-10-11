@@ -4,7 +4,7 @@ The list's order is not important
 
 -------------------------------------------------------------
 
-- [ ] handle animations outside of Ship objects  
+- [x] handle animations outside of Ship objects  
 - [ ] introduce Wave to set a wave of enemies  
 - [ ] starting screen and game over screen  
 - [ ] allow Unit1 to shoot  
