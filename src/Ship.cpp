@@ -1,6 +1,6 @@
 #include "Ship.hpp"
 
-Ship::Ship():id{"ship"}, cooVect{Vect(0, 0)}, speedVect{Vect(0, 0)}, coo({.x = 0, .y = 0, .w = WIDTH, .h = HEIGHT}), hitbox({.x = 0, .y = 0, .w = WIDTH, .h = HEIGHT}), speed{SPEED}, health{1}, maxHealth{1}, atk{1}, hitboxRatio{1.0}, frame{1}, /*framePos({.x = 0, .y = 0, .w = WIDTH, .h = HEIGHT}),*/ invincible{0}, nbFramesInvincible{0}, stayInScreen{false}{
+Ship::Ship():id{"ship"}, cooVect{Vect(0, 0)}, speedVect{Vect(0, 0)}, coo({.x = 0, .y = 0, .w = WIDTH, .h = HEIGHT}), hitbox({.x = 0, .y = 0, .w = WIDTH, .h = HEIGHT}), speed{SPEED}, health{1}, maxHealth{1}, atk{1}, hitboxRatio{1.0}, frame{1}, invincible{0}, nbFramesInvincible{0}, stayInScreen{false}{
 }
 
 Ship::Ship(int x, int y, string id){
@@ -12,10 +12,6 @@ Ship::Ship(int x, int y, string id){
 	this->hitbox = this->coo;
 	this->hitboxRatio = 1.0;
 	this->speed = SPEED;
-// 	this->framePos.x = 0;
-// 	this->framePos.y = 0;
-// 	this->framePos.w = WIDTH;
-// 	this->framePos.h = HEIGHT;
 }
 Ship::Ship(SDL_Rect coo, float speed):coo{coo}, hitbox{coo}, speed{speed}, hitboxRatio{100}{
 }
@@ -132,19 +128,6 @@ void Ship::setHitboxRatio(float hr){
 void Ship::setAtk(int a){
 	this->atk = a;
 }
-// void Ship::setAnimationNeutral(SDL_Renderer *r){
-// 	this->animNeutral.setFrameSize(WIDTH, HEIGHT);
-// 	this->animNeutral.setNumberOfFrames(10);
-// 	this->animNeutral.setTexture(r, (char*)"assets/playerShipTest.png");
-// }
-// void Ship::setAnimationNeutral(SDL_Renderer *r, char* animName, int nbFrames, int frameW, int frameH){
-// 	this->animNeutral.setFrameSize(frameW, frameH);
-// 	this->animNeutral.setNumberOfFrames(nbFrames);
-// 	this->animNeutral.setTexture(r, animName);
-// }
-// void Ship::setAnimationNeutral(const Animation& a){
-// 	this->animNeutral = a;
-// }
 void Ship::setInvincible(int i){
 	this->invincible = i;
 }
@@ -193,45 +176,6 @@ void Ship::synchronizeVectFromCoo(){
 	this->cooVect.setY(this->coo.y);
 }
 
-// void Ship::renderShip(SDL_Renderer *r){
-// 	
-// 	if(!isOnCamera(this->coo)){
-// 		return;
-// 	}
-// 	
-// 	SDL_Rect hmcoo = this->coo;
-// 	hmcoo.y = this->coo.y - 4;
-// 	hmcoo.h = 4;
-// 	SDL_Rect hcoo = hmcoo;
-// 	hcoo.h = 2;
-// 	hcoo.y = hmcoo.y+1;
-// 	hcoo.w = this->health*1.0/this->maxHealth*1.0 * hcoo.w;
-// 	//Drawing health bar only if the ship is damaged
-// 	if(this->health*1.0/this->maxHealth*1.0 > 20.0/100.0){
-// 		SDL_SetRenderDrawColor(r, 255, 200, 50, 255);
-// 	} else {
-// 		SDL_SetRenderDrawColor(r, 255, 0, 0, 0);
-// 	}
-// 	if(this->health < this->maxHealth){
-// 		SDL_RenderFillRect(r, &hcoo);
-// 		SDL_SetRenderDrawColor(r, 255, 255, 255, 255);
-// 		SDL_RenderDrawRect(r, &hmcoo);
-// 	}
-// 	
-// 	SDL_SetRenderDrawColor(r, 0, 0, 0, 0);
-// //	changing the alpha if it took damages
-// 	if(this->invincible > 0){
-// 		this->animNeutral.changeAlpha(rand()%255);
-// 		this->invincible++;
-// 		if(this->invincible == this->nbFramesInvincible){
-// 			this->invincible = 0;
-// 			this->animNeutral.resetAlpha();
-// 		}
-// 	}
-// 	this->animNeutral.renderImage(r, this->coo);
-// 	this->animNeutral.nextFrame();
-// }
-
 bool Ship::hitShip(SDL_Rect s){
 	SDL_Rect r;
 	return SDL_IntersectRect(&(this->hitbox), &s, &r) == SDL_TRUE;
@@ -273,6 +217,9 @@ void Ship::rerack(){
 	this->healCompletely();
 	this->setY(-this->coo.h);
 	this->synchronizeVectFromCoo();
+}
+bool Ship::launch(int startX, int startY){
+	return true;
 }
 
 /**

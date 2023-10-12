@@ -8,14 +8,29 @@ Missile::Missile(): Ship{}, ready{true}{
 	this->maxHealth = 10;
 	this->atk = 10;
 	this->cooVect = Vect(0, 0);
+	this->coo.w = 20;
+	this->coo.h = 20;
+	this->hitbox = this->coo;
+	this->hitboxRatio = 1.0;
 	this->synchronizeVectFromCoo();
+	this->healCompletely();
 }
-
-// void Missile::setAnimationNeutral(SDL_Renderer *r){
-// 	this->animNeutral.setFrameSize(10, 10);
-// 	this->animNeutral.setNumberOfFrames(6);
-// 	this->animNeutral.setTexture(r, (char*)"assets/missile.png");
-// }
+Missile::Missile(int x, int y): Ship{}, ready{true}{
+	this->id = "missile";
+	this->speed = MISSILE_SPEED;
+	this->speedVect.setX(0);
+	this->speedVect.setY(-MISSILE_SPEED);
+	this->maxHealth = 10;
+	this->atk = 10;
+	this->cooVect = Vect(0, 0);
+	this->launch(x, y);
+	this->coo.w = 20;
+	this->coo.h = 20;
+	this->hitbox = this->coo;
+	this->hitboxRatio = 1.0;
+	this->synchronizeVectFromCoo();
+	this->healCompletely();
+}
 
 void Missile::setReady(bool r){this->ready = r;};
 
@@ -50,12 +65,7 @@ bool Missile::launch(int startX, int startY){
 }
 
 void Missile::move(){
-	//If the ammo reached the top of the screen
-	if(this->coo.y < 0 || this->health <= 0){
-		this->setToStack();
-	} else {
-		this->translationMovement();
-	}
+	this->translationMovement();
 	this->updateHitbox();
 }
 bool Missile::takeDamage(int d){
@@ -69,6 +79,7 @@ bool Missile::takeDamage(int d){
 
 
 Missile::~Missile(){
+// 	cout << "Missile destroyed" << endl;
 }
 
 ostream& operator<<(ostream& out, Missile &m){

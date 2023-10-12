@@ -21,11 +21,7 @@ class Player: public Ship{
 		movestate mvState;
 		Uint32 shootCooldown; //in milliseconds
 		Uint32 startShootCooldown; //in millis
-		
-// 		Animation animRight;
-// 		Animation animLeft;
-// 		Animation animUp;
-// 		Animation animDown;
+		bool launchMissile;
 		
 	protected:
 	public:
@@ -39,36 +35,26 @@ class Player: public Ship{
 		Uint32 getStartShootCooldown() const;
 		Missile* getMissile(int index);
 		vector<Missile*>& getAmmo();
+		bool isShooting() const;
 		
-// 		void setMissileTexture(int missileId, const Animation& a);
 		void setAmmo(vector<Missile*> &mVector);
 		void setNbAmmo(int n);
 		void setStackSize(int stackSize);
 		void setMoveState(const InputState &is);
 		void setShootCooldown(Uint32 cooldown);
 		void setStartShootCooldown();
-// 		void setAnimationNeutral(SDL_Renderer *r);
-// 		void setAnimationUp(SDL_Renderer *r);
-// 		void setAnimationDown(SDL_Renderer *r);
-// 		void setAnimationLeft(SDL_Renderer *r);
-// 		void setAnimationRight(SDL_Renderer *r);
+		void setLaunchingState(bool a);
 		void doActions(const InputState &is);
 		virtual void init(int x, int y, int speed, int ammo, int stackSize);
-// 		virtual void init();
-// 		virtual void init(SDL_Texture *missileTexture);
-		virtual void init(/*SDL_Renderer *r*/);
+		virtual void init();
 		
 		void shoot();
 		void move();
 		void updateAmmos();
-// 		virtual void renderShip(SDL_Renderer *r) override;
 		int missileCollidesWith(SDL_Rect target);
 		void restackMissile(int index);
 		void damageMissile(int index, int damage);
 		virtual bool takeDamage(int d);
-		
-// 		void changeAlpha(int alpha);
-// 		void resetAlpha();
 		
 		virtual ~Player();
 };

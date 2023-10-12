@@ -12,13 +12,13 @@ class Missile: public Ship{
 	protected:
 	public:
 		Missile();
+		Missile(int x, int y);
 		
-// 		void setAnimationNeutral(SDL_Renderer *r);
 		bool isReady();
 		void setReady(bool r);
 		void setToStack();
 		
-		bool launch(int startX, int startY);
+		virtual bool launch(int startX, int startY);
 		virtual void move();
 		bool takeDamage(int d);
 		

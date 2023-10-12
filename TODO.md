@@ -3,6 +3,7 @@ These are the main features I'd like to add to the project.
 The list's order is not important  
 
 -------------------------------------------------------------
+## General objectives :
 
 - [x] handle animations outside of Ship objects  
 - [ ] introduce Wave to set a wave of enemies  
@@ -13,4 +14,8 @@ The list's order is not important
 - [ ] make a moving background with several layers (3)  
 - [ ] add sound effects  
 - [ ] add some juiciness  
-- [ ] change anmiation prototypes to clean animations__
+- [ ] change animation prototypes to clean animations__
+
+## More specific objectives:
+
+- [ ] in Missile, method to launch with a given direction, atk and size
