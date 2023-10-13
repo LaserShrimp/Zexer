@@ -1,45 +1,20 @@
 #include "Player.hpp"
 
-Player::Player():Ship{}, nbAmmo{0}, stackSize{0}, ammo{vector<Missile*>{}}, mvState{STATIONNARY}, shootCooldown{/*225*/200}, startShootCooldown{0}, launchMissile{false}{}
+Player::Player():Ship{}, mvState{STATIONNARY}, shootCooldown{/*225*/200}, startShootCooldown{0}, launchMissile{false}{}
 
-Player::Player(const Player& p): Ship{}, nbAmmo{p.getNbAmmo()}, stackSize{p.getStackSize()}, ammo{vector<Missile*>{}}, mvState{STATIONNARY}, shootCooldown{p.shootCooldown}, startShootCooldown{0}, launchMissile{false}{
+Player::Player(const Player& p): Ship{}, mvState{STATIONNARY}, shootCooldown{p.shootCooldown}, startShootCooldown{0}, launchMissile{false}{
 }
 
 Player::~Player(){
 }
 
-int Player::getNbAmmo() const {return this->nbAmmo;}
-int Player::getStackSize() const {return this->stackSize;}
 Uint32 Player::getShootCooldown() const {return this->shootCooldown;}
 Uint32 Player::getStartShootCooldown() const {return this->startShootCooldown;}
-Missile* Player::getMissile (int index) {
-	return this->ammo[index];
-}
-vector<Missile*> &Player::getAmmo() {
-	return this->ammo;
-}
 bool Player::isShooting() const{
 	return launchMissile;
 }
 movestate Player::getMvState() const{
 	return this->mvState;
-}
-void Player::setNbAmmo(int n){
-	this->nbAmmo = n;
-}
-void Player::setStackSize(int stackSize){
-	this->stackSize = stackSize;
-}
-
-void Player::setAmmo(vector<Missile*> &mVector){
-	this->nbAmmo = mVector.size();
-	this->stackSize = mVector.size();
-	this->ammo = mVector;
-	for(Missile* i : this->ammo){
-		i->setCoo({.x=0, .y=0, .w=10, .h=10});
-		i->setMaxHealth(10);
-		i->setToStack();
-	}
 }
 void Player::setShootCooldown(Uint32 cooldown){
 	this->shootCooldown = cooldown;
@@ -52,8 +27,6 @@ void Player::init(int x, int y, int speed, int ammo, int stackSize){
 	this->coo.y = y;
 	this->synchronizeVectFromCoo();
 	this->speed = speed;
-	this->nbAmmo = ammo;
-	this->stackSize = stackSize;
 }
 void Player::init(){
 	this->init(WIN_WIDTH/2 - WIDTH/2, WIN_HEIGHT - 1.5*HEIGHT, SPEED, 1, 1); //1, 1 are random
@@ -75,13 +48,6 @@ void Player::init(){
  */
 void Player::shoot(){
 	if(SDL_GetTicks() - this->startShootCooldown >= this->shootCooldown){
-// 		for(Missile* i : this->ammo){
-// 			if(i->isReady()){
-// 				//We set the next ammo in front of the ship and let it go
-// 				i->launch(this->coo.x + this->coo.w/2 - 2, this->coo.y);
-// 				break;
-// 			}
-// 		}
 		this->launchMissile = true;
 		this->startShootCooldown = SDL_GetTicks();
 	}
@@ -229,37 +195,6 @@ void Player::doActions(const InputState &is){
 	}
 }
 
-void Player::updateAmmos(){
-	int count = 0;
-	for(Missile* i : this->ammo){
-		//If the ammo is launched or waiting in the stack
-		if(!i->isReady()){
-			i->move();
-		} else {
-			count++;
-		}
-	}
-	this->nbAmmo = count;
-}
-
-/**
- * returns the index of colliding missile, -1 of no collision
- */
-int Player::missileCollidesWith(SDL_Rect target){
-	int count{0};
-	for(Missile* i : this->ammo){
-		if(i->hitShip(target))
-			return count;
-		count++;
-	}
-	return -1;
-}
-void Player::restackMissile(int index){
-	this->ammo[index]->setToStack();
-}
-void Player::damageMissile(int index, int damage){
-	this->ammo[index]->takeDamage(damage);
-}
 bool Player::takeDamage(int d){
 	if(this->invincible == 0){
 		this->health-= d;
@@ -271,6 +206,6 @@ bool Player::takeDamage(int d){
 }
 
 ostream& operator<<(ostream& out, Player &p){
-	out << "health = " << p.getHealth() << ", maxHealth = " << p.getMaxHealth() << endl << ", nbAmmos = " << p.getNbAmmo() << ", stackSize = " << p.getStackSize() << endl ;
+	out << "health = " << p.getHealth() << ", maxHealth = " << p.getMaxHealth() << endl ;
 	return out;
 }

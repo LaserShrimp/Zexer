@@ -11,6 +11,7 @@ The list's order is not important
 - [ ] allow Unit1 to shoot  
 - [ ] destroy animations for enemies  
 - [ ] make other units  
+- [ ] add bonus for the player  
 - [ ] make a moving background with several layers (3)  
 - [ ] add sound effects  
 - [ ] add some juiciness  

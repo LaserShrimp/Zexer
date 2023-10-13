@@ -57,10 +57,10 @@ int main(int argc, char **argv){
 	for(int i = 0; i < 3; i++){
 		vAmmo.push_back(new Missile());
 	}
-	player->setAmmo(vAmmo);
-	for(Missile* mi: player->getAmmo()){
-		mi->setToStack();
-	}
+// 	player->setAmmo(vAmmo);
+// 	for(Missile* mi: player->getAmmo()){
+// 		mi->setToStack();
+// 	}
     vector<Ship*> vEnemy;
 	vector<Ship*> vPlayer;
 	for(int i = 0; i < 6; i++){
@@ -94,14 +94,14 @@ int main(int argc, char **argv){
 		player->doActions(inputs);
 		if(player->isShooting()){
 			vPlayer.push_back(new Missile());
-			vPlayer.back()->launch(player->getX() + player->getW()/2 - vPlayer.back()->getW()/2, player->getY());
+			vPlayer.back()->launch(player->getX() + player->getW()/2 - vPlayer.back()->getW()/2, player->getY(), "player");
 			player->setLaunchingState(false);
 		}
-		player->updateAmmos();
 		
 		int pos = 0;
 		for(Ship* e: vEnemy){
-			e->move();
+// 			e->move();
+			e->doActions(vEnemy);
 			if(player->hitShip(e->getHitbox())){
 				player->takeDamage(e->getAtk());
 			}
@@ -143,9 +143,9 @@ int main(int argc, char **argv){
 		
 		//RENDERING
 		aHandler->renderOnScreen(*player);
-		for(int i = 0; i < player->getStackSize(); i++){
-			aHandler->renderOnScreen(*player->getMissile(i));
-		}
+// 		for(int i = 0; i < player->getStackSize(); i++){
+// 			aHandler->renderOnScreen(*player->getMissile(i));
+// 		}
 		for(Ship* e: vEnemy){
 			aHandler->renderOnScreen(*e);
 		}

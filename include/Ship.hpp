@@ -2,6 +2,7 @@
 #define __SHIP_HPP__
 
 #include <iostream>
+#include <vector>
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_image.h"
 
@@ -92,11 +93,15 @@ class Ship{
 		virtual bool takeDamage();
 		virtual bool takeDamage(int d);
 		void updateHitbox();
+		virtual void doActions(vector<Ship*>& v);
 		
 		void rerack();
 		
 		bool hitShip(SDL_Rect s);
-		virtual bool launch(int startX, int startY);
+		virtual void launch(int startX, int startY);
+		virtual void launch(int startX, int startY, Vect dir);
+		virtual void launch(int startX, int startY, string launcherId);
+		virtual void launch(int startX, int startY, string launcherId, int atk);
 		
 		void scintillate(int nbFrames);
 		void scintillate();

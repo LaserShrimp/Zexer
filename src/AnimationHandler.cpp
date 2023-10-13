@@ -93,7 +93,7 @@ void AnimationHandler::renderOnScreen(Ship &s){
 		} else {
 			SDL_SetRenderDrawColor(this->r, 255, 0, 0, 0);
 		}
-		if(s.health < s.maxHealth){
+		if(s.health < s.maxHealth && s.health > 0){
 			SDL_RenderFillRect(this->r, &hcoo);
 			SDL_SetRenderDrawColor(this->r, 255, 255, 255, 255);
 			SDL_RenderDrawRect(this->r, &hmcoo);

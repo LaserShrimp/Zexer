@@ -2,11 +2,14 @@
 #define __UNIT1_HPP__
 
 #include <iostream>
+#include <vector>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
 #include "defines.h"
 #include "Enemy.hpp"
+#include "Ship.hpp"
+#include "Missile.hpp"
 
 class Unit1:public Enemy{
 private:
@@ -20,8 +23,9 @@ protected:
 public:
 	Unit1();
 	
-	void init(/*SDL_Renderer *r*/);
+	void init();
 	void move();
+	virtual void doActions(vector<Ship*>& v);
 	
 	void randomDir();
 	

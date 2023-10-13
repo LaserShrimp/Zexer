@@ -27,7 +27,7 @@ int GameInterface::getScore(){return this->score;}
 void GameInterface::loadStatsFromPlayer(Player& p){
 	this->health = p.getHealth();
 	this->maxHealth = p.getMaxHealth();
-	this->munitions = p.getNbAmmo();
+// 	this->munitions = p.getNbAmmo();
 	
 	//coordinates
 	this->hmcoo.w = p.getMaxHealth()*4;
@@ -51,12 +51,12 @@ void GameInterface::increaseScore(int points){
 }
 
 void GameInterface::render(SDL_Renderer *r){
-	char bufferScore[30], bufferMun[30];
+	char bufferScore[30]/*, bufferMun[30]*/;
 	snprintf(bufferScore, 30, "score : %d", this->score);
-	snprintf(bufferMun, 30, "munitions : %d", this->munitions);
+// 	snprintf(bufferMun, 30, "munitions : %d", this->munitions);
 	SDL_Texture *ts = SDL_CreateTextureFromSurface(r, TTF_RenderText_Blended(this->font, bufferScore, {255, 255, 255, 255}));
-	SDL_Texture *tm = SDL_CreateTextureFromSurface(r, TTF_RenderText_Blended(this->font, bufferMun, {255, 255, 255, 255}));
-	if(ts == NULL || tm == NULL){
+// 	SDL_Texture *tm = SDL_CreateTextureFromSurface(r, TTF_RenderText_Blended(this->font, bufferMun, {255, 255, 255, 255}));
+	if(ts == NULL/* || tm == NULL*/){
 		cout << "TTF Texture == NULL\n" << endl;
 	}
 	SDL_SetRenderTarget(r, this->renderTexture);
@@ -64,7 +64,7 @@ void GameInterface::render(SDL_Renderer *r){
 	//SDL_RenderClear(r);
 	SDL_RenderCopy(r, this->backgroundTexture, NULL, NULL);
 	SDL_RenderCopy(r, ts, NULL, &(this->scoo));
-	SDL_RenderCopy(r, tm, NULL, &(this->mcoo));
+// 	SDL_RenderCopy(r, tm, NULL, &(this->mcoo));
 	
 	//Drawing health bar
 	if(this->health == this->maxHealth){
@@ -82,7 +82,7 @@ void GameInterface::render(SDL_Renderer *r){
 	
 	SDL_SetRenderDrawColor(r, 0, 0, 0, 0);
 	SDL_DestroyTexture(ts);
-	SDL_DestroyTexture(tm);
+// 	SDL_DestroyTexture(tm);
 }
 
 GameInterface::~GameInterface(){

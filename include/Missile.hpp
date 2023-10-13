@@ -8,17 +8,20 @@
 
 class Missile: public Ship{
 	private:
-		bool ready; //True if it's in the stack, false otherwise
+// 		bool ready; //True if it's in the stack, false otherwise
 	protected:
 	public:
 		Missile();
 		Missile(int x, int y);
 		
-		bool isReady();
-		void setReady(bool r);
-		void setToStack();
+// 		bool isReady();
+// 		void setReady(bool r);
+// 		void setToStack();
 		
-		virtual bool launch(int startX, int startY);
+		virtual void launch(int startX, int startY);
+		virtual void launch(int startX, int startY, Vect dir);
+		virtual void launch(int startX, int startY, string launcherId);
+		virtual void launch(int startX, int startY, string launcherId, int atk);
 		virtual void move();
 		bool takeDamage(int d);
 		

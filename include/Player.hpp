@@ -15,9 +15,6 @@ typedef enum movestate{
 
 class Player: public Ship{
 	private:
-		int nbAmmo;
-		int stackSize;
-		vector<Missile*> ammo;
 		movestate mvState;
 		Uint32 shootCooldown; //in milliseconds
 		Uint32 startShootCooldown; //in millis
@@ -28,18 +25,11 @@ class Player: public Ship{
 		Player();
 		Player(const Player& p);
 		
-		int getNbAmmo() const;
-		int getStackSize() const;
 		movestate getMvState() const;
 		Uint32 getShootCooldown() const;
 		Uint32 getStartShootCooldown() const;
-		Missile* getMissile(int index);
-		vector<Missile*>& getAmmo();
 		bool isShooting() const;
 		
-		void setAmmo(vector<Missile*> &mVector);
-		void setNbAmmo(int n);
-		void setStackSize(int stackSize);
 		void setMoveState(const InputState &is);
 		void setShootCooldown(Uint32 cooldown);
 		void setStartShootCooldown();
@@ -50,10 +40,6 @@ class Player: public Ship{
 		
 		void shoot();
 		void move();
-		void updateAmmos();
-		int missileCollidesWith(SDL_Rect target);
-		void restackMissile(int index);
-		void damageMissile(int index, int damage);
 		virtual bool takeDamage(int d);
 		
 		virtual ~Player();

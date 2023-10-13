@@ -213,13 +213,22 @@ void Ship::updateHitbox(){
 	this->hitbox.y = this->coo.y + this->coo.h/2 - this->hitbox.h/2;
 }
 
+void Ship::doActions(vector<Ship*>& v){
+	this->move();
+}
+
 void Ship::rerack(){
 	this->healCompletely();
 	this->setY(-this->coo.h);
 	this->synchronizeVectFromCoo();
 }
-bool Ship::launch(int startX, int startY){
-	return true;
+void Ship::launch(int startX, int startY){
+}
+void Ship::launch(int startX, int startY, Vect dir){
+}
+void Ship::launch(int startX, int startY, string launcherId){
+}
+void Ship::launch(int startX, int startY, string launcherId, int atk){
 }
 
 /**
