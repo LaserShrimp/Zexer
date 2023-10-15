@@ -8,7 +8,7 @@ The list's order is not important
 - [x] handle animations outside of Ship objects  
 - [ ] introduce Wave to set a wave of enemies  
 - [ ] starting screen and game over screen  
-- [ ] allow Unit1 to shoot  
+- [x] allow Unit1 to shoot  
 - [ ] destroy animations for enemies  
 - [ ] make other units  
 - [ ] add bonus for the player  
@@ -19,4 +19,4 @@ The list's order is not important
 
 ## More specific objectives:
 
-- [ ] in Missile, method to launch with a given direction, atk and size
+- [x] in Missile, method to launch with a given direction, atk and size

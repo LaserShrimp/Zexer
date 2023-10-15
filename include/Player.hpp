@@ -34,11 +34,11 @@ class Player: public Ship{
 		void setShootCooldown(Uint32 cooldown);
 		void setStartShootCooldown();
 		void setLaunchingState(bool a);
-		void doActions(const InputState &is);
+		void doActions(const InputState &is, vector<Ship*> &v);
 		virtual void init(int x, int y, int speed, int ammo, int stackSize);
 		virtual void init();
 		
-		void shoot();
+		void shoot(vector<Ship*> &v);
 		void move();
 		virtual bool takeDamage(int d);
 		

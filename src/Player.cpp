@@ -5,9 +5,6 @@ Player::Player():Ship{}, mvState{STATIONNARY}, shootCooldown{/*225*/200}, startS
 Player::Player(const Player& p): Ship{}, mvState{STATIONNARY}, shootCooldown{p.shootCooldown}, startShootCooldown{0}, launchMissile{false}{
 }
 
-Player::~Player(){
-}
-
 Uint32 Player::getShootCooldown() const {return this->shootCooldown;}
 Uint32 Player::getStartShootCooldown() const {return this->startShootCooldown;}
 bool Player::isShooting() const{
@@ -46,9 +43,12 @@ void Player::init(){
 /**
  * Shoots the first available ammo
  */
-void Player::shoot(){
+void Player::shoot(vector<Ship*> &v){
 	if(SDL_GetTicks() - this->startShootCooldown >= this->shootCooldown){
-		this->launchMissile = true;
+// 		this->launchMissile = true;
+		v.push_back(new Missile());
+		v.back()->launch(this->getX() + this->getW()/2 - v.back()->getW()/2, this->getY(), "player");
+// 		this->setLaunchingState(false);
 		this->startShootCooldown = SDL_GetTicks();
 	}
 }
@@ -186,12 +186,12 @@ void Player::setLaunchingState(bool a){
 /**
  * This method will allow the player to do everything he is meant to do (move, shoot, etc...)
  */
-void Player::doActions(const InputState &is){
+void Player::doActions(const InputState &is, vector<Ship*> &v){
 	this->setMoveState(is);
 	this->move();
 	this->updateHitbox();
 	if(is.getspacebar()){
-		this->shoot();
+		this->shoot(v);
 	}
 }
 
@@ -203,6 +203,10 @@ bool Player::takeDamage(int d){
 	if(this->health <= 0)
 		return true;
 	return false;
+}
+
+Player::~Player(){
+	cout << "player deleted" << endl;
 }
 
 ostream& operator<<(ostream& out, Player &p){

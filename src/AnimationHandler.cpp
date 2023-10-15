@@ -165,3 +165,15 @@ void AnimationHandler::resetAlphaPlayer(){
 void AnimationHandler::addAnim(const Animation *a){
 	//this->vAnim.push_back(a);
 }
+
+AnimationHandler::~AnimationHandler(){
+	for(int i = 0; i < 3; i++){
+		delete vAnim[i];
+	}
+	for(int i = 0; i < 5; i++){
+		delete vAnimPlayer[i];
+	}
+	vAnim.clear();
+	vAnimPlayer.clear();
+	cout << "animationHandler deleted" << endl;
+}

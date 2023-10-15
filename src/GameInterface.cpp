@@ -17,9 +17,11 @@ GameInterface::GameInterface(const GameInterface& gi){
 }
 
 void GameInterface::initBackground(SDL_Renderer *r){
- 	this->backgroundTexture = SDL_CreateTextureFromSurface(r, IMG_Load("assets/interfaceBackground.png"));
+	SDL_Surface *s = IMG_Load("assets/interfaceBackground.png");
+ 	this->backgroundTexture = SDL_CreateTextureFromSurface(r, s);
 	this->renderTexture = SDL_CreateTexture(r, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, INT_W, INT_H);
 	SDL_SetTextureBlendMode(this->renderTexture, SDL_BLENDMODE_BLEND);
+	SDL_FreeSurface(s);
 }
 
 int GameInterface::getScore(){return this->score;}
@@ -54,7 +56,8 @@ void GameInterface::render(SDL_Renderer *r){
 	char bufferScore[30]/*, bufferMun[30]*/;
 	snprintf(bufferScore, 30, "score : %d", this->score);
 // 	snprintf(bufferMun, 30, "munitions : %d", this->munitions);
-	SDL_Texture *ts = SDL_CreateTextureFromSurface(r, TTF_RenderText_Blended(this->font, bufferScore, {255, 255, 255, 255}));
+	SDL_Surface *s = TTF_RenderText_Blended(this->font, bufferScore, {255, 255, 255, 255});
+	SDL_Texture *ts = SDL_CreateTextureFromSurface(r, s);
 // 	SDL_Texture *tm = SDL_CreateTextureFromSurface(r, TTF_RenderText_Blended(this->font, bufferMun, {255, 255, 255, 255}));
 	if(ts == NULL/* || tm == NULL*/){
 		cout << "TTF Texture == NULL\n" << endl;
@@ -83,10 +86,16 @@ void GameInterface::render(SDL_Renderer *r){
 	SDL_SetRenderDrawColor(r, 0, 0, 0, 0);
 	SDL_DestroyTexture(ts);
 // 	SDL_DestroyTexture(tm);
+	SDL_FreeSurface(s);
 }
 
 GameInterface::~GameInterface(){
 	//cout << "closing font of game interface" << endl;
 	if(this->font != NULL)
 		TTF_CloseFont(this->font);
+	if(this->renderTexture != NULL)
+		SDL_DestroyTexture(this->renderTexture);
+	if(this->backgroundTexture != NULL)
+		SDL_DestroyTexture(this->backgroundTexture);
+	
 }

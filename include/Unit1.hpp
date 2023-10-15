@@ -26,6 +26,7 @@ public:
 	void init();
 	void move();
 	virtual void doActions(vector<Ship*>& v);
+	virtual void shoot(vector<Ship*>& v);
 	
 	void randomDir();
 	

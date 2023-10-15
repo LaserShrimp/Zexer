@@ -14,13 +14,10 @@ private:
 		Enemy();
 		Enemy(const Enemy& e);
 		
-// 		virtual void setAnimationNeutral(SDL_Renderer *r);
-// 		virtual void setAnimationNeutral(SDL_Renderer *r, char* animName, int nbFrames, int frameW, int frameH);
-		virtual void init(/*SDL_Renderer *r*/);
+		virtual void init();
 		virtual void move();
 		virtual void rerack();
 		virtual bool takeDamage(int damage);
-// 		virtual void renderShip(SDL_Renderer *r) override;
 		
 		virtual ~Enemy();
 };

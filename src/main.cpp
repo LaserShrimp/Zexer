@@ -49,18 +49,9 @@ int main(int argc, char **argv){
 		exit(EXIT_FAILURE);
 	}
 	
-// 	Uint32 prevTime = SDL_GetTicks();
 	Player *player = new Player();
 	
 	player->init();
-	vector<Missile*> vAmmo;
-	for(int i = 0; i < 3; i++){
-		vAmmo.push_back(new Missile());
-	}
-// 	player->setAmmo(vAmmo);
-// 	for(Missile* mi: player->getAmmo()){
-// 		mi->setToStack();
-// 	}
     vector<Ship*> vEnemy;
 	vector<Ship*> vPlayer;
 	for(int i = 0; i < 6; i++){
@@ -83,24 +74,18 @@ int main(int argc, char **argv){
 	Uint32 tick1 = 0;
 	Uint32 tick2 = 0;
 	
-	Uint32 timeStampIncrease = SDL_GetTicks();
-	Uint32 timeEnemyIncrease = SDL_GetTicks();
-	Uint32 timeHealthIncrease = SDL_GetTicks();
+// 	Uint32 timeStampIncrease = SDL_GetTicks();
+// 	Uint32 timeEnemyIncrease = SDL_GetTicks();
+// 	Uint32 timeHealthIncrease = SDL_GetTicks();
 	
 	while (player->getHealth() > 0  && !inputs.getquit() && !inputs.getescape()) {
 		tick1 = SDL_GetTicks();
 		SDL_PollEvent(&event);
 		inputs.setState(event);
-		player->doActions(inputs);
-		if(player->isShooting()){
-			vPlayer.push_back(new Missile());
-			vPlayer.back()->launch(player->getX() + player->getW()/2 - vPlayer.back()->getW()/2, player->getY(), "player");
-			player->setLaunchingState(false);
-		}
+		player->doActions(inputs, vPlayer);
 		
 		int pos = 0;
 		for(Ship* e: vEnemy){
-// 			e->move();
 			e->doActions(vEnemy);
 			if(player->hitShip(e->getHitbox())){
 				player->takeDamage(e->getAtk());
@@ -108,7 +93,7 @@ int main(int argc, char **argv){
 			for(Ship* p: vPlayer){
 				if(p->hitShip(e->getHitbox())){
 					if(e->takeDamage(p->getAtk())){
-						gameInterface->increaseScore();
+// 						gameInterface->increaseScore();
 					} else {
 						e->scintillate(10);
 					}
@@ -121,31 +106,28 @@ int main(int argc, char **argv){
 			m->move();
 		}
 		//Adding some difficulty over the time
-		if(SDL_GetTicks() - timeEnemyIncrease >= 20000){
-			Enemy* n = new Enemy;
-			n->init();
-			vEnemy.push_back(n);
-// 			cout << "new enemy : " << vEnemy.size() << " enemies" << endl; 
-			timeEnemyIncrease = SDL_GetTicks();
-		}
-		if(SDL_GetTicks() - timeStampIncrease >= 10000){
-			int elem{rand()%(int)vEnemy.size()};
-			vEnemy[elem]->setYSpeed(vEnemy[elem]->getYSpeed()+2);
-// 			cout << "speed increased" << endl;
-			timeStampIncrease = SDL_GetTicks();
-		}
-		if(SDL_GetTicks() - timeHealthIncrease >= 15000){
-			int elem{rand()%(int)vEnemy.size()};
-			vEnemy[elem]->setMaxHealth(vEnemy[elem]->getMaxHealth()+50);
-// 			cout << "health increased" << endl;
-			timeHealthIncrease = SDL_GetTicks();
-		}
+// 		if(SDL_GetTicks() - timeEnemyIncrease >= 20000){
+// 			Enemy* n = new Enemy;
+// 			n->init();
+// 			vEnemy.push_back(n);
+// // 			cout << "new enemy : " << vEnemy.size() << " enemies" << endl; 
+// 			timeEnemyIncrease = SDL_GetTicks();
+// 		}
+// 		if(SDL_GetTicks() - timeStampIncrease >= 10000){
+// 			int elem{rand()%(int)vEnemy.size()};
+// 			vEnemy[elem]->setYSpeed(vEnemy[elem]->getYSpeed()+2);
+// // 			cout << "speed increased" << endl;
+// 			timeStampIncrease = SDL_GetTicks();
+// 		}
+// 		if(SDL_GetTicks() - timeHealthIncrease >= 15000){
+// 			int elem{rand()%(int)vEnemy.size()};
+// 			vEnemy[elem]->setMaxHealth(vEnemy[elem]->getMaxHealth()+50);
+// // 			cout << "health increased" << endl;
+// 			timeHealthIncrease = SDL_GetTicks();
+// 		}
 		
 		//RENDERING
 		aHandler->renderOnScreen(*player);
-// 		for(int i = 0; i < player->getStackSize(); i++){
-// 			aHandler->renderOnScreen(*player->getMissile(i));
-// 		}
 		for(Ship* e: vEnemy){
 			aHandler->renderOnScreen(*e);
 		}
@@ -159,6 +141,13 @@ int main(int argc, char **argv){
 				vPlayer.erase(vPlayer.begin()+i);
 			}
 		}
+		for(long unsigned int i = 0; i < vEnemy.size(); i++){
+			//if the ship is out of the screen or has no health
+			if((vEnemy[i]->getCoo().y > WIN_HEIGHT || vEnemy[i]->getHealth() <= 0) && vEnemy[i]->getId() == "missile"){
+				delete vEnemy[i];
+				vEnemy.erase(vEnemy.begin()+i);
+			}
+		}
 		gameInterface->loadStatsFromPlayer(*player);
 		gameInterface->render(renderer);
 		SDL_RenderPresent(renderer);
@@ -170,9 +159,15 @@ int main(int argc, char **argv){
 	cout << "Final score : " << gameInterface->getScore() << endl;
 	delete gameInterface;
 	delete player;
-	for(Ship* e: vEnemy){
-		delete e;
+	for(long unsigned int i = 0; i < vEnemy.size(); i++){
+		delete vEnemy[i];
 	}
+	for(long unsigned int i = 0; i < vPlayer.size(); i++){
+		delete vPlayer[i];
+	}
+	vEnemy.clear();
+	vPlayer.clear();
+	delete aHandler;
     SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
 	TTF_Quit();

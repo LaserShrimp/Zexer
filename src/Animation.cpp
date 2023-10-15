@@ -27,8 +27,10 @@ void Animation::setTexture(SDL_Texture *t){
 	this->texture = t;
 }
 void Animation::setTexture(SDL_Renderer *r, char* texturePath){
-	this->texture = SDL_CreateTextureFromSurface(r, IMG_Load(texturePath));
+	SDL_Surface *s = IMG_Load(texturePath);
+	this->texture = SDL_CreateTextureFromSurface(r, s);
 	SDL_SetTextureBlendMode(this->texture, SDL_BLENDMODE_BLEND);
+	SDL_FreeSurface(s);
 }
 
 /**
@@ -64,4 +66,5 @@ SDL_Texture* Animation::getTexture(){
 
 Animation::~Animation(){
 	SDL_DestroyTexture(this->texture);
+	cout << "animation destroyed" << endl; 
 }

@@ -1,13 +1,13 @@
 #include "Unit1.hpp"
 
-Unit1::Unit1():shootCooldown{200}, moveCooldown{30}, staticCooldown{120}{
+Unit1::Unit1():shootCooldown{200}, shCurr{0}, moveCooldown{30}, staticCooldown{120}{
 	
 }
 
 void Unit1::init(){
 	this->id = "unit1";
-	shCurr = -1;
-	mCurr = -1;
+	shCurr = 0;
+	mCurr = 0;
 	stCurr = 0;
 	this->speed = 10.5;
 	this->speedVect.setY(0.4);
@@ -49,8 +49,16 @@ void Unit1::move(){
 void Unit1::doActions(vector<Ship*>& v){
 	this->move();
 	//shoot
+	if(this->shCurr == 1){
+		this->shoot(v);
+	}
+	this->shCurr++;
+	this->shCurr = this->shCurr%this->shootCooldown;
+}
+
+void Unit1::shoot(vector<Ship*>& v){
 	v.push_back(new Missile());
-	v.back()->launch(this->getX() + this->getW()/2 - this->getW()/2, this->getY(), "unit1");
+	v.back()->launch(this->getX() + this->getW()/2 - v.back()->getW()/2, this->getY(), "unit1");
 }
 
 /**
@@ -62,4 +70,6 @@ void Unit1::randomDir(){
 	this->speedVect.setX(speed);
 }
 
-Unit1::~Unit1(){}
+Unit1::~Unit1(){
+	cout << "unit1 deleted" << endl;
+}
