@@ -175,5 +175,5 @@ AnimationHandler::~AnimationHandler(){
 	}
 	vAnim.clear();
 	vAnimPlayer.clear();
-	cout << "animationHandler deleted" << endl;
+// 	cout << "animationHandler deleted" << endl;
 }

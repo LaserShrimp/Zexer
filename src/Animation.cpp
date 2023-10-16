@@ -66,5 +66,5 @@ SDL_Texture* Animation::getTexture(){
 
 Animation::~Animation(){
 	SDL_DestroyTexture(this->texture);
-	cout << "animation destroyed" << endl; 
+// 	cout << "animation deleted" << endl; 
 }

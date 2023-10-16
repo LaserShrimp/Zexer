@@ -16,7 +16,7 @@ private:
 		
 		virtual void init();
 		virtual void move();
-		virtual void rerack();
+// 		virtual void rerack();
 		virtual bool takeDamage(int damage);
 		
 		virtual ~Enemy();

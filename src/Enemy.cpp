@@ -29,23 +29,24 @@ void Enemy::init(){
 }
 
 void Enemy::move(){
-	if(this->coo.y > WIN_HEIGHT){
-		this->rerack();
-	} else {
-		this->translationMovement();
-	}
+// 	if(this->coo.y > WIN_HEIGHT){
+// 		this->rerack();
+// 	} else {
+// 		this->translationMovement();
+// 	}
+	this->translationMovement();
 	this->updateHitbox();
 }
 
 /**
  * Resets the ship to fall again
  */
-void Enemy::rerack(){
-	this->health = this->maxHealth;
-	this->coo.y = -50;
-	this->coo.x = rand()%(WIN_WIDTH - 100);
-	this->synchronizeVectFromCoo();
-}
+// void Enemy::rerack(){
+// 	this->health = this->maxHealth;
+// 	this->coo.y = -50;
+// 	this->coo.x = rand()%(WIN_WIDTH - 100);
+// 	this->synchronizeVectFromCoo();
+// }
 
 /**
  * returns true if the enemy's dead, false if not
@@ -53,12 +54,12 @@ void Enemy::rerack(){
 bool Enemy::takeDamage(int damage){
 	this->health-= damage;
 	if(this->health <= 0){
-		this->rerack();
+// 		this->rerack();
 		return true;
 	}
 	return false;
 }
 
 Enemy::~Enemy(){
-	cout << "enemy deleted" << endl;
+// 	cout << "enemy deleted" << endl;
 }

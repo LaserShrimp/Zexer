@@ -206,7 +206,7 @@ bool Player::takeDamage(int d){
 }
 
 Player::~Player(){
-	cout << "player deleted" << endl;
+// 	cout << "player deleted" << endl;
 }
 
 ostream& operator<<(ostream& out, Player &p){

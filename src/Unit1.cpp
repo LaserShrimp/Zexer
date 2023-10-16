@@ -71,5 +71,5 @@ void Unit1::randomDir(){
 }
 
 Unit1::~Unit1(){
-	cout << "unit1 deleted" << endl;
+// 	cout << "unit1 deleted" << endl;
 }

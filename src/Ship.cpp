@@ -135,8 +135,7 @@ void Ship::setStayInScreen(bool b){
 	this->stayInScreen = b;
 }
 
-void Ship::init(){}/*
-void Ship::init(SDL_Renderer *r){}*/
+void Ship::init(){}
 
 void Ship::goLeft(){
 	this->coo.x-= this->speed;

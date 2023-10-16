@@ -6,7 +6,7 @@ The list's order is not important
 ## General objectives :
 
 - [x] handle animations outside of Ship objects  
-- [ ] introduce Wave to set a wave of enemies  
+- [x] introduce Wave to set a wave of enemies  
 - [ ] starting screen and game over screen  
 - [x] allow Unit1 to shoot  
 - [ ] destroy animations for enemies  
