@@ -1,6 +1,6 @@
 #include "GameInterface.hpp"
 
-GameInterface::GameInterface():health{0}, maxHealth{0}, score{0}, munitions{0}, font{TTF_OpenFont("Hybrid_b.ttf", 15)}, renderTexture{NULL}, backgroundTexture{NULL}, coo{.x = WIN_WIDTH/2 - INT_W/2, .y = WIN_HEIGHT - INT_H, .w = INT_W, .h = INT_H}, hcoo{.x = 0, .y = 15 , .w = INT_W, .h = 20}, hmcoo{.x = 0, .y = 15, .w = 500, .h = 20}, scoo{.x = INT_W/4, .y = INT_H - 50, .w = 150, .h = 30}, mcoo{.x = INT_W/4, .y = INT_H - 70, .w = 150, .h = 30}{
+GameInterface::GameInterface():health{0}, maxHealth{0}, score{0}, munitions{0}, font{TTF_OpenFont("Hybrid_b.ttf", 30)}, renderTexture{NULL}, backgroundTexture{NULL}, coo{.x = WIN_WIDTH/2 - INT_W/2, .y = WIN_HEIGHT - INT_H, .w = INT_W, .h = INT_H}, hcoo{.x = 0, .y = 15 , .w = INT_W, .h = 20}, hmcoo{.x = 0, .y = 15, .w = 500, .h = 20}, scoo{.x = INT_W/4, .y = INT_H - 50, .w = 150, .h = 30}, mcoo{.x = INT_W/4, .y = INT_H - 70, .w = 150, .h = 30}{
 }
 
 GameInterface::GameInterface(const GameInterface& gi){
@@ -66,6 +66,8 @@ void GameInterface::render(SDL_Renderer *r){
 	SDL_SetRenderDrawColor(r, 0, 0, 0, 0);
 	//SDL_RenderClear(r);
 	SDL_RenderCopy(r, this->backgroundTexture, NULL, NULL);
+	this->scoo.w = s->w;
+	this->scoo.h = s->h;
 	SDL_RenderCopy(r, ts, NULL, &(this->scoo));
 // 	SDL_RenderCopy(r, tm, NULL, &(this->mcoo));
 	
