@@ -7,9 +7,10 @@ The list's order is not important
 
 - [x] handle animations outside of Ship objects  
 - [x] introduce Wave to set a wave of enemies  
-- [ ] starting screen and game over screen  
+- [x] starting screen and game over screen  
 - [x] allow Unit1 to shoot  
-- [ ] destroy animations for enemies  
+- [x] destroy animations for enemies  
+- [ ] make other particles
 - [ ] make other units  
 - [ ] add bonus for the player  
 - [ ] make a moving background with several layers (3)  

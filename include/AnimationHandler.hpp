@@ -12,6 +12,7 @@
 #include "gameAddOns.h"
 #include "Animation.hpp"
 #include "Vect.hpp"
+#include "Particle.hpp"
 
 using namespace std;
 
@@ -19,12 +20,14 @@ class AnimationHandler{
 private:
 	vector<Animation*> vAnim;
 	vector<Animation*> vAnimPlayer; //animations for the player
+	vector<Animation*> vAnimParticles;
 	SDL_Renderer *r;
 protected:
 public:
 	AnimationHandler(SDL_Renderer *r);
 	void renderOnScreen(Ship &s);
 	void renderOnScreen(Player &p);
+	void renderOnScreen(Particle &p);
 	void addAnim(const Animation *a);
 	void resetAlphaPlayer();
 	void changeAlphaPlayer(int alpha);

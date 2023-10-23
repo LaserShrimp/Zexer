@@ -16,6 +16,7 @@ void Game::start(SDL_Renderer *renderer, SDL_Window *window){
 	player->init();
     vector<Ship*> vEnemy;
 	vector<Ship*> vPlayer;
+	vector<Particle*> vParticle;
 	w.loadLevel(vEnemy, 1);
 	w.randomizeShipCoo(vEnemy);
 	
@@ -75,6 +76,9 @@ void Game::start(SDL_Renderer *renderer, SDL_Window *window){
 		for(Ship* e: vPlayer){
 			aHandler->renderOnScreen(*e);
 		}
+		for(Particle* p: vParticle){
+			aHandler->renderOnScreen(*p);
+		}
 		for(long unsigned int i = 0; i < vPlayer.size(); i++){
 			//if the ship is out of the screen or has no health
 			if(vPlayer[i]->getCoo().y + vPlayer[i]->getCoo().h < 0 || vPlayer[i]->getHealth() <= 0){
@@ -85,10 +89,19 @@ void Game::start(SDL_Renderer *renderer, SDL_Window *window){
 		for(long unsigned int i = 0; i < vEnemy.size(); i++){
 			//if the ship is out of the screen or has no health
 			if((vEnemy[i]->getCoo().y > WIN_HEIGHT || vEnemy[i]->getHealth() <= 0)){
+				vParticle.push_back(new Particle("explosion1", vEnemy[i]->getCoo().x, vEnemy[i]->getCoo().y));
 				delete vEnemy[i];
 				vEnemy.erase(vEnemy.begin()+i);
 			}
 		}
+		for(long unsigned int i = 0; i < vParticle.size(); i++){
+			//If the animation is finished
+			if(vParticle[i]->getCurrentFrame() >= vParticle[i]->getNbFrames()){
+				delete vParticle[i];
+				vParticle.erase(vParticle.begin()+i);
+			}
+		}
+		
 		gameInterface->loadStatsFromPlayer(*player);
 		gameInterface->render(renderer);
 		SDL_RenderPresent(renderer);
@@ -103,6 +116,9 @@ void Game::start(SDL_Renderer *renderer, SDL_Window *window){
 	delete player;
 	for(long unsigned int i = 0; i < vEnemy.size(); i++){
 		delete vEnemy[i];
+	}
+	for(long unsigned int i = 0; i < vParticle.size(); i++){
+		delete vParticle[i];
 	}
 	for(long unsigned int i = 0; i < vPlayer.size(); i++){
 		delete vPlayer[i];

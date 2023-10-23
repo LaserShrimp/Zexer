@@ -48,6 +48,12 @@ AnimationHandler::AnimationHandler(SDL_Renderer *r):r{r}{
 	this->vAnimPlayer[4]->setFrameSize(WIDTH, HEIGHT);
 	this->vAnimPlayer[4]->setNumberOfFrames(10);
 	this->vAnimPlayer[4]->setTexture(r, (char*)"assets/playerShipTest.png");
+	
+	this->vAnimParticles.push_back(new Animation());
+	this->vAnimParticles[0]->setName("explosion1");
+	this->vAnimParticles[0]->setFrameSize(WIDTH/2, HEIGHT);
+	this->vAnimParticles[0]->setNumberOfFrames(16);
+	this->vAnimParticles[0]->setTexture(r, (char*)"assets/explosion1.png");
 }
 
 void AnimationHandler::renderOnScreen(Ship &s){
@@ -103,6 +109,25 @@ void AnimationHandler::renderOnScreen(Ship &s){
 	}
 	else
 		cout << "Error on AnimationHandler : id " << s.getId() << " not recognized..." << endl;
+}
+
+void AnimationHandler::renderOnScreen(Particle &p){
+	int animIndex(0);
+	string n = p.getId();
+	
+	if(n == "particle"){
+		if(p.getType() == "explosion1")
+			animIndex = 0;
+		
+		if(this->vAnimParticles[animIndex]->getTexture() == NULL){
+			cout << "animTexture NULL" << endl;
+		}
+		//set animation to current frame
+		this->vAnimParticles[animIndex]->setToFrame(p.getCurrentFrameAndIncrease());
+		this->vAnimParticles[animIndex]->renderImage(this->r, p.coo);
+	}
+	else
+		cout << "Error on AnimationHandler : id " << p.getId() << " not recognized..." << endl;
 }
 
 void AnimationHandler::renderOnScreen(Player &p){
@@ -173,7 +198,11 @@ AnimationHandler::~AnimationHandler(){
 	for(int i = 0; i < 5; i++){
 		delete vAnimPlayer[i];
 	}
+	for(int i = 0; i < 1; i++){
+		delete vAnimParticles[i];
+	}
 	vAnim.clear();
 	vAnimPlayer.clear();
+	vAnimParticles.clear();
 // 	cout << "animationHandler deleted" << endl;
 }

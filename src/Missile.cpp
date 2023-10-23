@@ -1,6 +1,6 @@
 #include "Missile.hpp"
 
-Missile::Missile(): Ship{}/*, ready{true}*/{
+Missile::Missile(): Ship{}{
 	this->id = "missile";
 	this->speed = MISSILE_SPEED;
 	this->speedVect.setX(0);
