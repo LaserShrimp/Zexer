@@ -8,6 +8,7 @@
 #include "Ship.hpp"
 #include "Missile.hpp"
 #include "InputState.hpp"
+#include "Item.hpp"
 
 typedef enum movestate{
 	RIGHT, UPRIGHT, DOWNRIGHT, LEFT, UPLEFT, DOWNLEFT, UP, DOWN, STATIONNARY
@@ -40,6 +41,7 @@ class Player: public Ship{
 		
 		void shoot(vector<Ship*> &v);
 		void move();
+		bool gatherItem(Item& i);
 		virtual bool takeDamage(int d);
 		
 		virtual ~Player();

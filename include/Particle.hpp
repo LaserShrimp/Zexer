@@ -11,6 +11,7 @@ protected:
 public:
 	Particle(string name);
 	Particle(string name, int x, int y);
+	Particle(string name, int x, int y, int w, int h);
 	
 	int getNbFrames();
 	string getType();

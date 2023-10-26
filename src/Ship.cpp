@@ -61,6 +61,9 @@ int Ship::getMaxHealth(){
 int Ship::getAtk(){
 	return this->atk;
 }
+int Ship::getStrength(){
+	return this->strength;
+}
 float Ship::getXSpeed(){
 	return this->speedVect.getX();
 }
@@ -128,6 +131,9 @@ void Ship::setHitboxRatio(float hr){
 void Ship::setAtk(int a){
 	this->atk = a;
 }
+void Ship::setStrength(int s){
+	this->strength = s;
+}
 void Ship::setInvincible(int i){
 	this->invincible = i;
 }
@@ -181,10 +187,16 @@ bool Ship::hitShip(SDL_Rect s){
 }
 
 void Ship::heal(){
-	this->health++;
+	if(this->health < this->maxHealth){
+		this->health++;
+	}
 }
 void Ship::heal(int a){
-	this->health+= a;
+	if(this->health + a > this->maxHealth){
+		this->healCompletely();
+	} else {
+		this->health+= a;
+	}
 }
 void Ship::healCompletely(){
 	this->health = this->maxHealth;

@@ -19,6 +19,7 @@
 #include "GameInterface.hpp"
 #include "AnimationHandler.hpp"
 #include "Wave.hpp"
+#include "Item.hpp"
 
 class Game{
 private:

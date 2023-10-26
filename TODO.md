@@ -10,9 +10,9 @@ The list's order is not important
 - [x] starting screen and game over screen  
 - [x] allow Unit1 to shoot  
 - [x] destroy animations for enemies  
-- [ ] make other particles
+- [x] make other particles
 - [ ] make other units  
-- [ ] add bonus for the player  
+- [x] add bonus for the player  
 - [ ] make a moving background with several layers (3)  
 - [ ] add sound effects  
 - [ ] add some juiciness  

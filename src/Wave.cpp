@@ -17,11 +17,11 @@ void Wave::loadLevel(vector<Ship*>& v, int l){
 		for(long unsigned int i = 0; i < 4; i++){
 			if(i < 3){
 				v.push_back(new Enemy());
-				v[i]->init();
+				v.back()->init();
 			}
 			if(i == 3){
 				v.push_back(new Unit1());
-				v[i]->init();
+				v.back()->init();
 			}
 // 			cout << "i : " << v[i]->getId() << endl;
 		}
@@ -29,18 +29,27 @@ void Wave::loadLevel(vector<Ship*>& v, int l){
 		for(long unsigned int i = 0; i < 7; i++){
 			if(i < 5){
 				v.push_back(new Enemy());
-				v[i]->init();
+				v.back()->init();
 			}
 			else {
 				v.push_back(new Unit1());
-				v[i]->init();
+				v.back()->init();
 			}
 		}
 	} else if (l == 3){
 		for(long unsigned int i = 0; i < 6; i++){
-			if(i < 6){
+			v.push_back(new Unit1());
+			v.back()->init();
+		}
+	} else if (l == 4){
+		for(long unsigned int i = 0; i < 60; i++){
+			if(i < 20){
 				v.push_back(new Unit1());
-				v[i]->init();
+				v.back()->init();
+			}
+			else {
+				v.push_back(new Enemy());
+				v.back()->init();
 			}
 		}
 	} else {

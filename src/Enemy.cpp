@@ -20,6 +20,7 @@ void Enemy::init(){
 	this->id = "asteroid";
 	this->speed = ENEMY_SPEED;
 	this->atk = 20;
+	this->strength = 20;
 	this->coo.x = rand()%WIN_WIDTH;
 	this->coo.y = -50;
 	this->setMaxHealth(30);
@@ -29,24 +30,9 @@ void Enemy::init(){
 }
 
 void Enemy::move(){
-// 	if(this->coo.y > WIN_HEIGHT){
-// 		this->rerack();
-// 	} else {
-// 		this->translationMovement();
-// 	}
 	this->translationMovement();
 	this->updateHitbox();
 }
-
-/**
- * Resets the ship to fall again
- */
-// void Enemy::rerack(){
-// 	this->health = this->maxHealth;
-// 	this->coo.y = -50;
-// 	this->coo.x = rand()%(WIN_WIDTH - 100);
-// 	this->synchronizeVectFromCoo();
-// }
 
 /**
  * returns true if the enemy's dead, false if not
@@ -54,7 +40,6 @@ void Enemy::move(){
 bool Enemy::takeDamage(int damage){
 	this->health-= damage;
 	if(this->health <= 0){
-// 		this->rerack();
 		return true;
 	}
 	return false;

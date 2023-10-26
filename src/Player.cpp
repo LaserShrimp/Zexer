@@ -35,7 +35,8 @@ void Player::init(){
 	this->updateHitbox();
 	this->setMaxHealth(100);
 	this->healCompletely();
-	this->setAtk(1);
+	this->setAtk(10);
+	this->setStrength(10);
 	
 	this->invincible = 0;
 }
@@ -45,10 +46,9 @@ void Player::init(){
  */
 void Player::shoot(vector<Ship*> &v){
 	if(SDL_GetTicks() - this->startShootCooldown >= this->shootCooldown){
-// 		this->launchMissile = true;
 		v.push_back(new Missile());
+		v.back()->setStrength(this->atk);
 		v.back()->launch(this->getX() + this->getW()/2 - v.back()->getW()/2, this->getY(), "player");
-// 		this->setLaunchingState(false);
 		this->startShootCooldown = SDL_GetTicks();
 	}
 }
@@ -202,6 +202,25 @@ bool Player::takeDamage(int d){
 	}
 	if(this->health <= 0)
 		return true;
+	return false;
+}
+
+/**
+ * This function decides what to do when the player gathers an item (returns true if the item is touched, false otherwise)
+ */
+bool Player::gatherItem(Item& i){
+	string t = i.getType();
+	if(this->hitShip(i.getCoo())){
+		if(t == "itemAtkUp"){
+			this->atk+=10;
+			i.setHealth(0);
+		} else if(t == "itemHeal"){
+			this->heal(15);
+			i.setHealth(0);
+		}
+		return true;
+	}
+	
 	return false;
 }
 

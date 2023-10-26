@@ -20,9 +20,10 @@ void Unit1::init(){
 	this->synchronizeVectFromCoo();
 	this->setStayInScreen(true);
 	
-	this->setMaxHealth(150);
+	this->setMaxHealth(75);
 	this->healCompletely();
 	this->atk = 10;
+	this->strength = 10;
 	this->invincible = 0;
 }
 
@@ -58,6 +59,7 @@ void Unit1::doActions(vector<Ship*>& v){
 
 void Unit1::shoot(vector<Ship*>& v){
 	v.push_back(new Missile());
+	v.back()->setStrength(this->atk);
 	v.back()->launch(this->getX() + this->getW()/2 - v.back()->getW()/2, this->getY(), "unit1");
 }
 

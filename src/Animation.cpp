@@ -32,6 +32,9 @@ void Animation::setTexture(SDL_Renderer *r, char* texturePath){
 	SDL_SetTextureBlendMode(this->texture, SDL_BLENDMODE_BLEND);
 	SDL_FreeSurface(s);
 }
+int Animation::getCurrentFrame(){
+	return this->currentFrame;
+}
 
 /**
  * Sets the animation to the next frame

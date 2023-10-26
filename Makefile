@@ -1,4 +1,4 @@
-all: compile game
+all: Ship.o Enemy.o Player.o Missile.o InputState.o GameInterface.o Animation.o Unit1.o Vect.o gameAddOns.o Game.o Particle.o Wave.o AnimationHandler.o Item.o main.o game
 CPP= g++ --std=c++11 -Wall
 LIBS = -lSDL2 -lSDL2_image -lSDL2_ttf
 CFLAGS = -I./include/
@@ -6,48 +6,58 @@ SRC = ./src/
 # `sdl2-config --cflags --libs`
 # -lmingw32 -lSDL2main -lSDL2 -lSDL2_image
 	
-# Ship.o: Ship.cpp Ship.hpp
-# 	$(CPP) -c Ship.cpp $(LIBS)
-# 	
-# Enemy.o: Enemy.cpp Enemy.hpp
-# 	$(CPP) -c Enemy.cpp $(LIBS)
-# 	
-# Player.o: Player.cpp Player.hpp
-# 	$(CPP) -c Player.cpp $(LIBS)
-# 	
-# Missile.o: Missile.cpp Missile.hpp
-# 	$(CPP) -c Missile.cpp $(LIBS)
-# 	
-# InputState.o: InputState.cpp InputState.hpp
-# 	$(CPP) -c InputState.cpp $(LIBS)
-# 	
-# GameInterface.o: GameInterface.cpp GameInterface.hpp
-# 	$(CPP) -c GameInterface.cpp  $(LIBS)
-# 	
-# Animation.o: Animation.cpp Animation.hpp
-# 	$(CPP) -c Animation.cpp  $(LIBS)
-# 	
-# Unit1.o: Unit1.cpp Unit1.hpp
-# 	$(CPP) -c Unit1.cpp  $(LIBS)
-# 	
-# Vect.o: Vect.cpp Vect.hpp
-# 	$(CPP) -c Vect.cpp  $(LIBS)
-# 	
-# gameAddOns.o: gameAddOns.c gameAddOns.h
-# 	$(CPP) -c gameAddOns.c  $(LIBS)
-# 	
-# main.o: main.cpp defines.h
-# 	$(CPP) -c main.cpp $(LIBS)
+Ship.o: $(SRC)Ship.cpp 
+	$(CPP) -c $(SRC)Ship.cpp $(LIBS) $(CFLAGS)
 	
-# %.o: %.cpp
-# 	$(CPP) -o $@ -c $(LIBS)
+Enemy.o: $(SRC)Enemy.cpp
+	$(CPP) -c $(SRC)Enemy.cpp $(LIBS) $(CFLAGS)
 	
-# game: main.o Ship.o Enemy.o Player.o Missile.o InputState.o GameInterface.o Animation.o Unit1.o Vect.o gameAddOns.o
-# 	$(CPP) -o zexer Ship.o Enemy.o Player.o Missile.o InputState.o GameInterface.o Animation.o Unit1.o Vect.o gameAddOns.o main.o $(LIBS)
-# 	
-compile: 
-	$(CPP) -c $(SRC)*.c $(SRC)*.cpp $(CFLAGS) $(LIBS)
-game:
+Player.o: $(SRC)Player.cpp
+	$(CPP) -c $(SRC)Player.cpp $(LIBS) $(CFLAGS)
+	
+Missile.o: $(SRC)Missile.cpp
+	$(CPP) -c $(SRC)Missile.cpp $(LIBS) $(CFLAGS)
+	
+InputState.o: $(SRC)InputState.cpp
+	$(CPP) -c $(SRC)InputState.cpp $(LIBS) $(CFLAGS)
+	
+GameInterface.o: $(SRC)GameInterface.cpp
+	$(CPP) -c $(SRC)GameInterface.cpp  $(LIBS) $(CFLAGS)
+	
+Animation.o: $(SRC)Animation.cpp
+	$(CPP) -c $(SRC)Animation.cpp  $(LIBS) $(CFLAGS)
+	
+Unit1.o: $(SRC)Unit1.cpp
+	$(CPP) -c $(SRC)Unit1.cpp  $(LIBS) $(CFLAGS)
+	
+Vect.o: $(SRC)Vect.cpp
+	$(CPP) -c $(SRC)Vect.cpp  $(LIBS) $(CFLAGS)
+	
+gameAddOns.o: $(SRC)gameAddOns.c
+	$(CPP) -c $(SRC)gameAddOns.c  $(LIBS) $(CFLAGS)
+
+Game.o: $(SRC)Game.cpp
+	$(CPP) -c $(SRC)Game.cpp  $(LIBS) $(CFLAGS)
+
+Particle.o: $(SRC)Particle.cpp
+	$(CPP) -c $(SRC)Particle.cpp  $(LIBS) $(CFLAGS)
+
+Wave.o: $(SRC)Wave.cpp
+	$(CPP) -c $(SRC)Wave.cpp  $(LIBS) $(CFLAGS)
+	
+AnimationHandler.o: $(SRC)AnimationHandler.cpp
+	$(CPP) -c $(SRC)AnimationHandler.cpp  $(LIBS) $(CFLAGS)
+	
+Item.o: $(SRC)Item.cpp
+	$(CPP) -c $(SRC)Item.cpp  $(LIBS) $(CFLAGS)
+	
+main.o: $(SRC)main.cpp
+	$(CPP) -c $(SRC)main.cpp $(LIBS) $(CFLAGS)
+	
+# compile: 
+# 	$(CPP) -c $(SRC)*.c $(SRC)*.cpp $(CFLAGS) $(LIBS)
+
+game: *.o
 	$(CPP) -o zexer *.o $(LIBS)
 clean:
 	rm -rf *.o

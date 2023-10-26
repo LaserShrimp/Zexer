@@ -23,7 +23,8 @@ class Ship{
 		float speed;
 		int health;
 		int maxHealth;
-		int atk;
+		int atk; //For shoot
+		int strength; //For contact
 		float hitboxRatio; //to set the size of the hitbox (a a percentage of the whole sprite centered in the middle of the ship)
 		
 		int frame;//number of the current frame (for animation)
@@ -53,6 +54,7 @@ class Ship{
 		int getHealth();
 		int getMaxHealth();
 		int getAtk();
+		int getStrength();
 		float getXSpeed();
 		float getYSpeed();
 		int getInvincible();
@@ -71,6 +73,7 @@ class Ship{
 		void setHealth(int h);
 		void setMaxHealth(int m);
 		void setAtk(int a);
+		void setStrength(int s);
 		void setXSpeed(float x);
 		void setYSpeed(float y);
 		void setHitboxRatio(float hr);

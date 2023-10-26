@@ -1,6 +1,7 @@
 #include "AnimationHandler.hpp"
 
 AnimationHandler::AnimationHandler(SDL_Renderer *r):r{r}{
+	//SHIPS
 	this->vAnim.push_back(new Animation());
 	this->vAnim[0]->setName("asteroid");
 	this->vAnim[0]->setFrameSize(WIDTH, HEIGHT);
@@ -19,6 +20,7 @@ AnimationHandler::AnimationHandler(SDL_Renderer *r):r{r}{
 	this->vAnim[2]->setNumberOfFrames(6);
 	this->vAnim[2]->setTexture(r, (char*)"assets/missile.png");
 	
+	//PLAYER
 	this->vAnimPlayer.push_back(new Animation());
 	this->vAnimPlayer[0]->setName("up");
 	this->vAnimPlayer[0]->setFrameSize(WIDTH, HEIGHT);
@@ -49,11 +51,43 @@ AnimationHandler::AnimationHandler(SDL_Renderer *r):r{r}{
 	this->vAnimPlayer[4]->setNumberOfFrames(10);
 	this->vAnimPlayer[4]->setTexture(r, (char*)"assets/playerShipTest.png");
 	
+	//PARTICLES
 	this->vAnimParticles.push_back(new Animation());
 	this->vAnimParticles[0]->setName("explosion1");
 	this->vAnimParticles[0]->setFrameSize(WIDTH/2, HEIGHT);
 	this->vAnimParticles[0]->setNumberOfFrames(16);
 	this->vAnimParticles[0]->setTexture(r, (char*)"assets/explosion1.png");
+	
+	this->vAnimParticles.push_back(new Animation());
+	this->vAnimParticles[1]->setName("atkUp");
+	this->vAnimParticles[1]->setFrameSize(WIDTH/2, HEIGHT);
+	this->vAnimParticles[1]->setNumberOfFrames(15);
+	this->vAnimParticles[1]->setTexture(r, (char*)"assets/atkUp.png");
+	
+	this->vAnimParticles.push_back(new Animation());
+	this->vAnimParticles[2]->setName("smoke");
+	this->vAnimParticles[2]->setFrameSize(WIDTH, HEIGHT);
+	this->vAnimParticles[2]->setNumberOfFrames(7);
+	this->vAnimParticles[2]->setTexture(r, (char*)"assets/smoke.png");
+	
+	this->vAnimParticles.push_back(new Animation());
+	this->vAnimParticles[3]->setName("healing");
+	this->vAnimParticles[3]->setFrameSize(WIDTH, HEIGHT);
+	this->vAnimParticles[3]->setNumberOfFrames(7);
+	this->vAnimParticles[3]->setTexture(r, (char*)"assets/healing.png");
+	
+	//ITEMS
+	this->vAnimItems.push_back(new Animation());
+	this->vAnimItems[0]->setName("itemAtkUp");
+	this->vAnimItems[0]->setFrameSize(32, 32);
+	this->vAnimItems[0]->setNumberOfFrames(20);
+	this->vAnimItems[0]->setTexture(r, (char*)"assets/itemAtkUp.png");
+	
+	this->vAnimItems.push_back(new Animation());
+	this->vAnimItems[1]->setName("itemHeal");
+	this->vAnimItems[1]->setFrameSize(32, 32);
+	this->vAnimItems[1]->setNumberOfFrames(20);
+	this->vAnimItems[1]->setTexture(r, (char*)"assets/itemHeal.png");
 }
 
 void AnimationHandler::renderOnScreen(Ship &s){
@@ -108,16 +142,23 @@ void AnimationHandler::renderOnScreen(Ship &s){
 		
 	}
 	else
-		cout << "Error on AnimationHandler : id " << s.getId() << " not recognized..." << endl;
+		cout << "Error on AnimationHandler with Ship : id " << s.getId() << " not recognized..." << endl;
 }
 
 void AnimationHandler::renderOnScreen(Particle &p){
 	int animIndex(0);
 	string n = p.getId();
+	string type = p.getType();
 	
 	if(n == "particle"){
-		if(p.getType() == "explosion1")
+		if(type == "explosion1")
 			animIndex = 0;
+		else if(type == "atkUp")
+			animIndex = 1;
+		else if(type == "smoke")
+			animIndex = 2;
+		else if(type == "healing")
+			animIndex = 3;
 		
 		if(this->vAnimParticles[animIndex]->getTexture() == NULL){
 			cout << "animTexture NULL" << endl;
@@ -125,9 +166,35 @@ void AnimationHandler::renderOnScreen(Particle &p){
 		//set animation to current frame
 		this->vAnimParticles[animIndex]->setToFrame(p.getCurrentFrameAndIncrease());
 		this->vAnimParticles[animIndex]->renderImage(this->r, p.coo);
+// 		cout << "current frame : " << this->vAnimParticles[animIndex]->getCurrentFrame() << " " << p.getCurrentFrame() << endl;
 	}
 	else
 		cout << "Error on AnimationHandler : id " << p.getId() << " not recognized..." << endl;
+}
+
+void AnimationHandler::renderOnScreen(Item &i){
+	int animIndex(0);
+	string n = i.getId();
+	string type = i.getType();
+	if(type == "itemAtkUp")
+		animIndex = 0;
+	else if(type == "itemHeal")
+		animIndex = 1;
+	else{
+		cout << "Error on AnimationHandler : id " << i.getId() << " not recognized..." << endl;
+		return;
+	}
+		
+	if(this->vAnimItems[animIndex]->getTexture() == NULL){
+		cout << "animTexture NULL" << endl;
+	}
+	//set animation to current frame
+	this->vAnimItems[animIndex]->setToFrame(i.getCurrentFrameAndIncrease());
+	this->vAnimItems[animIndex]->renderImage(this->r, i.coo);
+			
+	//set animation to current frame
+	this->vAnimItems[animIndex]->setToFrame(i.getCurrentFrameAndIncrease());
+	this->vAnimItems[animIndex]->renderImage(this->r, i.coo);
 }
 
 void AnimationHandler::renderOnScreen(Player &p){
@@ -140,7 +207,6 @@ void AnimationHandler::renderOnScreen(Player &p){
 	} else {
 		this->resetAlphaPlayer();
 	}
-	
 	int ind(0);
 	switch(p.getMvState()){
 		case STATIONNARY:
