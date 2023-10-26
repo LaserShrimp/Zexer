@@ -2,6 +2,8 @@
 
 Enemy::Enemy(){
 	this->speed = ENEMY_SPEED;
+	this->coo.w = WIDTH;
+	this->coo.h = HEIGHT;
 	this->coo.x = rand()%WIN_WIDTH;
 	this->coo.y = -50;
 	this->cooVect.setX(rand()%WIN_WIDTH);
@@ -23,6 +25,8 @@ void Enemy::init(){
 	this->strength = 20;
 	this->coo.x = rand()%WIN_WIDTH;
 	this->coo.y = -50;
+	this->coo.w = WIDTH;
+	this->coo.h = HEIGHT;
 	this->setMaxHealth(30);
 	this->healCompletely();
 	this->setHitboxRatio(1.0);

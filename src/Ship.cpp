@@ -186,6 +186,11 @@ bool Ship::hitShip(SDL_Rect s){
 	return SDL_IntersectRect(&(this->hitbox), &s, &r) == SDL_TRUE;
 }
 
+bool Ship::isOnGameArea(){
+// 	cout << this->id << " : \"I'm on cam babe\"" << endl;
+	return this->coo.x >= 0 && this->coo.y >= -Y_EXTENSION && this->coo.x + this->coo.w <= WIN_WIDTH && this->coo.y <= WIN_HEIGHT;
+}
+
 void Ship::heal(){
 	if(this->health < this->maxHealth){
 		this->health++;

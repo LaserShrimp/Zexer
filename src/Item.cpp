@@ -3,13 +3,13 @@
 Item::Item(string name, int x, int y):Ship{}{
 	this->id = "item";
 	this->type = name;
-	this->nbFrames = 20; //each Item will have 20 frames
+	this->nbFrames = 20; //each Item will have 20 frames of animation
 	this->coo.x = x;
 	this->coo.y = y;
-	this->coo.w = 10;
-	this->coo.h = 10;
+	this->coo.w = 20;
+	this->coo.h = 20;
 	this->frame = 0;
-	this->nbFramesAlive = 15*FPS; //15 seconds
+	this->nbFramesAlive = 7*FPS; //15 seconds
 	this->alive = 0;
 }
 Item::Item(string name, int x, int y, int w, int h):Ship{}{

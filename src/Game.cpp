@@ -34,11 +34,7 @@ void Game::start(SDL_Renderer *renderer, SDL_Window *window){
 	Uint32 tick1 = 0;
 	Uint32 tick2 = 0;
 	
-// 	Uint32 timeStampIncrease = SDL_GetTicks();
-// 	Uint32 timeEnemyIncrease = SDL_GetTicks();
-// 	Uint32 timeHealthIncrease = SDL_GetTicks();
-	
-	while (player->getHealth() > 0  && !inputs.getquit() && !inputs.getescape() && w.getLevel() <= 4) {
+	while (player->getHealth() > 0  && !inputs.getquit() && !inputs.getescape() && w.getLevel() <= 5) {
 		if(vEnemy.size() == 0){
 			w.increaseLevel();
 			w.loadLevel(vEnemy, w.getLevel());
@@ -54,6 +50,8 @@ void Game::start(SDL_Renderer *renderer, SDL_Window *window){
 			e->doActions(vEnemy);
 			if(player->hitShip(e->getHitbox())){
 				player->takeDamage(e->getStrength());
+// 				e->takeDamage(player->getStrength());
+// 				e->scintillate(10);
 			}
 			for(Ship* p: vPlayer){
 				//an enemy takes damages only if the Ship it collides with has another Id (prevents from missile to missile collisions)
@@ -76,9 +74,10 @@ void Game::start(SDL_Renderer *renderer, SDL_Window *window){
 			if(player->gatherItem(*i)){
 				if(i->getType() == "itemAtkUp")
 					vParticle.push_back(new Particle("atkUp", player->getCoo().x, player->getCoo().y, player->getCoo().w, player->getCoo().h));
-				else if(i->getType() == "healing")
+				else if(i->getType() == "itemHeal")
 					vParticle.push_back(new Particle("healing", player->getCoo().x, player->getCoo().y, player->getCoo().w, player->getCoo().h));
 			}
+			i->increaseAlive();
 		}
 		
 		//RENDERING
@@ -105,14 +104,16 @@ void Game::start(SDL_Renderer *renderer, SDL_Window *window){
 		}
 		for(long unsigned int i = 0; i < vEnemy.size(); i++){
 			//if the ship is out of the screen or has no health
-			if((vEnemy[i]->getCoo().y > WIN_HEIGHT || vEnemy[i]->getHealth() <= 0)){
+			if((!vEnemy[i]->isOnGameArea() || vEnemy[i]->getHealth() <= 0)){
 				vParticle.push_back(new Particle("explosion1", vEnemy[i]->getCoo().x, vEnemy[i]->getCoo().y, vEnemy[i]->getCoo().w, vEnemy[i]->getCoo().h));
 				//Generate an item with chance 1/3 1/3 1/3
-				int chance(rand()%3);
-				if(chance == 0)
-					vItems.push_back(new Item("itemAtkUp", vEnemy[i]->getCoo().x, vEnemy[i]->getCoo().y, vEnemy[i]->getCoo().w, vEnemy[i]->getCoo().h));
-				else if(chance == 1)
-					vItems.push_back(new Item("itemHeal", vEnemy[i]->getCoo().x, vEnemy[i]->getCoo().y, vEnemy[i]->getCoo().w, vEnemy[i]->getCoo().h));
+				if(vEnemy[i]->getId() != "missile"){
+					int chance(rand()%3);
+					if(chance == 0)
+						vItems.push_back(new Item("itemAtkUp", vEnemy[i]->getCoo().x, vEnemy[i]->getCoo().y, vEnemy[i]->getCoo().w, vEnemy[i]->getCoo().h));
+					else if(chance == 1)
+						vItems.push_back(new Item("itemHeal", vEnemy[i]->getCoo().x, vEnemy[i]->getCoo().y, vEnemy[i]->getCoo().w, vEnemy[i]->getCoo().h));
+				}
 				delete vEnemy[i];
 				vEnemy.erase(vEnemy.begin()+i);
 			}

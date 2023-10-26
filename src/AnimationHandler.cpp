@@ -20,6 +20,12 @@ AnimationHandler::AnimationHandler(SDL_Renderer *r):r{r}{
 	this->vAnim[2]->setNumberOfFrames(6);
 	this->vAnim[2]->setTexture(r, (char*)"assets/missile.png");
 	
+	this->vAnim.push_back(new Animation());
+	this->vAnim[3]->setName("unitOmni");
+	this->vAnim[3]->setFrameSize(WIDTH, HEIGHT);
+	this->vAnim[3]->setNumberOfFrames(10);
+	this->vAnim[3]->setTexture(r, (char*)"assets/unitOmni.png");
+	
 	//PLAYER
 	this->vAnimPlayer.push_back(new Animation());
 	this->vAnimPlayer[0]->setName("up");
@@ -73,7 +79,7 @@ AnimationHandler::AnimationHandler(SDL_Renderer *r):r{r}{
 	this->vAnimParticles.push_back(new Animation());
 	this->vAnimParticles[3]->setName("healing");
 	this->vAnimParticles[3]->setFrameSize(WIDTH, HEIGHT);
-	this->vAnimParticles[3]->setNumberOfFrames(7);
+	this->vAnimParticles[3]->setNumberOfFrames(20);
 	this->vAnimParticles[3]->setTexture(r, (char*)"assets/healing.png");
 	
 	//ITEMS
@@ -94,55 +100,54 @@ void AnimationHandler::renderOnScreen(Ship &s){
 	int animIndex(0);
 	string n = s.getId();
 	
-	if(n == "asteroid" || n == "unit1" || n == "missile"){
-		if(n == "asteroid")
-			animIndex = 0;
-		else if(n == "unit1")
-			animIndex = 1;
-		else if(n == "missile")
-			animIndex = 2;
-		
-		if(this->vAnim[animIndex]->getTexture() == NULL){
-			cout << "animTexture NULL" << endl;
-		}
-		if(!isOnCamera(s.getCoo()))
-			return;
-		//	changing the alpha if it took damages
-		if(s.getInvincible() > 0){
-			this->vAnim[animIndex]->changeAlpha(rand()%255);
-			s.invincible++;
-			if(s.invincible == s.nbFramesInvincible)
-				s.invincible = 0;
-		} else {
-			this->vAnim[animIndex]->resetAlpha();
-		}
-		//set animation to current frame
-		this->vAnim[animIndex]->setToFrame(s.getCurrentFrameAndIncrease());
-		this->vAnim[animIndex]->renderImage(this->r, s.coo);
-		
-		//Drawing health bar only if the ship is damaged
-		SDL_Rect hmcoo = s.coo;
-		hmcoo.y = s.coo.y - 4;
-		hmcoo.h = 4;
-		SDL_Rect hcoo = hmcoo;
-		hcoo.h = 2;
-		hcoo.y = hmcoo.y+1;
-		hcoo.w = s.health*1.0/s.maxHealth*1.0 * hmcoo.w;
-		if(s.health*1.0/s.maxHealth*1.0 > 20.0/100.0){
-			SDL_SetRenderDrawColor(this->r, 255, 200, 50, 255);
-		} else {
-			SDL_SetRenderDrawColor(this->r, 255, 0, 0, 0);
-		}
-		if(s.health < s.maxHealth && s.health > 0){
-			SDL_RenderFillRect(this->r, &hcoo);
-			SDL_SetRenderDrawColor(this->r, 255, 255, 255, 255);
-			SDL_RenderDrawRect(this->r, &hmcoo);
-		}	
-		SDL_SetRenderDrawColor(this->r, 0, 0, 0, 0);
-		
-	}
+	if(n == "asteroid")
+		animIndex = 0;
+	else if(n == "unit1")
+		animIndex = 1;
+	else if(n == "missile")
+		animIndex = 2;
+	else if(n == "unitOmni")
+		animIndex = 3;
 	else
 		cout << "Error on AnimationHandler with Ship : id " << s.getId() << " not recognized..." << endl;
+	
+	if(this->vAnim[animIndex]->getTexture() == NULL){
+		cout << "animTexture NULL" << endl;
+	}
+	if(!isOnCamera(s.getCoo()))
+		return;
+	//	changing the alpha if it took damages
+	if(s.getInvincible() > 0){
+		this->vAnim[animIndex]->changeAlpha(rand()%255);
+		s.invincible++;
+		if(s.invincible == s.nbFramesInvincible)
+			s.invincible = 0;
+	} else {
+		this->vAnim[animIndex]->resetAlpha();
+	}
+	//set animation to current frame
+	this->vAnim[animIndex]->setToFrame(s.getCurrentFrameAndIncrease());
+	this->vAnim[animIndex]->renderImage(this->r, s.coo);
+	
+	//Drawing health bar only if the ship is damaged
+	SDL_Rect hmcoo = s.coo;
+	hmcoo.y = s.coo.y - 4;
+	hmcoo.h = 4;
+	SDL_Rect hcoo = hmcoo;
+	hcoo.h = 2;
+	hcoo.y = hmcoo.y+1;
+	hcoo.w = s.health*1.0/s.maxHealth*1.0 * hmcoo.w;
+	if(s.health*1.0/s.maxHealth*1.0 > 20.0/100.0){
+		SDL_SetRenderDrawColor(this->r, 255, 200, 50, 255);
+	} else {
+		SDL_SetRenderDrawColor(this->r, 255, 0, 0, 0);
+	}
+	if(s.health < s.maxHealth && s.health > 0){
+		SDL_RenderFillRect(this->r, &hcoo);
+		SDL_SetRenderDrawColor(this->r, 255, 255, 255, 255);
+		SDL_RenderDrawRect(this->r, &hmcoo);
+	}	
+	SDL_SetRenderDrawColor(this->r, 0, 0, 0, 0);
 }
 
 void AnimationHandler::renderOnScreen(Particle &p){

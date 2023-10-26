@@ -1,6 +1,6 @@
 #include "Player.hpp"
 
-Player::Player():Ship{}, mvState{STATIONNARY}, shootCooldown{/*225*/200}, startShootCooldown{0}, launchMissile{false}{}
+Player::Player():Ship{}, mvState{STATIONNARY}, shootCooldown{200}, startShootCooldown{0}, launchMissile{false}{}
 
 Player::Player(const Player& p): Ship{}, mvState{STATIONNARY}, shootCooldown{p.shootCooldown}, startShootCooldown{0}, launchMissile{false}{
 }
@@ -36,7 +36,7 @@ void Player::init(){
 	this->setMaxHealth(100);
 	this->healCompletely();
 	this->setAtk(10);
-	this->setStrength(10);
+	this->setStrength(1);
 	
 	this->invincible = 0;
 }

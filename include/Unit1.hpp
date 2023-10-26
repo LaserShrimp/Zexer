@@ -11,6 +11,10 @@
 #include "Ship.hpp"
 #include "Missile.hpp"
 
+#define U1_XSPEED		0
+#define U1_YSPEED		5
+#define U1_LIMIT_MAX	WIN_HEIGHT/3
+
 class Unit1:public Enemy{
 private:
 	int shootCooldown;//In frames
@@ -19,6 +23,8 @@ private:
 	int mCurr;
 	int staticCooldown;//In frames
 	int stCurr;
+	int areaLimit; //the area where it lands before attacking
+	bool hasLanded;
 protected:
 public:
 	Unit1();
@@ -31,6 +37,20 @@ public:
 	void randomDir();
 	
 	virtual ~Unit1();
+};
+
+class UnitOmni: public Enemy{
+private:
+	int shootCooldown;//In frames
+	int shCurr;
+protected:
+public:
+	UnitOmni();
+	virtual void init();
+	void move();
+	virtual void doActions(vector<Ship*>& v);
+	virtual void shoot(vector<Ship*>& v);
+	virtual ~UnitOmni();
 };
 
 #endif

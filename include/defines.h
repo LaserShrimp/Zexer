@@ -12,5 +12,6 @@
 #define HEIGHT 			100
 #define FPS				60
 #define INF				INT_MAX
+#define Y_EXTENSION		200 //defines the area (off screen) in front of the player that is still considered as a spawnable area 
 
 #endif

@@ -101,6 +101,7 @@ class Ship{
 		void rerack();
 		
 		bool hitShip(SDL_Rect s);
+		bool isOnGameArea();
 		virtual void launch(int startX, int startY);
 		virtual void launch(int startX, int startY, Vect dir);
 		virtual void launch(int startX, int startY, string launcherId);

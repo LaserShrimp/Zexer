@@ -1,5 +1,5 @@
 all: Ship.o Enemy.o Player.o Missile.o InputState.o GameInterface.o Animation.o Unit1.o Vect.o gameAddOns.o Game.o Particle.o Wave.o AnimationHandler.o Item.o main.o game
-CPP= g++ --std=c++11 -Wall
+CPP= g++ --std=c++20 -Wall
 LIBS = -lSDL2 -lSDL2_image -lSDL2_ttf
 CFLAGS = -I./include/
 SRC = ./src/
@@ -57,7 +57,7 @@ main.o: $(SRC)main.cpp
 # compile: 
 # 	$(CPP) -c $(SRC)*.c $(SRC)*.cpp $(CFLAGS) $(LIBS)
 
-game: *.o
+game: Ship.o Enemy.o Player.o Missile.o InputState.o GameInterface.o Animation.o Unit1.o Vect.o gameAddOns.o Game.o Particle.o Wave.o AnimationHandler.o Item.o main.o
 	$(CPP) -o zexer *.o $(LIBS)
 clean:
 	rm -rf *.o

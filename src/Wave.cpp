@@ -14,13 +14,17 @@ void Wave::increaseLevel(){
 
 void Wave::loadLevel(vector<Ship*>& v, int l){
 	if(l == 1){
-		for(long unsigned int i = 0; i < 4; i++){
+		for(long unsigned int i = 0; i < 5; i++){
 			if(i < 3){
 				v.push_back(new Enemy());
 				v.back()->init();
 			}
-			if(i == 3){
+			else if(i == 3){
 				v.push_back(new Unit1());
+				v.back()->init();
+			}
+			else if(i == 4){
+				v.push_back(new UnitOmni());
 				v.back()->init();
 			}
 // 			cout << "i : " << v[i]->getId() << endl;
@@ -52,6 +56,11 @@ void Wave::loadLevel(vector<Ship*>& v, int l){
 				v.back()->init();
 			}
 		}
+	} else if (l == 5){
+		for(long unsigned int i = 0; i < 50; i++){
+			v.push_back(new UnitOmni());
+			v.back()->init();
+		}
 	} else {
 		cout << "impossible to load requested level..." << endl;
 	}
@@ -59,12 +68,12 @@ void Wave::loadLevel(vector<Ship*>& v, int l){
 
 /**
  * this function set random coordinates for all the ships in v.
- * these coo must be between : 0 <= x <= WIN_WIDTH - v[i].w and  -500 <= y <= 0 - v[i].h
+ * these coo must be between : 0 <= x <= WIN_WIDTH - v[i].w and  -Y_EXTENSION <= y <= 0 - v[i].h
  */
 void Wave::randomizeShipCoo(vector<Ship*>& v){
 	for(long unsigned int i = 0; i < v.size(); i++){
-		int x = rand()%(WIN_WIDTH - v[i]->getW());
-		int y = rand()%200 - (200 + v[i]->getH());
+		int x = rand()%(WIN_WIDTH - v[i]->getW()) /*+ v[i]->getW()*/;
+		int y = rand()%(Y_EXTENSION - v[i]->getH()) - (Y_EXTENSION);
 		v[i]->setCooVect(x, y);
 		v[i]->synchronizeCooFromVect();
 	}
