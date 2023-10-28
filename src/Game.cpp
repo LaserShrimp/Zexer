@@ -34,10 +34,10 @@ void Game::start(SDL_Renderer *renderer, SDL_Window *window){
 	Uint32 tick1 = 0;
 	Uint32 tick2 = 0;
 	
-	while (player->getHealth() > 0  && !inputs.getquit() && !inputs.getescape() && w.getLevel() <= 5) {
+	while (player->getHealth() > 0  && !inputs.getquit() && !inputs.getescape()/* && w.getLevel() <= 5*/) {
 		if(vEnemy.size() == 0){
 			w.increaseLevel();
-			w.loadLevel(vEnemy, w.getLevel());
+			w.loadRandomizedLevel(vEnemy, w.getLevel());
 			w.randomizeShipCoo(vEnemy);
 		}
 		tick1 = SDL_GetTicks();
@@ -46,7 +46,10 @@ void Game::start(SDL_Renderer *renderer, SDL_Window *window){
 		player->doActions(inputs, vPlayer);
 		
 		int pos = 0;
-		for(Ship* e: vEnemy){
+// 		cout << "enemies will do stuffs : " << endl;
+		for(unsigned long int k = 0; k < vEnemy.size(); k++){
+// 			cout << "turn " << pos << " of : " << e->getId() << endl;
+			Ship *e = vEnemy[k];
 			e->doActions(vEnemy);
 			if(player->hitShip(e->getHitbox())){
 				player->takeDamage(e->getStrength());
@@ -106,13 +109,13 @@ void Game::start(SDL_Renderer *renderer, SDL_Window *window){
 			//if the ship is out of the screen or has no health
 			if((!vEnemy[i]->isOnGameArea() || vEnemy[i]->getHealth() <= 0)){
 				vParticle.push_back(new Particle("explosion1", vEnemy[i]->getCoo().x, vEnemy[i]->getCoo().y, vEnemy[i]->getCoo().w, vEnemy[i]->getCoo().h));
-				//Generate an item with chance 1/3 1/3 1/3
+				//Generate an item with chance 5/10 4/10 1/10
 				if(vEnemy[i]->getId() != "missile"){
-					int chance(rand()%3);
-					if(chance == 0)
-						vItems.push_back(new Item("itemAtkUp", vEnemy[i]->getCoo().x, vEnemy[i]->getCoo().y, vEnemy[i]->getCoo().w, vEnemy[i]->getCoo().h));
-					else if(chance == 1)
+					int chance(rand()%10);
+					if(5 <= chance && chance <= 8)
 						vItems.push_back(new Item("itemHeal", vEnemy[i]->getCoo().x, vEnemy[i]->getCoo().y, vEnemy[i]->getCoo().w, vEnemy[i]->getCoo().h));
+					else if(chance == 9)
+						vItems.push_back(new Item("itemAtkUp", vEnemy[i]->getCoo().x, vEnemy[i]->getCoo().y, vEnemy[i]->getCoo().w, vEnemy[i]->getCoo().h));
 				}
 				delete vEnemy[i];
 				vEnemy.erase(vEnemy.begin()+i);

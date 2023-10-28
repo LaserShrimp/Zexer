@@ -4,6 +4,10 @@ Wave::Wave(): level{0}{
 	
 }
 
+void Wave::setLevel(int level){
+	this->level = level;
+}
+
 int Wave::getLevel(){
 	return this->level;
 }
@@ -12,57 +16,78 @@ void Wave::increaseLevel(){
 	this->level++;
 }
 
+void Wave::insertShip(vector<Ship*>& v, string name){
+	if(name == "unit1"){
+		Unit1 *s = new Unit1();
+		s->init();
+		v.push_back(s);
+	} else if(name == "unitOmni"){
+		UnitOmni *s = new UnitOmni();
+		s->init();
+		v.push_back(s);
+	} else if(name == "enemy"){
+		Enemy *s = new Enemy();
+		s->init();
+		v.push_back(s);
+	}
+}
+
 void Wave::loadLevel(vector<Ship*>& v, int l){
+	this->level = l;
 	if(l == 1){
 		for(long unsigned int i = 0; i < 5; i++){
 			if(i < 3){
-				v.push_back(new Enemy());
-				v.back()->init();
+				this->insertShip(v, "enemy");
 			}
 			else if(i == 3){
-				v.push_back(new Unit1());
-				v.back()->init();
+				this->insertShip(v, "unit1");
 			}
 			else if(i == 4){
-				v.push_back(new UnitOmni());
-				v.back()->init();
+				this->insertShip(v, "unitOmni");
 			}
 // 			cout << "i : " << v[i]->getId() << endl;
 		}
 	} else if (l == 2){
 		for(long unsigned int i = 0; i < 7; i++){
 			if(i < 5){
-				v.push_back(new Enemy());
-				v.back()->init();
+				this->insertShip(v, "enemy");
 			}
 			else {
-				v.push_back(new Unit1());
-				v.back()->init();
+				this->insertShip(v, "unit1");
 			}
 		}
 	} else if (l == 3){
 		for(long unsigned int i = 0; i < 6; i++){
-			v.push_back(new Unit1());
-			v.back()->init();
+			this->insertShip(v, "unit1");
 		}
 	} else if (l == 4){
 		for(long unsigned int i = 0; i < 60; i++){
 			if(i < 20){
-				v.push_back(new Unit1());
-				v.back()->init();
+				this->insertShip(v, "unit1");
 			}
 			else {
-				v.push_back(new Enemy());
-				v.back()->init();
+				this->insertShip(v, "enemy");
 			}
 		}
 	} else if (l == 5){
 		for(long unsigned int i = 0; i < 50; i++){
-			v.push_back(new UnitOmni());
-			v.back()->init();
+			this->insertShip(v, "unitOmni");
 		}
 	} else {
 		cout << "impossible to load requested level..." << endl;
+	}
+}
+
+void Wave::loadRandomizedLevel(vector<Ship*>& v, int l){
+	this->level = l;
+	for(int i = 0; i <= l; i++){
+		int o = rand()%3;
+		if(o == 0)
+			this->insertShip(v, "unit1");
+		else if(o == 1)
+			this->insertShip(v, "unitOmni");
+		else if(o == 2)
+			this->insertShip(v, "enemy");
 	}
 }
 
@@ -79,29 +104,5 @@ void Wave::randomizeShipCoo(vector<Ship*>& v){
 	}
 }
 
-// Ship* Wave::get(long unsigned int i){
-// 	return this->vEnemy[i];
-// }
-// void Wave::erase(long unsigned int i){
-// 	this->vEnemy.erase(this->vEnemy)
-// }
-// 
-// void Wave::add(string n){
-// 	if(n == "enemy")
-// 		this->vEnemy.push_back(new Enemy());
-// 	else if(n == "unit1")
-// 		this->vEnemy.push_back(new Unit1());
-// 	
-// 	this->vEnemy.end()->init();
-// }
-
 Wave::~Wave(){
-	for(long unsigned int i = 0; i < this->vEnemy.size(); i++){
-		delete this->vEnemy[i];
-	}
-	this->vEnemy.clear();
 }
-
-// Ship* operator[](int i){
-// 	return ;
-// }

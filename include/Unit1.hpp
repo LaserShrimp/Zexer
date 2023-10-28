@@ -30,7 +30,7 @@ public:
 	Unit1();
 	
 	virtual void init();
-	void move();
+	virtual void move();
 	virtual void doActions(vector<Ship*>& v);
 	virtual void shoot(vector<Ship*>& v);
 	
@@ -47,7 +47,7 @@ protected:
 public:
 	UnitOmni();
 	virtual void init();
-	void move();
+	virtual void move();
 	virtual void doActions(vector<Ship*>& v);
 	virtual void shoot(vector<Ship*>& v);
 	virtual ~UnitOmni();

@@ -54,7 +54,7 @@ int main(int argc, char **argv){
 	SDL_PollEvent(&e);
 	Game g;
 	while(e.type != SDL_QUIT && !(e.type == SDL_KEYUP && e.key.keysym.sym == SDLK_ESCAPE)){
-		SDL_PollEvent(&e);
+		SDL_WaitEvent(&e);
 		if(e.type == SDL_KEYDOWN){
 			switch(e.key.keysym.sym){
 				case SDLK_RETURN:{

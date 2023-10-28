@@ -126,10 +126,12 @@ void UnitOmni::doActions(vector<Ship*>& v){
 void UnitOmni::shoot(vector<Ship*>& v){
 	this->move();
 	for(float i = 0.0; i < 12.0; i+= 1.0){
-		v.push_back(new Missile());
-		v.back()->setStrength(this->atk);
-		Vect mDir(double((cos((i/12.0)*2*std::numbers::pi) * MISSILE_SPEED)), double((sin((i/12.0)*2*std::numbers::pi)* MISSILE_SPEED)));
-		v.back()->launch(this->getX() + this->getW()/2 - v.back()->getW()/2, this->getY(), mDir);
+		Missile *n = new Missile();
+		n->setStrength(this->atk);
+		Vect mDir(double((cos((i/12.0)*2*std::numbers::pi) * MISSILE_SPEED/4.0)), double((sin((i/12.0)*2*std::numbers::pi)* MISSILE_SPEED/4.0)));
+		n->launch(this->getX() + this->getW()/2 - n->getW()/2, this->getY() + this->getH()/2 - n->getH()/2, mDir);
+		v.push_back(n);
+		cout << "missile loaded by omni" << endl;
 	}
 }
 
@@ -139,5 +141,5 @@ void UnitOmni::move(){
 }
 
 UnitOmni::~UnitOmni(){
-	
+// 	cout << "UnitOmni destroyed" << endl;
 }
