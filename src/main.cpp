@@ -4,6 +4,7 @@
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_image.h"
 #include "SDL2/SDL_ttf.h"
+#include "SDL2/SDL_mixer.h"
 
 #include "Game.hpp"
 
@@ -17,6 +18,11 @@ int main(int argc, char **argv){
     }
     if(TTF_Init() < 0){
 		fprintf(stderr, "Error : %s", TTF_GetError());
+		exit(EXIT_FAILURE);
+	}
+// 	int flags = Mix_Init(MIX_INIT_MP3|MIX_INIT_OGG|MIX_INIT_FLAC|MIX_INIT_MOD|MIX_INIT_MID|MIX_INIT_OPUS);
+	if(Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 1024)){
+		fprintf(stderr, "Error : %s", Mix_GetError());
 		exit(EXIT_FAILURE);
 	}
 	srand(time(nullptr));
@@ -84,6 +90,7 @@ int main(int argc, char **argv){
 	SDL_DestroyTexture(tScore);
     SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
+	Mix_Quit();
 	TTF_Quit();
 	SDL_Quit();
 	

@@ -108,7 +108,7 @@ void UnitOmni::init(){
 	
 	this->setMaxHealth(100);
 	this->healCompletely();
-	this->atk = 10;
+	this->atk = 30;
 	this->strength = 15;
 	this->invincible = 0;
 }
@@ -131,7 +131,7 @@ void UnitOmni::shoot(vector<Ship*>& v){
 		Vect mDir(double((cos((i/12.0)*2*std::numbers::pi) * MISSILE_SPEED/4.0)), double((sin((i/12.0)*2*std::numbers::pi)* MISSILE_SPEED/4.0)));
 		n->launch(this->getX() + this->getW()/2 - n->getW()/2, this->getY() + this->getH()/2 - n->getH()/2, mDir);
 		v.push_back(n);
-		cout << "missile loaded by omni" << endl;
+// 		cout << "missile loaded by omni" << endl;
 	}
 }
 

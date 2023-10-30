@@ -10,3 +10,6 @@ A little and simple shoot'em up, just for fun.
 
 - WINDOWS:
   * same as in the linux section but for now it's not available
+
+## Notes
+The music is ***Sexy Chillout Hip Hop Track - Come With Me*** and is free of use (picked on  Pixabay.com)

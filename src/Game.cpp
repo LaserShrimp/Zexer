@@ -18,8 +18,8 @@ void Game::start(SDL_Renderer *renderer, SDL_Window *window){
 	vector<Ship*> vPlayer;
 	vector<Item*> vItems;
 	vector<Particle*> vParticle;
-	w.loadLevel(vEnemy, 1);
-	w.randomizeShipCoo(vEnemy);
+// 	w.loadLevel(vEnemy, 1);
+// 	w.randomizeShipCoo(vEnemy);
 	
 	SDL_Surface *sBackground = IMG_Load("assets/background.png");
 	SDL_Texture *tBackground = SDL_CreateTextureFromSurface(renderer, sBackground);
@@ -34,6 +34,12 @@ void Game::start(SDL_Renderer *renderer, SDL_Window *window){
 	Uint32 tick1 = 0;
 	Uint32 tick2 = 0;
 	
+	Mix_Music *musicTest = Mix_LoadMUS("./assets/musicProto.mp3");
+	if(musicTest == nullptr){
+		cout << Mix_GetError() << endl;
+	}
+	Mix_PlayMusic(musicTest, 0);
+// 	Mix_VolumeMusic(MIX_MAX_VOLUME);
 	while (player->getHealth() > 0  && !inputs.getquit() && !inputs.getescape()/* && w.getLevel() <= 5*/) {
 		if(vEnemy.size() == 0){
 			w.increaseLevel();
@@ -45,10 +51,7 @@ void Game::start(SDL_Renderer *renderer, SDL_Window *window){
 		inputs.setState(event);
 		player->doActions(inputs, vPlayer);
 		
-		int pos = 0;
-// 		cout << "enemies will do stuffs : " << endl;
 		for(unsigned long int k = 0; k < vEnemy.size(); k++){
-// 			cout << "turn " << pos << " of : " << e->getId() << endl;
 			Ship *e = vEnemy[k];
 			e->doActions(vEnemy);
 			if(player->hitShip(e->getHitbox())){
@@ -68,7 +71,6 @@ void Game::start(SDL_Renderer *renderer, SDL_Window *window){
 					p->takeDamage(e->getStrength());
 				}
 			}
-			pos++;
 		}
 		for(Ship* m: vPlayer){
 			m->move();
@@ -112,9 +114,9 @@ void Game::start(SDL_Renderer *renderer, SDL_Window *window){
 				//Generate an item with chance 5/10 4/10 1/10
 				if(vEnemy[i]->getId() != "missile"){
 					int chance(rand()%10);
-					if(5 <= chance && chance <= 8)
+					if(chance <= 2)
 						vItems.push_back(new Item("itemHeal", vEnemy[i]->getCoo().x, vEnemy[i]->getCoo().y, vEnemy[i]->getCoo().w, vEnemy[i]->getCoo().h));
-					else if(chance == 9)
+					else if(chance == 3)
 						vItems.push_back(new Item("itemAtkUp", vEnemy[i]->getCoo().x, vEnemy[i]->getCoo().y, vEnemy[i]->getCoo().w, vEnemy[i]->getCoo().h));
 				}
 				delete vEnemy[i];
@@ -168,6 +170,8 @@ void Game::start(SDL_Renderer *renderer, SDL_Window *window){
 	
 	SDL_FreeSurface(sBackground);
 	SDL_DestroyTexture(tBackground);
+	
+	Mix_FreeMusic(musicTest);
 }
 
 void Game::pause(){

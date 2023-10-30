@@ -1,6 +1,6 @@
 all: Ship.o Enemy.o Player.o Missile.o InputState.o GameInterface.o Animation.o Unit1.o Vect.o gameAddOns.o Game.o Particle.o Wave.o AnimationHandler.o Item.o main.o game
 CPP= g++ --std=c++20 -Wall
-LIBS = -lSDL2 -lSDL2_image -lSDL2_ttf
+LIBS = -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer
 CFLAGS = -I./include/
 SRC = ./src/
 # `sdl2-config --cflags --libs`
