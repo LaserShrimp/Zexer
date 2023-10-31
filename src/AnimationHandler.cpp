@@ -240,6 +240,12 @@ void AnimationHandler::renderOnScreen(Player &p){
 	}
 	this->vAnimPlayer[ind]->setToFrame(p.getCurrentFrameAndIncrease());
 	this->vAnimPlayer[ind]->renderImage(this->r, p.coo);
+// 	SDL_Point *center = /*{.x = p.getX() + p.getW()/2, .y = p.getY() + p.getH()/2}*/NULL;
+// 	SDL_Rect fp = vAnimPlayer[ind]->getFramePos();
+// 	int xs, ys;
+// 	if(p.getYSpeed() == 0)
+		
+// 	SDL_RenderCopyEx(r, vAnimPlayer[ind]->getTexture(), &fp, &p.coo, int(acos(p.getXSpeed()/(-p.getYSpeed()))), NULL, SDL_FLIP_NONE);
 }
 
 void AnimationHandler::changeAlphaPlayer(int alpha){

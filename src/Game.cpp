@@ -34,11 +34,13 @@ void Game::start(SDL_Renderer *renderer, SDL_Window *window){
 	Uint32 tick1 = 0;
 	Uint32 tick2 = 0;
 	
-	Mix_Music *musicTest = Mix_LoadMUS("./assets/musicProto.mp3");
+	Mix_AllocateChannels(10);
+	Mix_Music *musicTest = Mix_LoadMUS("./assets/paProto.mp3");
 	if(musicTest == nullptr){
 		cout << Mix_GetError() << endl;
 	}
-	Mix_PlayMusic(musicTest, 0);
+	Mix_Chunk *c = Mix_LoadWAV("assets/plucked.wav");
+	Mix_PlayMusic(musicTest, -1);
 // 	Mix_VolumeMusic(MIX_MAX_VOLUME);
 	while (player->getHealth() > 0  && !inputs.getquit() && !inputs.getescape()/* && w.getLevel() <= 5*/) {
 		if(vEnemy.size() == 0){
@@ -118,6 +120,8 @@ void Game::start(SDL_Renderer *renderer, SDL_Window *window){
 						vItems.push_back(new Item("itemHeal", vEnemy[i]->getCoo().x, vEnemy[i]->getCoo().y, vEnemy[i]->getCoo().w, vEnemy[i]->getCoo().h));
 					else if(chance == 3)
 						vItems.push_back(new Item("itemAtkUp", vEnemy[i]->getCoo().x, vEnemy[i]->getCoo().y, vEnemy[i]->getCoo().w, vEnemy[i]->getCoo().h));
+					
+					Mix_PlayChannel(-1, c, 0);
 				}
 				delete vEnemy[i];
 				vEnemy.erase(vEnemy.begin()+i);

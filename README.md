@@ -12,4 +12,9 @@ A little and simple shoot'em up, just for fun.
   * same as in the linux section but for now it's not available
 
 ## Notes
-The music is ***Sexy Chillout Hip Hop Track - Come With Me*** and is free of use (picked on  Pixabay.com)
+Musics (for now, all picked up on www.Pixabay.com, all free of use):
+- ***Sexy Chillout Hip Hop Track - Come With Me*** by Keyframe_Audio
+- ***Password Infinity*** by Evgeny_Bardyuzha
+- ***Electronic Future Beats*** by QubeSounds
+
+> These songs are not meant to be a part of the project eternally, but hanks to their creators.

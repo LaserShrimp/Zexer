@@ -63,6 +63,10 @@ void Animation::renderImage(SDL_Renderer *r, SDL_Rect dest){
 	SDL_RenderCopy(r, this->texture, &(this->framePos), &dest);
 }
 
+SDL_Rect Animation::getFramePos(){
+	return this->framePos;
+}
+
 SDL_Texture* Animation::getTexture(){
 	return this->texture;
 }
