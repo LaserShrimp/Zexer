@@ -232,6 +232,9 @@ void Ship::updateHitbox(){
 void Ship::doActions(vector<Ship*>& v){
 	this->move();
 }
+void Ship::doActions(vector<Ship*>& v, Ship& p){
+	this->doActions(v);
+}
 
 void Ship::rerack(){
 	this->healCompletely();
@@ -239,8 +242,17 @@ void Ship::rerack(){
 	this->synchronizeVectFromCoo();
 }
 void Ship::launch(int startX, int startY){
+	this->coo.x = startX;
+	this->coo.y = startY;
+	this->synchronizeVectFromCoo();
+	this->updateHitbox();
 }
 void Ship::launch(int startX, int startY, Vect dir){
+	this->speedVect = dir;
+	this->coo.x = startX;
+	this->coo.y = startY;
+	this->synchronizeVectFromCoo();
+	this->updateHitbox();
 }
 void Ship::launch(int startX, int startY, string launcherId){
 }

@@ -26,6 +26,19 @@ AnimationHandler::AnimationHandler(SDL_Renderer *r):r{r}{
 	this->vAnim[3]->setNumberOfFrames(10);
 	this->vAnim[3]->setTexture(r, (char*)"assets/unitOmni.png");
 	
+	this->vAnim.push_back(new Animation());
+	this->vAnim[4]->setName("unitTracker");
+	this->vAnim[4]->setFrameSize(WIDTH, HEIGHT);
+	this->vAnim[4]->setNumberOfFrames(18);
+	this->vAnim[4]->setTexture(r, (char*)"assets/unitTracker.png");
+	
+	this->vAnim.push_back(new Animation());
+	this->vAnim[5]->setName("unitDestroyer");
+	this->vAnim[5]->setFrameSize(WIDTH, 150);
+	this->vAnim[5]->setNumberOfFrames(24);
+	this->vAnim[5]->setTexture(r, (char*)"assets/unitDestroyer.png");
+	
+	
 	//PLAYER
 	this->vAnimPlayer.push_back(new Animation());
 	this->vAnimPlayer[0]->setName("up");
@@ -108,6 +121,10 @@ void AnimationHandler::renderOnScreen(Ship &s){
 		animIndex = 2;
 	else if(n == "unitOmni")
 		animIndex = 3;
+	else if(n == "unitTracker")
+		animIndex = 4;
+	else if(n == "unitDestroyer")
+		animIndex = 5;
 	else
 		cout << "Error on AnimationHandler with Ship : id " << s.getId() << " not recognized..." << endl;
 	
@@ -127,8 +144,15 @@ void AnimationHandler::renderOnScreen(Ship &s){
 	}
 	//set animation to current frame
 	this->vAnim[animIndex]->setToFrame(s.getCurrentFrameAndIncrease());
-	this->vAnim[animIndex]->renderImage(this->r, s.coo);
-	
+	if(animIndex == 4){ //if it's a unitTracker
+		Vect unitaire(0, 1);
+		float a = s.speedVect.angle(unitaire)*(180/std::numbers::pi);
+		if(s.speedVect.getX() > 0)
+			a = 360 - a;
+		this->vAnim[animIndex]->renderImage(this->r, s.coo, a);
+	}
+	else
+		this->vAnim[animIndex]->renderImage(this->r, s.coo);
 	//Drawing health bar only if the ship is damaged
 	SDL_Rect hmcoo = s.coo;
 	hmcoo.y = s.coo.y - 4;

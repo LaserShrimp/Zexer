@@ -29,6 +29,15 @@ void Wave::insertShip(vector<Ship*>& v, string name){
 		Enemy *s = new Enemy();
 		s->init();
 		v.push_back(s);
+	} else if(name == "unitTracker"){
+		UnitTracker *s = new UnitTracker();
+		s->init();
+		v.push_back(s);
+	}
+	else if(name == "unitDestroyer"){
+		UnitDestroyer *s = new UnitDestroyer();
+		s->init();
+		v.push_back(s);
 	}
 }
 
@@ -81,13 +90,17 @@ void Wave::loadLevel(vector<Ship*>& v, int l){
 void Wave::loadRandomizedLevel(vector<Ship*>& v, int l){
 	this->level = l;
 	for(int i = 0; i <= l; i++){
-		int o = rand()%3;
+		int o = rand()%5;
 		if(o == 0)
 			this->insertShip(v, "unit1");
 		else if(o == 1)
 			this->insertShip(v, "unitOmni");
 		else if(o == 2)
 			this->insertShip(v, "enemy");
+		else if(o == 3)
+			this->insertShip(v, "unitTracker");
+		else if(o == 4)
+			this->insertShip(v, "unitDestroyer");
 	}
 }
 

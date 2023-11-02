@@ -32,6 +32,7 @@ public:
 	virtual void init();
 	virtual void move();
 	virtual void doActions(vector<Ship*>& v);
+	virtual void doActions(vector<Ship*>& v, Ship& p);
 	virtual void shoot(vector<Ship*>& v);
 	
 	void randomDir();
@@ -49,8 +50,35 @@ public:
 	virtual void init();
 	virtual void move();
 	virtual void doActions(vector<Ship*>& v);
+	virtual void doActions(vector<Ship*>& v, Ship& p);
 	virtual void shoot(vector<Ship*>& v);
 	virtual ~UnitOmni();
+};
+
+class UnitTracker: public Enemy{
+private:
+protected:
+public:
+	UnitTracker();
+	virtual void init();
+	virtual void move(Vect& target);
+	virtual void doActions(vector<Ship*>& v, Ship& p);
+	virtual ~UnitTracker();
+};
+
+class UnitDestroyer: public Enemy{
+private:
+	int landmark; // to set where the destroyer will shoot from
+	int shootCooldown;//In frames
+	int shCurr;
+protected:
+public:
+	UnitDestroyer();
+	virtual void init();
+	virtual void move(Vect& target);
+	virtual void doActions(vector<Ship*>& v, Ship& p);
+	virtual void shoot(vector<Ship*>& v);
+	virtual ~UnitDestroyer();
 };
 
 #endif

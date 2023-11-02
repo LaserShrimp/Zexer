@@ -65,6 +65,9 @@ void Unit1::doActions(vector<Ship*>& v){
 	this->shCurr++;
 	this->shCurr = this->shCurr%this->shootCooldown;
 }
+void Unit1::doActions(vector<Ship*>& v, Ship& p){
+	this->doActions(v);
+}
 
 void Unit1::shoot(vector<Ship*>& v){
 	v.push_back(new Missile());
@@ -122,9 +125,12 @@ void UnitOmni::doActions(vector<Ship*>& v){
 	this->shCurr++;
 	this->shCurr = this->shCurr%this->shootCooldown;
 }
+void UnitOmni::doActions(vector<Ship*>& v, Ship& p){
+	this->doActions(v);
+}
 
 void UnitOmni::shoot(vector<Ship*>& v){
-	this->move();
+// 	this->move();
 	for(float i = 0.0; i < 12.0; i+= 1.0){
 		Missile *n = new Missile();
 		n->setStrength(this->atk);
@@ -141,5 +147,122 @@ void UnitOmni::move(){
 }
 
 UnitOmni::~UnitOmni(){
+// 	cout << "UnitOmni destroyed" << endl;
+}
+
+//UNITTRACKER
+
+UnitTracker::UnitTracker(){
+	
+}
+
+void UnitTracker::init(){
+	this->id = "unitTracker";
+	this->speed = 2.75;
+	this->speedVect.setY(0.6);
+	this->speedVect.setX(0);
+	this->coo.x = rand()%WIN_WIDTH;
+	this->coo.y = -50;
+	this->coo.w = 30;
+	this->coo.h = 30;
+	this->setHitboxRatio(1.0);
+	this->synchronizeVectFromCoo();
+	this->setStayInScreen(true);
+	
+	this->setMaxHealth(100);
+	this->healCompletely();
+	this->atk = 0;
+	this->strength = 45;
+	this->invincible = 0;
+}
+
+void UnitTracker::doActions(vector<Ship*>& v, Ship& p){
+	this->move(p.getCooVect());
+}
+
+void UnitTracker::move(Vect& target){
+	this->setXSpeed(target.getX() - this->cooVect.getX());
+	this->setYSpeed(target.getY() - this->cooVect.getY());
+	this->speedVect.divideBy(this->speedVect.norm());
+	this->speedVect.multiplyBy(this->speed);
+	
+	this->translationMovement();
+	this->updateHitbox();
+}
+
+UnitTracker::~UnitTracker(){
+// 	cout << "UnitOmni destroyed" << endl;
+}
+
+//UNITDESTROYER
+
+UnitDestroyer::UnitDestroyer(){
+	
+}
+
+void UnitDestroyer::init(){
+	this->id = "unitDestroyer";
+	this->speed = 2.75;
+	this->speedVect.setY(0.6);
+	this->speedVect.setX(0);
+	this->coo.x = rand()%WIN_WIDTH;
+	this->coo.y = -50;
+	this->coo.w = 100;
+	this->coo.h = 150;
+	this->setHitboxRatio(1.0);
+	this->synchronizeVectFromCoo();
+	this->setStayInScreen(true);
+	
+	this->setMaxHealth(500);
+	this->healCompletely();
+	this->atk = 0;
+	this->strength = 60;
+	this->invincible = 0;
+	
+	this->landmark = rand()%200;
+	this->shootCooldown = FPS * 5;
+	this->shCurr = 0;
+}
+
+void UnitDestroyer::doActions(vector<Ship*>& v, Ship& p){
+	this->move(p.getCooVect());
+	if(this->shCurr == 1 && this->coo.y >= 0){ //shoot if the cooldown is finished AND the ship is on screen
+		this->shoot(v);
+	}
+	this->shCurr++;
+	this->shCurr = this->shCurr%this->shootCooldown;
+	
+}
+
+void UnitDestroyer::move(Vect& target){
+	if(this->coo.y < landmark)
+		this->speedVect.setY(2.5);
+	else
+		this->speedVect.setY(0);
+	
+	this->translationMovement();
+	this->updateHitbox();
+}
+
+void UnitDestroyer::shoot(vector<Ship*>& v){
+	UnitTracker *n1 = new UnitTracker();
+	UnitTracker *n2 = new UnitTracker();
+	UnitTracker *n3 = new UnitTracker();
+	UnitTracker *n4 = new UnitTracker();
+	n1->init();
+	n1->launch(this->getX() - 30, this->getY());
+	v.push_back(n1);
+	n2->init();
+	n2->launch(this->getX() + this->getW(), this->getY());
+	v.push_back(n2);
+	n3->init();
+	n3->launch(this->getX() - 30, this->getY() + 120);
+	v.push_back(n3);
+	n4->init();
+	n4->launch(this->getX() + this->getW(), this->getY() + 120);
+	v.push_back(n4);
+}
+
+UnitDestroyer::~UnitDestroyer(){
 // 	cout << "UnitOmni destroyed" << endl;
 }

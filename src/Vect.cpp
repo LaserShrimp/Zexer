@@ -39,6 +39,25 @@ Vect& Vect::sub(const Vect& v){
 	return *this;
 }
 
+Vect& Vect::divideBy(const float f){
+// 	Vect n(this->x, this->y);
+	if(f != 0){
+		this->x/= f;
+		this->y/= f;
+	} else {
+		std::cout << "couldn't divide by zero..." << std::endl;
+	}
+	
+	return *this;
+}
+Vect& Vect::multiplyBy(const float f){
+// 	Vect n(this->x, this->y);
+	this->x*= f;
+	this->y*= f;
+	
+	return *this;
+}
+
 float Vect::norm() const{
 	return sqrt(pow(this->x, 2) + pow(this->y, 2));
 }

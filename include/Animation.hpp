@@ -36,6 +36,7 @@ public:
 	void changeAlpha(int alpha);
 	void resetAlpha();
 	void renderImage(SDL_Renderer *r, SDL_Rect dest);
+	void renderImage(SDL_Renderer *r, SDL_Rect dest, float angle);
 	SDL_Texture* getTexture();
 	
 	virtual ~Animation();

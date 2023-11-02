@@ -62,6 +62,10 @@ void Animation::resetAlpha(){
 void Animation::renderImage(SDL_Renderer *r, SDL_Rect dest){
 	SDL_RenderCopy(r, this->texture, &(this->framePos), &dest);
 }
+void Animation::renderImage(SDL_Renderer *r, SDL_Rect dest, float angle){
+	SDL_RenderCopyEx(r, this->texture, &(this->framePos), &dest, angle, NULL, SDL_FLIP_NONE);
+// 	cout << "angle : " << angle << endl;
+}
 
 SDL_Rect Animation::getFramePos(){
 	return this->framePos;

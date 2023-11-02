@@ -36,17 +36,10 @@ Missile::Missile(int x, int y): Ship{}/*, ready{true}*/{
  * This function launches the missile
  */
 void Missile::launch(int startX, int startY){
-	this->coo.x = startX;
-	this->coo.y = startY;
-	this->synchronizeVectFromCoo();
-	this->updateHitbox();
+	Ship::launch(startX, startY);
 }
 void Missile::launch(int startX, int startY, Vect dir){
-	this->speedVect = dir;
-	this->coo.x = startX;
-	this->coo.y = startY;
-	this->synchronizeVectFromCoo();
-	this->updateHitbox();
+	Ship::launch(startX, startY, dir);
 }
 void Missile::launch(int startX, int startY, string launcherId){
 	if(launcherId == "player"){

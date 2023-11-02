@@ -26,6 +26,8 @@ public:
 	
 	Vect& add(const Vect& v);
 	Vect& sub(const Vect& v);
+	Vect& divideBy(const float f);
+	Vect& multiplyBy(const float f);
 	
 	float norm() const;
 	float angle(const Vect& v) const;

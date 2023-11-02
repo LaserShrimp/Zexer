@@ -97,6 +97,7 @@ class Ship{
 		virtual bool takeDamage(int d);
 		void updateHitbox();
 		virtual void doActions(vector<Ship*>& v);
+		virtual void doActions(vector<Ship*>& v, Ship& p);
 		
 		void rerack();
 		

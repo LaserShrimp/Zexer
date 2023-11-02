@@ -137,7 +137,7 @@ void Player::move(){
 			break;
 		case STATIONNARY:
 			this->setXSpeed(0);
-			this->setYSpeed(0);
+			this->setYSpeed(0.2);
 			break;
 		default:
 			break;

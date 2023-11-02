@@ -55,7 +55,7 @@ void Game::start(SDL_Renderer *renderer, SDL_Window *window){
 		
 		for(unsigned long int k = 0; k < vEnemy.size(); k++){
 			Ship *e = vEnemy[k];
-			e->doActions(vEnemy);
+			e->doActions(vEnemy, *player);
 			if(player->hitShip(e->getHitbox())){
 				player->takeDamage(e->getStrength());
 // 				e->takeDamage(player->getStrength());

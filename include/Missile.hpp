@@ -14,10 +14,6 @@ class Missile: public Ship{
 		Missile();
 		Missile(int x, int y);
 		
-// 		bool isReady();
-// 		void setReady(bool r);
-// 		void setToStack();
-		
 		virtual void launch(int startX, int startY);
 		virtual void launch(int startX, int startY, Vect dir);
 		virtual void launch(int startX, int startY, string launcherId);
