@@ -15,6 +15,9 @@ Particle::Particle(string name):Ship{}{
 	else if(name == "healing"){
 		this->nbFrames = 10;
 	}
+	else if(name == "smoke2"){
+		this->nbFrames = 18;
+	}
 	this->frame = 0;
 }
 Particle::Particle(string name, int x, int y):Ship{}{
@@ -30,6 +33,9 @@ Particle::Particle(string name, int x, int y):Ship{}{
 	}
 	else if(name == "healing"){
 		this->nbFrames = 10;
+	}
+	else if(name == "smoke2"){
+		this->nbFrames = 18;
 	}
 	this->coo.x = x;
 	this->coo.y = y;
@@ -50,6 +56,9 @@ Particle::Particle(string name, int x, int y, int w, int h):Ship{}{
 	}
 	else if(name == "healing"){
 		this->nbFrames = 10;
+	}
+	else if(name == "smoke2"){
+		this->nbFrames = 18;
 	}
 	this->coo.x = x;
 	this->coo.y = y;

@@ -95,6 +95,12 @@ AnimationHandler::AnimationHandler(SDL_Renderer *r):r{r}{
 	this->vAnimParticles[3]->setNumberOfFrames(20);
 	this->vAnimParticles[3]->setTexture(r, (char*)"assets/healing.png");
 	
+	this->vAnimParticles.push_back(new Animation());
+	this->vAnimParticles[4]->setName("smoke2");
+	this->vAnimParticles[4]->setFrameSize(WIDTH, HEIGHT);
+	this->vAnimParticles[4]->setNumberOfFrames(18);
+	this->vAnimParticles[4]->setTexture(r, (char*)"assets/smoke2.png");
+	
 	//ITEMS
 	this->vAnimItems.push_back(new Animation());
 	this->vAnimItems[0]->setName("itemAtkUp");
@@ -186,6 +192,8 @@ void AnimationHandler::renderOnScreen(Particle &p){
 			animIndex = 1;
 		else if(type == "smoke")
 			animIndex = 2;
+		else if(type == "smoke2")
+			animIndex = 4;
 		else if(type == "healing")
 			animIndex = 3;
 		

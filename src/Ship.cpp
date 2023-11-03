@@ -1,6 +1,8 @@
 #include "Ship.hpp"
+#include "Particle.hpp"
+#include "Item.hpp"
 
-Ship::Ship():id{"ship"}, cooVect{Vect(0, 0)}, speedVect{Vect(0, 0)}, coo({.x = 0, .y = 0, .w = WIDTH, .h = HEIGHT}), hitbox({.x = 0, .y = 0, .w = WIDTH, .h = HEIGHT}), speed{SPEED}, health{1}, maxHealth{1}, atk{1}, hitboxRatio{1.0}, frame{1}, invincible{0}, nbFramesInvincible{0}, stayInScreen{false}{
+Ship::Ship():id{"ship"}, cooVect{Vect(0, 0)}, speedVect{Vect(0, 0)}, coo({.x = 0, .y = 0, .w = WIDTH, .h = HEIGHT}), hitbox({.x = 0, .y = 0, .w = WIDTH, .h = HEIGHT}), speed{SPEED}, health{1}, maxHealth{1}, atk{1}, hitboxRatio{1.0}, frame{1}, invincible{0}, nbFramesInvincible{0}, stayInScreen{false}, readyToDelete{false}{
 }
 
 Ship::Ship(int x, int y, string id){
@@ -12,6 +14,7 @@ Ship::Ship(int x, int y, string id){
 	this->hitbox = this->coo;
 	this->hitboxRatio = 1.0;
 	this->speed = SPEED;
+	this->readyToDelete = false;
 }
 Ship::Ship(SDL_Rect coo, float speed):coo{coo}, hitbox{coo}, speed{speed}, hitboxRatio{100}{
 }
@@ -82,6 +85,10 @@ int Ship::getCurrentFrameAndIncrease(){
 	if(this->frame >= 10000)//Frame must stay between 1 and 9999
 		this->frame = 1;
 	return this->frame - 1;
+}
+
+bool Ship::getReadyToDelete(){
+	return this->readyToDelete;
 }
 
 void Ship::setCoo(SDL_Rect n){
@@ -187,7 +194,6 @@ bool Ship::hitShip(SDL_Rect s){
 }
 
 bool Ship::isOnGameArea(){
-// 	cout << this->id << " : \"I'm on cam babe\"" << endl;
 	return this->coo.x >= 0 && this->coo.y >= -Y_EXTENSION && this->coo.x + this->coo.w <= WIN_WIDTH && this->coo.y <= WIN_HEIGHT;
 }
 
@@ -234,6 +240,14 @@ void Ship::doActions(vector<Ship*>& v){
 }
 void Ship::doActions(vector<Ship*>& v, Ship& p){
 	this->doActions(v);
+}
+void Ship::doActions(vector<Ship*>& v, vector<Item*>& vi, vector<Particle*>& vp, Ship& p){
+	this->doActions(v);
+	
+	if(!this->isOnGameArea() || this->health <= 0){
+		vp.push_back(new Particle("explosion1", this->getCoo().x, this->getCoo().y, this->getCoo().w, this->getCoo().h));
+		this->readyToDelete = true;
+	}
 }
 
 void Ship::rerack(){

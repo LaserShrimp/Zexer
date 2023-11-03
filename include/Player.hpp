@@ -10,6 +10,8 @@
 #include "InputState.hpp"
 #include "Item.hpp"
 
+#define DRAW 0.7
+
 typedef enum movestate{
 	RIGHT, UPRIGHT, DOWNRIGHT, LEFT, UPLEFT, DOWNLEFT, UP, DOWN, STATIONNARY
 }movestate;

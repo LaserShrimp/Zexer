@@ -4,7 +4,6 @@
 #include <iostream>
 #include <vector>
 #include "SDL2/SDL.h"
-#include "SDL2/SDL_image.h"
 
 #include "defines.h"
 #include "gameAddOns.h"
@@ -12,6 +11,9 @@
 #include "Vect.hpp"
 
 using namespace std;
+
+class Item;
+class Particle;
 
 class Ship{
 	protected:
@@ -34,6 +36,7 @@ class Ship{
 		
 		bool stayInScreen;
 		void setId(string id);
+		bool readyToDelete;
 	private :
 		
 	public:
@@ -60,6 +63,7 @@ class Ship{
 		int getInvincible();
 		int getCurrentFrame();
 		int getCurrentFrameAndIncrease();
+		bool getReadyToDelete();
 		
 		void setCooVect(float x, float y);
 		void setSpeedVect(float x, float y);
@@ -98,6 +102,7 @@ class Ship{
 		void updateHitbox();
 		virtual void doActions(vector<Ship*>& v);
 		virtual void doActions(vector<Ship*>& v, Ship& p);
+		virtual void doActions(vector<Ship*>& v, vector<Item*>& vi, vector<Particle*>& vp, Ship& p);
 		
 		void rerack();
 		

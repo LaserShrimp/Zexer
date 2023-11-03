@@ -10,6 +10,8 @@
 #include "Enemy.hpp"
 #include "Ship.hpp"
 #include "Missile.hpp"
+#include "Item.hpp"
+#include "Particle.hpp"
 
 #define U1_XSPEED		0
 #define U1_YSPEED		5
@@ -33,6 +35,7 @@ public:
 	virtual void move();
 	virtual void doActions(vector<Ship*>& v);
 	virtual void doActions(vector<Ship*>& v, Ship& p);
+	virtual void doActions(vector<Ship*>& v, vector<Item*>& vi, vector<Particle*>& vp, Ship& p);
 	virtual void shoot(vector<Ship*>& v);
 	
 	void randomDir();
@@ -51,6 +54,7 @@ public:
 	virtual void move();
 	virtual void doActions(vector<Ship*>& v);
 	virtual void doActions(vector<Ship*>& v, Ship& p);
+	virtual void doActions(vector<Ship*>& v, vector<Item*>& vi, vector<Particle*>& vp, Ship& p);
 	virtual void shoot(vector<Ship*>& v);
 	virtual ~UnitOmni();
 };
@@ -63,6 +67,7 @@ public:
 	virtual void init();
 	virtual void move(Vect& target);
 	virtual void doActions(vector<Ship*>& v, Ship& p);
+	virtual void doActions(vector<Ship*>& v, vector<Item*>& vi, vector<Particle*>& vp, Ship& p);
 	virtual ~UnitTracker();
 };
 
@@ -77,6 +82,7 @@ public:
 	virtual void init();
 	virtual void move(Vect& target);
 	virtual void doActions(vector<Ship*>& v, Ship& p);
+	virtual void doActions(vector<Ship*>& v, vector<Item*>& vi, vector<Particle*>& vp, Ship& p);
 	virtual void shoot(vector<Ship*>& v);
 	virtual ~UnitDestroyer();
 };

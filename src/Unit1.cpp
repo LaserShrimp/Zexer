@@ -28,6 +28,7 @@ void Unit1::init(){
 	this->invincible = 0;
 	this->areaLimit = rand()%U1_LIMIT_MAX;
 	this->hasLanded = false;
+	this->readyToDelete = false;
 }
 
 void Unit1::move(){
@@ -59,7 +60,7 @@ void Unit1::move(){
 void Unit1::doActions(vector<Ship*>& v){
 	this->move();
 	//shoot
-	if(this->shCurr == 1 && this->coo.y >= 0){ //shoot if the cooldown is finished AND the ship is on screen
+	if(this->shCurr == this->shootCooldown - 1 && this->coo.y >= 0){ //shoot if the cooldown is finished AND the ship is on screen
 		this->shoot(v);
 	}
 	this->shCurr++;
@@ -67,6 +68,14 @@ void Unit1::doActions(vector<Ship*>& v){
 }
 void Unit1::doActions(vector<Ship*>& v, Ship& p){
 	this->doActions(v);
+}
+void Unit1::doActions(vector<Ship*>& v, vector<Item*>& vi, vector<Particle*>& vp, Ship& p){
+	this->doActions(v);
+	if(!this->isOnGameArea() || this->health <= 0){
+		vp.push_back(new Particle("explosion1", this->getCoo().x, this->getCoo().y, this->getCoo().w, this->getCoo().h));
+ 		vi.push_back(new Item("itemHeal", this-> getCoo().x + this->getCoo().w/2 - 10, this->getCoo().y + this->getCoo().h/2 - 10));
+		this->readyToDelete = true;
+	}
 }
 
 void Unit1::shoot(vector<Ship*>& v){
@@ -114,6 +123,7 @@ void UnitOmni::init(){
 	this->atk = 30;
 	this->strength = 15;
 	this->invincible = 0;
+	this->readyToDelete = false;
 }
 
 void UnitOmni::doActions(vector<Ship*>& v){
@@ -127,6 +137,13 @@ void UnitOmni::doActions(vector<Ship*>& v){
 }
 void UnitOmni::doActions(vector<Ship*>& v, Ship& p){
 	this->doActions(v);
+}
+void UnitOmni::doActions(vector<Ship*>& v, vector<Item*>& vi, vector<Particle*>& vp, Ship& p){
+	this->doActions(v);
+	if(!this->isOnGameArea() || this->health <= 0){
+		vp.push_back(new Particle("explosion1", this->getCoo().x, this->getCoo().y, this->getCoo().w, this->getCoo().h));
+		this->readyToDelete = true;
+	}
 }
 
 void UnitOmni::shoot(vector<Ship*>& v){
@@ -169,15 +186,26 @@ void UnitTracker::init(){
 	this->synchronizeVectFromCoo();
 	this->setStayInScreen(true);
 	
-	this->setMaxHealth(100);
+	this->setMaxHealth(40);
 	this->healCompletely();
 	this->atk = 0;
 	this->strength = 45;
 	this->invincible = 0;
+	this->readyToDelete = false;
 }
 
 void UnitTracker::doActions(vector<Ship*>& v, Ship& p){
 	this->move(p.getCooVect());
+}
+void UnitTracker::doActions(vector<Ship*>& v, vector<Item*>& vi, vector<Particle*>& vp, Ship& p){
+	this->doActions(v, p);
+	if(!this->isOnGameArea() || this->health <= 0){
+		vp.push_back(new Particle("explosion1", this->getCoo().x, this->getCoo().y, this->getCoo().w, this->getCoo().h));
+		if(rand()%10 == 0){
+			vi.push_back(new Item("itemHeal", this-> getCoo().x, this->getCoo().y));
+		}
+		this->readyToDelete = true;
+	}
 }
 
 void UnitTracker::move(Vect& target){
@@ -222,6 +250,7 @@ void UnitDestroyer::init(){
 	this->landmark = rand()%200;
 	this->shootCooldown = FPS * 5;
 	this->shCurr = 0;
+	this->readyToDelete = false;
 }
 
 void UnitDestroyer::doActions(vector<Ship*>& v, Ship& p){
@@ -231,7 +260,27 @@ void UnitDestroyer::doActions(vector<Ship*>& v, Ship& p){
 	}
 	this->shCurr++;
 	this->shCurr = this->shCurr%this->shootCooldown;
+}
+void UnitDestroyer::doActions(vector<Ship*>& v, vector<Item*>& vi, vector<Particle*>& vp, Ship& p){
+	this->move(p.getCooVect());
+	if(this->shCurr == 1 && this->coo.y >= 0){ //shoot if the cooldown is finished AND the ship is on screen
+		this->shoot(v);
+		vp.push_back(new Particle("smoke2", this->getX() - 30, this->getY(), 20, 20));
+		vp.push_back(new Particle("smoke2", this->getX() + this->getW(), this->getY(), 20, 20));
+		vp.push_back(new Particle("smoke2", this->getX() - 30, this->getY() + 120, 20, 20));
+		vp.push_back(new Particle("smoke2", this->getX() + this->getW(), this->getY() + 120, 20, 20));
+		vp.push_back(new Particle("smoke2", this->getX() + this->getW()/2 - 25, this->getY() + this->getH(), 50, 50));
+	}
+	this->shCurr++;
+	this->shCurr = this->shCurr%this->shootCooldown;
 	
+	if(!this->isOnGameArea() || this->health <= 0){
+		vi.push_back(new Item("itemHeal", this->getCoo().x, this->getCoo().y + 75));
+		vi.push_back(new Item("itemHeal", this->getCoo().x, this->getCoo().y + 40));
+		vi.push_back(new Item("itemAtkUp", this->getCoo().x + this->getCoo().w - 20, this->getCoo().y + 75));
+		vp.push_back(new Particle("smoke2", this->getCoo().x, this->getCoo().y + 25, this->getCoo().w, this->getCoo().w));
+		this->readyToDelete = true;
+	}
 }
 
 void UnitDestroyer::move(Vect& target){
@@ -261,6 +310,10 @@ void UnitDestroyer::shoot(vector<Ship*>& v){
 	n4->init();
 	n4->launch(this->getX() + this->getW(), this->getY() + 120);
 	v.push_back(n4);
+	Unit1 *u = new Unit1();
+	u->init();
+	u->launch(this->getX() + this->getW()/2 - u->getW()/2, this->getY() + this->getH());
+	v.push_back(u);
 }
 
 UnitDestroyer::~UnitDestroyer(){

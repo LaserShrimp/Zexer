@@ -58,15 +58,21 @@ void Player::move(){
 		case RIGHT:
 			if(this->coo.x+this->coo.w < WIN_WIDTH){
 				this->setXSpeed(this->speed);
-				this->setYSpeed(0);
-			} else {
-				this->setXSpeed(0);
+				if(this->coo.y + this->coo.h < WIN_HEIGHT)
+					this->setYSpeed(DRAW);
+				else
+					this->setYSpeed(0);
+				} else {
+					this->setXSpeed(0);
 			}
 			break;
 		case LEFT:
 			if(this->coo.x > 0){
 				this->setXSpeed(-this->speed);
-				this->setYSpeed(0);
+				if(this->coo.y + this->coo.h < WIN_HEIGHT)
+					this->setYSpeed(DRAW);
+				else
+					this->setYSpeed(0);
 			} else {
 				this->setXSpeed(0);
 			}
@@ -137,7 +143,10 @@ void Player::move(){
 			break;
 		case STATIONNARY:
 			this->setXSpeed(0);
-			this->setYSpeed(0.2);
+			if(this->coo.y + this->coo.h < WIN_HEIGHT)
+				this->setYSpeed(DRAW);
+			else
+				this->setYSpeed(0);
 			break;
 		default:
 			break;

@@ -44,6 +44,7 @@ void Enemy::move(){
 bool Enemy::takeDamage(int damage){
 	this->health-= damage;
 	if(this->health <= 0){
+		this->scintillate(10);
 		return true;
 	}
 	return false;
