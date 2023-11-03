@@ -13,6 +13,8 @@ public:
 	Particle(string name, int x, int y);
 	Particle(string name, int x, int y, int w, int h);
 	
+	void initFramesNameId(string name);
+	
 	int getNbFrames();
 	string getType();
 	

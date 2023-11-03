@@ -61,7 +61,7 @@ int main(int argc, char **argv){
 	Game g;
 	while(e.type != SDL_QUIT && !(e.type == SDL_KEYUP && e.key.keysym.sym == SDLK_ESCAPE)){
 		SDL_WaitEvent(&e);
-		if(e.type == SDL_KEYDOWN){
+		if(e.type == SDL_KEYUP){
 			switch(e.key.keysym.sym){
 				case SDLK_RETURN:{
 					g.setScore(0);

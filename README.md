@@ -17,4 +17,6 @@ Musics (for now, all picked up on www.Pixabay.com, all free of use):
 - ***Password Infinity*** by Evgeny_Bardyuzha
 - ***Electronic Future Beats*** by QubeSounds
 
+Sounds:
+- metalBoom : remixed from ***Trap*** by Joseph SARDIN on bigsoundbank.com
 > These songs are not meant to be a part of the project eternally, but hanks to their creators.

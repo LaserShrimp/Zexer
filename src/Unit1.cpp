@@ -73,7 +73,8 @@ void Unit1::doActions(vector<Ship*>& v, vector<Item*>& vi, vector<Particle*>& vp
 	this->doActions(v);
 	if(!this->isOnGameArea() || this->health <= 0){
 		vp.push_back(new Particle("explosion1", this->getCoo().x, this->getCoo().y, this->getCoo().w, this->getCoo().h));
- 		vi.push_back(new Item("itemHeal", this-> getCoo().x + this->getCoo().w/2 - 10, this->getCoo().y + this->getCoo().h/2 - 10));
+		if(rand()%2 == 0)
+			vi.push_back(new Item("itemHeal", this-> getCoo().x + this->getCoo().w/2 - 10, this->getCoo().y + this->getCoo().h/2 - 10));
 		this->readyToDelete = true;
 	}
 }
@@ -247,7 +248,7 @@ void UnitDestroyer::init(){
 	this->strength = 60;
 	this->invincible = 0;
 	
-	this->landmark = rand()%200;
+	this->landmark = rand()%75;
 	this->shootCooldown = FPS * 5;
 	this->shCurr = 0;
 	this->readyToDelete = false;

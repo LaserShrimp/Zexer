@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <cstdlib>
 #include <ctime>
 #include <vector>
@@ -18,7 +19,6 @@
 class Wave{
 private:
 	int level;
-// 	vector<Ship*> vEnemy;
 protected:
 public:
 	Wave();
@@ -31,6 +31,7 @@ public:
 	void loadLevel(vector<Ship*>& v, int l);
 	void loadRandomizedLevel(vector<Ship*>& v, int l);
 	void randomizeShipCoo(vector<Ship*>& v);
+	void loadLevelFromFile(vector<Ship*>& v, string fileName);
 	
 	virtual ~Wave();
 };

@@ -101,6 +101,12 @@ AnimationHandler::AnimationHandler(SDL_Renderer *r):r{r}{
 	this->vAnimParticles[4]->setNumberOfFrames(18);
 	this->vAnimParticles[4]->setTexture(r, (char*)"assets/smoke2.png");
 	
+	this->vAnimParticles.push_back(new Animation());
+	this->vAnimParticles[5]->setName("cross");
+	this->vAnimParticles[5]->setFrameSize(WIDTH, HEIGHT);
+	this->vAnimParticles[5]->setNumberOfFrames(17);
+	this->vAnimParticles[5]->setTexture(r, (char*)"assets/cross.png");
+	
 	//ITEMS
 	this->vAnimItems.push_back(new Animation());
 	this->vAnimItems[0]->setName("itemAtkUp");
@@ -196,6 +202,8 @@ void AnimationHandler::renderOnScreen(Particle &p){
 			animIndex = 4;
 		else if(type == "healing")
 			animIndex = 3;
+		else if(type == "cross")
+			animIndex = 5;
 		
 		if(this->vAnimParticles[animIndex]->getTexture() == NULL){
 			cout << "animTexture NULL" << endl;
@@ -272,12 +280,6 @@ void AnimationHandler::renderOnScreen(Player &p){
 	}
 	this->vAnimPlayer[ind]->setToFrame(p.getCurrentFrameAndIncrease());
 	this->vAnimPlayer[ind]->renderImage(this->r, p.coo);
-// 	SDL_Point *center = /*{.x = p.getX() + p.getW()/2, .y = p.getY() + p.getH()/2}*/NULL;
-// 	SDL_Rect fp = vAnimPlayer[ind]->getFramePos();
-// 	int xs, ys;
-// 	if(p.getYSpeed() == 0)
-		
-// 	SDL_RenderCopyEx(r, vAnimPlayer[ind]->getTexture(), &fp, &p.coo, int(acos(p.getXSpeed()/(-p.getYSpeed()))), NULL, SDL_FLIP_NONE);
 }
 
 void AnimationHandler::changeAlphaPlayer(int alpha){
