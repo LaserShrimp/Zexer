@@ -11,7 +11,7 @@ AnimationHandler::AnimationHandler(SDL_Renderer *r):r{r}{
 	this->vAnim.push_back(new Animation());
 	this->vAnim[1]->setName("unit1");
 	this->vAnim[1]->setFrameSize(WIDTH/2, HEIGHT/2);
-	this->vAnim[1]->setNumberOfFrames(27);
+	this->vAnim[1]->setNumberOfFrames(24);
 	this->vAnim[1]->setTexture(r, (char*)"assets/unit1.png");
 	
 	this->vAnim.push_back(new Animation());
@@ -35,7 +35,7 @@ AnimationHandler::AnimationHandler(SDL_Renderer *r):r{r}{
 	this->vAnim.push_back(new Animation());
 	this->vAnim[5]->setName("unitDestroyer");
 	this->vAnim[5]->setFrameSize(WIDTH, 150);
-	this->vAnim[5]->setNumberOfFrames(24);
+	this->vAnim[5]->setNumberOfFrames(20);
 	this->vAnim[5]->setTexture(r, (char*)"assets/unitDestroyer.png");
 	
 	
