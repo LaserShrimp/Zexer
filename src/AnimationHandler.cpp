@@ -42,33 +42,33 @@ AnimationHandler::AnimationHandler(SDL_Renderer *r):r{r}{
 	//PLAYER
 	this->vAnimPlayer.push_back(new Animation());
 	this->vAnimPlayer[0]->setName("up");
-	this->vAnimPlayer[0]->setFrameSize(WIDTH, HEIGHT);
+	this->vAnimPlayer[0]->setFrameSize(120, 120);
 	this->vAnimPlayer[0]->setNumberOfFrames(10);
-	this->vAnimPlayer[0]->setTexture(r, (char*)"assets/playerUpTest.png");
+	this->vAnimPlayer[0]->setTexture(r, (char*)"assets/playerUp.png");
 	
 	this->vAnimPlayer.push_back(new Animation());
 	this->vAnimPlayer[1]->setName("down");
-	this->vAnimPlayer[1]->setFrameSize(WIDTH, HEIGHT);
-	this->vAnimPlayer[1]->setNumberOfFrames(10);
-	this->vAnimPlayer[1]->setTexture(r, (char*)"assets/playerDownTest.png");
+	this->vAnimPlayer[1]->setFrameSize(120, 120);
+	this->vAnimPlayer[1]->setNumberOfFrames(13);
+	this->vAnimPlayer[1]->setTexture(r, (char*)"assets/playerNeutral.png");
 	
 	this->vAnimPlayer.push_back(new Animation());
 	this->vAnimPlayer[2]->setName("right");
-	this->vAnimPlayer[2]->setFrameSize(WIDTH, HEIGHT);
-	this->vAnimPlayer[2]->setNumberOfFrames(10);
-	this->vAnimPlayer[2]->setTexture(r, (char*)"assets/playerRightTest.png");
+	this->vAnimPlayer[2]->setFrameSize(120, 120);
+	this->vAnimPlayer[2]->setNumberOfFrames(13);
+	this->vAnimPlayer[2]->setTexture(r, (char*)"assets/playerNeutral.png");
 	this->vAnimPlayer.push_back(new Animation());
 	
 	this->vAnimPlayer[3]->setName("left");
-	this->vAnimPlayer[3]->setFrameSize(WIDTH, HEIGHT);
-	this->vAnimPlayer[3]->setNumberOfFrames(10);
-	this->vAnimPlayer[3]->setTexture(r, (char*)"assets/playerLeftTest.png");
+	this->vAnimPlayer[3]->setFrameSize(120, 120);
+	this->vAnimPlayer[3]->setNumberOfFrames(13);
+	this->vAnimPlayer[3]->setTexture(r, (char*)"assets/playerNeutral.png");
 	this->vAnimPlayer.push_back(new Animation());
 	
 	this->vAnimPlayer[4]->setName("neutral");
-	this->vAnimPlayer[4]->setFrameSize(WIDTH, HEIGHT);
-	this->vAnimPlayer[4]->setNumberOfFrames(10);
-	this->vAnimPlayer[4]->setTexture(r, (char*)"assets/playerShipTest.png");
+	this->vAnimPlayer[4]->setFrameSize(120, 120);
+	this->vAnimPlayer[4]->setNumberOfFrames(13);
+	this->vAnimPlayer[4]->setTexture(r, (char*)"assets/playerNeutral.png");
 	
 	//PARTICLES
 	this->vAnimParticles.push_back(new Animation());
@@ -158,7 +158,7 @@ void AnimationHandler::renderOnScreen(Ship &s){
 	this->vAnim[animIndex]->setToFrame(s.getCurrentFrameAndIncrease());
 	if(animIndex == 4){ //if it's a unitTracker
 		Vect unitaire(0, 1);
-		float a = s.speedVect.angle(unitaire)*(180/std::numbers::pi);
+		float a = s.speedVect.angle(unitaire)*(180/3.1415);
 		if(s.speedVect.getX() > 0)
 			a = 360 - a;
 		this->vAnim[animIndex]->renderImage(this->r, s.coo, a);
