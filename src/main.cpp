@@ -59,35 +59,95 @@ int main(int argc, char **argv){
 	SDL_Event e;
 	SDL_PollEvent(&e);
 	Game g;
-	while(e.type != SDL_QUIT && !(e.type == SDL_KEYUP && e.key.keysym.sym == SDLK_ESCAPE)){
-		SDL_WaitEvent(&e);
+	Player p;
+	InputState in;
+	vector<Ship*> vShip;
+	AnimationHandler animHandler(renderer);
+	SDL_Surface *sOptPlay = TTF_RenderText_Blended(font, "Play", {255, 255, 255, 255});
+	SDL_Texture *tOptPlay = SDL_CreateTextureFromSurface(renderer, sOptPlay);
+	SDL_Rect rOptPlay = {0, 0, sOptPlay->w, sOptPlay->h};
+	SDL_Surface *sOptQuit = TTF_RenderText_Blended(font, "Quit", {255, 255, 255, 255});
+	SDL_Texture *tOptQuit = SDL_CreateTextureFromSurface(renderer, sOptQuit);
+	SDL_Rect rOptQuit = {rOptPlay.w + 50, 0, sOptPlay->w, sOptPlay->h};
+	
+	int fps = FPS;
+	Uint32 frameTime = 1000/fps; //1000 milliseconds/FPS
+	Uint32 tick1 = 0;
+	Uint32 tick2 = 0;
+	
+	bool game = true;
+	bool launchGame = false;
+	
+	while(e.type != SDL_QUIT /*&& !(e.type == SDL_KEYUP && e.key.keysym.sym == SDLK_ESCAPE)*/ && game){
+		tick1 = SDL_GetTicks();
+		SDL_PollEvent(&e);
+		in.setState(e);
+		p.doActions(in, vShip);
 		if(e.type == SDL_KEYUP){
 			switch(e.key.keysym.sym){
 				case SDLK_RETURN:{
-					g.setScore(0);
-					g.start(renderer, window);
-					snprintf(bufferScore, 29, "score : %d", g.getScore());
-					SDL_FreeSurface(sScore);
-					SDL_DestroyTexture(tScore);
-					sScore = TTF_RenderText_Blended(font, bufferScore, {255, 255, 255, 255});
-					tScore = SDL_CreateTextureFromSurface(renderer, sScore);
+					launchGame = true;
 					break;
 				}
 				default:
 					break;
 			}
 		}
+		for(unsigned long int i = 0; i < vShip.size(); i++){
+			vShip[i]->doActions(vShip);
+			SDL_Rect cooS = vShip[i]->getCoo();
+			if(vShip[i]->getCoo().y + vShip[i]->getCoo().h < 0){
+				delete vShip[i];
+				vShip.erase(vShip.begin()+i);
+			}
+			if(SDL_HasIntersection(&cooS, &rOptPlay) == SDL_TRUE){
+				delete vShip[i];
+				vShip.erase(vShip.begin()+i);
+				//lance le jeu
+				launchGame = true;
+			} else if (SDL_HasIntersection(&cooS, &rOptQuit) == SDL_TRUE){
+				game = false;
+			}
+		}
 		
 		SDL_RenderClear(renderer);
 		SDL_RenderCopy(renderer, tScore, NULL, &cooScore);
 		SDL_RenderCopy(renderer, tPlayButton, NULL, &cooPlayButton);
+		SDL_RenderCopy(renderer, tOptPlay, NULL, &rOptPlay);
+		SDL_RenderCopy(renderer, tOptQuit, NULL, &rOptQuit);
+		animHandler.renderOnScreen(p);
+		for(unsigned long int i = 0; i < vShip.size(); i++){
+			animHandler.renderOnScreen(*vShip[i]);
+		}
 		SDL_RenderPresent(renderer);
+		if(launchGame){
+			for(unsigned long int i = 0; i < vShip.size(); i++){
+				delete vShip[i];
+				vShip.erase(vShip.begin()+i);
+			}
+			g.setScore(0);
+			g.start(renderer, window);
+			snprintf(bufferScore, 29, "score : %d", g.getScore());
+			SDL_FreeSurface(sScore);
+			SDL_DestroyTexture(tScore);
+			sScore = TTF_RenderText_Blended(font, bufferScore, {255, 255, 255, 255});
+			tScore = SDL_CreateTextureFromSurface(renderer, sScore);
+		}
+			
+		
+		tick2 = SDL_GetTicks();
+		if(tick2 - tick1 < frameTime)
+			SDL_Delay(frameTime - (tick2 - tick1));
 	}
 	TTF_CloseFont(font);
 	SDL_FreeSurface(sPlayButton);
 	SDL_DestroyTexture(tPlayButton);
 	SDL_FreeSurface(sScore);
 	SDL_DestroyTexture(tScore);
+	SDL_FreeSurface(sOptPlay);
+	SDL_DestroyTexture(tOptPlay);
+	SDL_FreeSurface(sOptQuit);
+	SDL_DestroyTexture(tOptQuit);
     SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
 	Mix_Quit();
