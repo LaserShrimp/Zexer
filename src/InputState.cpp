@@ -81,6 +81,19 @@ void InputState::setState(const SDL_Event event){
 	}
 }
 
+void InputState::resetState(){
+	this->z = false;
+	this->q = false;
+	this->s = false;
+	this->d = false;
+	this->right = false;
+	this->left = false;
+	this->up = false;
+	this->down = false;
+	this->spacebar = false;
+	this->escape = false;
+	this->quit = false;
+}
 
 bool InputState::getz() const{
 	return this->z;

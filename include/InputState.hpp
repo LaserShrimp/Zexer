@@ -20,6 +20,7 @@ class InputState{
 	public:
 		InputState();
 		void setState(const SDL_Event event);
+		void resetState();
 		SDL_Event getState();
 	
 		bool getz() const;

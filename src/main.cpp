@@ -27,8 +27,7 @@ int main(int argc, char **argv){
 	}
 	srand(time(nullptr));
 	SDL_Window *window;
-        SDL_Renderer *renderer;
-//         SDL_Event event;
+	SDL_Renderer *renderer;
 		
     window = SDL_CreateWindow("Shoot'em up",
 							SDL_WINDOWPOS_CENTERED,
@@ -46,9 +45,9 @@ int main(int argc, char **argv){
 		exit(EXIT_FAILURE);
 	}
 	TTF_Font *font = TTF_OpenFont("Hybrid_b.ttf", 50);
-	SDL_Surface *sPlayButton = TTF_RenderText_Blended(font, "Press ENTER to play :)", {255, 255, 255, 255});
-	SDL_Texture *tPlayButton = SDL_CreateTextureFromSurface(renderer, sPlayButton);
-	SDL_Rect cooPlayButton = {.x = WIN_WIDTH/2 - sPlayButton->w/2, .y = WIN_HEIGHT/2 - sPlayButton->h/2, .w = sPlayButton->w, .h = sPlayButton->h};
+// 	SDL_Surface *sPlayButton = TTF_RenderText_Blended(font, "Press ENTER to play :)", {255, 255, 255, 255});
+// 	SDL_Texture *tPlayButton = SDL_CreateTextureFromSurface(renderer, sPlayButton);
+// 	SDL_Rect cooPlayButton = {.x = WIN_WIDTH/2 - sPlayButton->w/2, .y = WIN_HEIGHT/2 - sPlayButton->h/2, .w = sPlayButton->w, .h = sPlayButton->h};
 	
 	char bufferScore[30];
 	snprintf(bufferScore, 29, "score : %d", 0);
@@ -65,10 +64,10 @@ int main(int argc, char **argv){
 	AnimationHandler animHandler(renderer);
 	SDL_Surface *sOptPlay = TTF_RenderText_Blended(font, "Play", {255, 255, 255, 255});
 	SDL_Texture *tOptPlay = SDL_CreateTextureFromSurface(renderer, sOptPlay);
-	SDL_Rect rOptPlay = {0, 0, sOptPlay->w, sOptPlay->h};
+	SDL_Rect rOptPlay = {450, 230, sOptPlay->w, sOptPlay->h};
 	SDL_Surface *sOptQuit = TTF_RenderText_Blended(font, "Quit", {255, 255, 255, 255});
 	SDL_Texture *tOptQuit = SDL_CreateTextureFromSurface(renderer, sOptQuit);
-	SDL_Rect rOptQuit = {rOptPlay.w + 50, 0, sOptPlay->w, sOptPlay->h};
+	SDL_Rect rOptQuit = {rOptPlay.x + rOptPlay.w + 120, rOptPlay.y, sOptPlay->w, sOptPlay->h};
 	
 	int fps = FPS;
 	Uint32 frameTime = 1000/fps; //1000 milliseconds/FPS
@@ -78,23 +77,16 @@ int main(int argc, char **argv){
 	bool game = true;
 	bool launchGame = false;
 	
-	while(e.type != SDL_QUIT /*&& !(e.type == SDL_KEYUP && e.key.keysym.sym == SDLK_ESCAPE)*/ && game){
+	while(game){
 		tick1 = SDL_GetTicks();
 		SDL_PollEvent(&e);
 		in.setState(e);
 		p.doActions(in, vShip);
-		if(e.type == SDL_KEYUP){
-			switch(e.key.keysym.sym){
-				case SDLK_RETURN:{
-					launchGame = true;
-					break;
-				}
-				default:
-					break;
-			}
+		if(e.type == SDL_QUIT){
+			game = false;
 		}
 		for(unsigned long int i = 0; i < vShip.size(); i++){
-			vShip[i]->doActions(vShip);
+			vShip[i]->move();
 			SDL_Rect cooS = vShip[i]->getCoo();
 			if(vShip[i]->getCoo().y + vShip[i]->getCoo().h < 0){
 				delete vShip[i];
@@ -109,10 +101,9 @@ int main(int argc, char **argv){
 				game = false;
 			}
 		}
-		
 		SDL_RenderClear(renderer);
 		SDL_RenderCopy(renderer, tScore, NULL, &cooScore);
-		SDL_RenderCopy(renderer, tPlayButton, NULL, &cooPlayButton);
+// 		SDL_RenderCopy(renderer, tPlayButton, NULL, &cooPlayButton);
 		SDL_RenderCopy(renderer, tOptPlay, NULL, &rOptPlay);
 		SDL_RenderCopy(renderer, tOptQuit, NULL, &rOptQuit);
 		animHandler.renderOnScreen(p);
@@ -132,16 +123,16 @@ int main(int argc, char **argv){
 			SDL_DestroyTexture(tScore);
 			sScore = TTF_RenderText_Blended(font, bufferScore, {255, 255, 255, 255});
 			tScore = SDL_CreateTextureFromSurface(renderer, sScore);
+			launchGame = false;
+			in.resetState();
 		}
-			
-		
 		tick2 = SDL_GetTicks();
 		if(tick2 - tick1 < frameTime)
 			SDL_Delay(frameTime - (tick2 - tick1));
 	}
 	TTF_CloseFont(font);
-	SDL_FreeSurface(sPlayButton);
-	SDL_DestroyTexture(tPlayButton);
+// 	SDL_FreeSurface(sPlayButton);
+// 	SDL_DestroyTexture(tPlayButton);
 	SDL_FreeSurface(sScore);
 	SDL_DestroyTexture(tScore);
 	SDL_FreeSurface(sOptPlay);
