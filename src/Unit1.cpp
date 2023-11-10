@@ -152,7 +152,7 @@ void UnitOmni::shoot(vector<Ship*>& v){
 	for(float i = 0.0; i < 12.0; i+= 1.0){
 		Missile *n = new Missile();
 		n->setStrength(this->atk);
-		Vect mDir(double((cos((i/12.0)*2*std::numbers::pi) * MISSILE_SPEED/4.0)), double((sin((i/12.0)*2*std::numbers::pi)* MISSILE_SPEED/4.0)));
+		Vect mDir(double((cos((i/12.0)*2*PI) * MISSILE_SPEED/4.0)), double((sin((i/12.0)*2*PI)* MISSILE_SPEED/4.0)));
 		n->launch(this->getX() + this->getW()/2 - n->getW()/2, this->getY() + this->getH()/2 - n->getH()/2, mDir);
 		v.push_back(n);
 // 		cout << "missile loaded by omni" << endl;

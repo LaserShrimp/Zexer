@@ -1,5 +1,5 @@
 all: Ship.o Enemy.o Player.o Missile.o InputState.o GameInterface.o Animation.o Unit1.o Vect.o gameAddOns.o Game.o Particle.o Wave.o AnimationHandler.o Item.o main.o game
-CPP= g++ --std=c++20 -Wall
+CPP= g++ --std=c++11 -Wall
 ifeq ($(OS), WINDOWS_NT)
 	LIBS = -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer
 else

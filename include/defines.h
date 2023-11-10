@@ -13,5 +13,6 @@
 #define FPS				60
 #define INF				INT_MAX
 #define Y_EXTENSION		200 //defines the area (off screen) in front of the player that is still considered as a spawnable area 
+#define PI 				3.14159265359
 
 #endif
