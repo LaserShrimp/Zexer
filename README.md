@@ -4,12 +4,18 @@ A little and simple shoot'em up, just for fun.
 
 ## HOW TO COMPILE AND RUN
 - LINUX:
-  * go to your terminal
-  * use the 'make' to the root of the project
-  * write './zexer', tap enter and here you go :)
+  1. go to your terminal
+  2. use the command 'make' at the root of the project
+  3. write './zexer', tap enter and here you go :)
 
 - WINDOWS:
-  * same as in the linux section but for now it's not available
+
+> You should be able to play Zexer without compiling, skipping steps 1 & 2 
+
+  1. go to your terminal
+  2. use the command 'make' at the root of the project
+  3. copy-paste the content of dll folder at the root
+  4. launch zexer.exe :)
 
 ## Notes
 Musics (for now, all picked up on www.Pixabay.com, all free of use):
