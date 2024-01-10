@@ -2,15 +2,17 @@
 
 A little and simple shoot'em up, just for fun.
 
+![alt text](./screenCapture.png)
+
 ## HOW TO COMPILE AND RUN
 - LINUX:
   1. go to your terminal
   2. use the command 'make' at the root of the project
   3. write './zexer', tap enter and here you go :)
 
-- WINDOWS:
+- WINDOWS: **not available for now ! Ignore instructions below !**
 
-> You should be able to play Zexer without compiling, skipping steps 1 & 2 
+  > You should be able to play Zexer without compiling, skipping steps 1 & 2 
 
   1. go to your terminal
   2. use the command 'make' at the root of the project
