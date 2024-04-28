@@ -1,3 +1,5 @@
 zexer.exe
 zexer
 *.o
+*.kdev4
+.kdev4

@@ -24,7 +24,7 @@
 
 class Game{
 private:
-	int score;
+	int score_;
 protected:
 public:
 	Game();
@@ -32,8 +32,9 @@ public:
 	void setScore(int score);
 	int getScore();
 	
-	void start(SDL_Renderer *renderer, SDL_Window *window);
+	void start(SDL_Renderer *renderer);
 	void pause();
+	void endScreen(SDL_Renderer *r, bool win);
 	
 	virtual ~Game();
 };

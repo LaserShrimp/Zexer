@@ -1,5 +1,5 @@
 OBJS=Ship.o Enemy.o Player.o Missile.o InputState.o GameInterface.o Animation.o Unit1.o Vect.o gameAddOns.o Game.o Particle.o Wave.o AnimationHandler.o Item.o main.o
-CPP=c++ --std=c++11 -Wall
+CPP=c++ --std=c++20 -Wall
 ifeq ($(OS), Windows_NT)
 	LIBS=-lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer
 else
@@ -20,6 +20,6 @@ zexer: $(OBJS)
 
 %.o:$(SRC)%.cpp
 	$(CPP) $(CFLAGS) -c $<
-	
+
 clean:
 	rm -rf *.o

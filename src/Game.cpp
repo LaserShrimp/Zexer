@@ -1,14 +1,14 @@
 #include "Game.hpp"
 
-Game::Game(): score{0}{}
+Game::Game(): score_{0}{}
 
 void Game::setScore(int s){
-	this->score = s;
+	score_ = s;
 }
 
-int Game::getScore(){return this->score;}
+int Game::getScore(){return score_;}
 
-void Game::start(SDL_Renderer *renderer, SDL_Window *window){
+void Game::start(SDL_Renderer *renderer){
 	SDL_Event event;
 	Wave w;
 	Player *player = new Player();
@@ -54,13 +54,25 @@ void Game::start(SDL_Renderer *renderer, SDL_Window *window){
 	}
 	Mix_Chunk *c = Mix_LoadWAV("assets/plucked.wav");
 	Mix_Chunk *cMetalBoom = Mix_LoadWAV("assets/metalBoom.wav");
+	Mix_Chunk *winChunk = Mix_LoadWAV("assets/winScreen.wav");
+	Mix_Chunk *loseChunk = Mix_LoadWAV("assets/loseScreen.wav");
 	Mix_PlayMusic(musicTest, -1);
 // 	Mix_VolumeMusic(MIX_MAX_VOLUME);
-	while (player->getHealth() > 0  && !inputs.getquit() && !inputs.getescape()) {
-		if(vEnemy.size() == 0){
+	bool gameLoopActive{true};
+	bool levelContinues{true};
+	while (gameLoopActive) {
+		gameLoopActive = !inputs.getquit() && !inputs.getescape();
+		if(player->getHealth() <= 0 && levelContinues){
+			levelContinues = false;
+			Mix_PlayChannel(-1, loseChunk, 0);
+		}
+		if(vEnemy.size() == 0 && levelContinues){
 			w.increaseLevel();
 // 			w.loadRandomizedLevel(vEnemy, w.getLevel());
-			w.loadLevelFromFile(vEnemy, "level.lvl");
+			levelContinues = w.loadLevelFromFile(vEnemy, "level.lvl");
+			if(!levelContinues) {
+				Mix_PlayChannel(-1, winChunk, 0);
+			}
 			w.randomizeShipCoo(vEnemy);
 		}
 		tick1 = SDL_GetTicks();
@@ -175,18 +187,27 @@ void Game::start(SDL_Renderer *renderer, SDL_Window *window){
 				vItems.erase(vItems.begin()+i);
 			}
 		}
+		if(player->getHealth() <= 0){
+			player->setX(-100);
+			player->synchronizeVectFromCoo();
+		}
 		
 		gameInterface->loadStatsFromPlayer(*player);
 		gameInterface->render(renderer);
+		if(!levelContinues){
+			endScreen(renderer, player->getHealth() > 0);
+		}
 		SDL_RenderPresent(renderer);
 		tick2 = SDL_GetTicks();
 		if(tick2 - tick1 < frameTime)
 			SDL_Delay(frameTime - (tick2 - tick1));
 	}
-	this->score = gameInterface->getScore();
-	cout << "Final score : " << gameInterface->getScore() << endl;
+
+	score_ = gameInterface->getScore();
 	delete gameInterface;
-	delete player;
+	if(player != nullptr){
+		delete player;
+	}
 	for(long unsigned int i = 0; i < vEnemy.size(); i++){
 		delete vEnemy[i];
 	}
@@ -216,11 +237,30 @@ void Game::start(SDL_Renderer *renderer, SDL_Window *window){
 	
 	Mix_FreeChunk(c);
 	Mix_FreeChunk(cMetalBoom);
+	Mix_FreeChunk(winChunk);
+	Mix_FreeChunk(loseChunk);
 	Mix_FreeMusic(musicTest);
 }
 
 void Game::pause(){
 	
+}
+
+void Game::endScreen(SDL_Renderer *r, bool win){
+	TTF_Font *f = TTF_OpenFont("Hybrid_b.ttf", 30);
+
+	SDL_Surface *s = NULL;
+	if(win){
+		s = TTF_RenderText_Blended(f, "FINISHED !", {255, 255, 255, 255});
+	} else {
+		s = TTF_RenderText_Blended(f, "EXPLODED !", {255, 255, 255, 255});
+	}
+	SDL_Texture *t = SDL_CreateTextureFromSurface(r, s);
+	SDL_RenderCopy(r, t, NULL, NULL);
+
+	SDL_FreeSurface(s);
+	SDL_DestroyTexture(t);
+	TTF_CloseFont(f);
 }
 
 Game::~Game(){

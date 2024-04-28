@@ -117,7 +117,7 @@ void Wave::randomizeShipCoo(vector<Ship*>& v){
 	}
 }
 
-void Wave::loadLevelFromFile(vector<Ship*>& v, string fileName){
+bool Wave::loadLevelFromFile(vector<Ship*>& v, string fileName){
 	ifstream f(fileName);
 	string currentLine("");
 	int cpt(0);
@@ -133,6 +133,8 @@ void Wave::loadLevelFromFile(vector<Ship*>& v, string fileName){
 		this->insertShip(v, currentLine);
 	}
 	f.close();
+
+	return currentLine != "";
 }
 
 Wave::~Wave(){

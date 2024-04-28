@@ -1,3 +1,5 @@
+#pragma once
+
 #include <iostream>
 #include <fstream>
 #include <cstdlib>
@@ -31,7 +33,7 @@ public:
 	void loadLevel(vector<Ship*>& v, int l);
 	void loadRandomizedLevel(vector<Ship*>& v, int l);
 	void randomizeShipCoo(vector<Ship*>& v);
-	void loadLevelFromFile(vector<Ship*>& v, string fileName);
+	bool loadLevelFromFile(vector<Ship*>& v, string fileName);
 	
 	virtual ~Wave();
 };

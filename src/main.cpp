@@ -117,7 +117,7 @@ int main(int argc, char **argv){
 				vShip.erase(vShip.begin()+i);
 			}
 			g.setScore(0);
-			g.start(renderer, window);
+			g.start(renderer);
 			snprintf(bufferScore, 29, "score : %d", g.getScore());
 			SDL_FreeSurface(sScore);
 			SDL_DestroyTexture(tScore);
