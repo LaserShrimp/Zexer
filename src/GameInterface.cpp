@@ -81,6 +81,11 @@ void GameInterface::render(SDL_Renderer *r){
 	SDL_RenderDrawRect(r, &(this->hmcoo));
 	SDL_SetRenderTarget(r, NULL);
 	SDL_RenderCopy(r, this->renderTexture, NULL, &(this->coo));
+
+	if(health <= 20){
+		SDL_Texture *textureContour = SDL_CreateTextureFromSurface(r, IMG_Load("assets/redContour.png"));
+		SDL_RenderCopy(r, textureContour, NULL, NULL);
+	}
 	
 	SDL_SetRenderDrawColor(r, 0, 0, 0, 0);
 	SDL_DestroyTexture(ts);
