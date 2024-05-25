@@ -21,11 +21,19 @@
 #include "AnimationHandler.hpp"
 #include "Wave.hpp"
 #include "Item.hpp"
+#include "SDLMenu.hpp"
 
 class Game{
 private:
 	int score_{0};
 	static Game *game_;
+
+	bool gameLoopActive_{true};
+	bool levelContinues_{true};
+	bool gamePaused_{false};
+	bool escapeReleased_{true};
+
+	void pauseMenu(SDL_Renderer *renderer);
 protected:
 	Game();
 public:

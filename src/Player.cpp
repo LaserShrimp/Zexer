@@ -209,7 +209,9 @@ bool Player::takeDamage(int d){
 		this->health-= d;
 		this->scintillate(60);
 	}
-	if(this->health <= 0)
+	if(this->health <= 0) {
+		health = 0;
+	}
 		return true;
 	return false;
 }
