@@ -24,10 +24,14 @@
 
 class Game{
 private:
-	int score_;
+	int score_{0};
+	static Game *game_;
 protected:
-public:
 	Game();
+public:
+	Game* getInstance();
+	Game(Game& game) = delete;
+	void operator=(Game& game) = delete;
 	
 	void setScore(int score);
 	int getScore();
@@ -36,7 +40,7 @@ public:
 	void pause();
 	void endScreen(SDL_Renderer *r, bool win);
 	
-	virtual ~Game();
+	virtual ~Game() = default;
 };
 
 #endif

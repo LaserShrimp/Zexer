@@ -1,6 +1,15 @@
 #include "Game.hpp"
 
-Game::Game(): score_{0}{}
+// Game::Game(): score_{0}{}
+
+Game* Game::getInstance() {
+	if(game_ == nullptr) {
+		game_ = new Game();
+		return game_;
+	}
+
+	return game_;
+}
 
 void Game::setScore(int s){
 	score_ = s;
