@@ -9,7 +9,7 @@
 #include "Ship.hpp"
 #include "Player.hpp"
 #include "defines.h"
-#include "gameAddOns.h"
+#include "gameAddOns.hpp"
 #include "Animation.hpp"
 #include "Vect.hpp"
 #include "Particle.hpp"

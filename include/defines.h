@@ -1,7 +1,7 @@
 #ifndef __DEFINES_H__
 #define __DEFINES_H__
 
-#include <climits>
+// #include <climits>
 
 #define WIN_WIDTH 		1280
 #define WIN_HEIGHT 		720

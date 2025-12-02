@@ -5,7 +5,7 @@
 #include "SDL2/SDL_image.h"
 
 #include "defines.h"
-#include "gameAddOns.h"
+#include "gameAddOns.hpp"
 #include "Ship.hpp"
 
 class Enemy : public Ship {

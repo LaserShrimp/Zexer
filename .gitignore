@@ -2,4 +2,6 @@ zexer.exe
 zexer
 *.o
 *.kdev4
-.kdev4
+.kdev4/
+build/
+.vscode/

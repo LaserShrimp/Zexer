@@ -1,4 +1,5 @@
 #include "SDLMenu.hpp"
+#include "gameAddOns.hpp"
 
 std::string SDLMenu::optionHovered() const {
 	return options_.at(optionHovered_);
@@ -25,7 +26,7 @@ void SDLMenu::renderMenu(SDL_Renderer *renderer) const {
 	SDL_SetTextureBlendMode(t, SDL_BLENDMODE_BLEND);
 	SDL_SetRenderTarget(renderer, t);
 
-	int H{(coordinates_.h - ((options_.size() - 1) * padding_))/options_.size()};
+	int H{(coordinates_.h - ((static_cast<int>(options_.size()) - 1) * padding_))/static_cast<int>(options_.size())};
 	int cpt{0};
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
 	SDL_RenderClear(renderer);

@@ -10,7 +10,7 @@
 #include "SDL2/SDL_ttf.h"
 
 #include "defines.h"
-#include "gameAddOns.h"
+#include "gameAddOns.hpp"
 #include "Ship.hpp"
 #include "Enemy.hpp"
 #include "Player.hpp"

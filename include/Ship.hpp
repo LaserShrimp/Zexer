@@ -6,7 +6,7 @@
 #include "SDL2/SDL.h"
 
 #include "defines.h"
-#include "gameAddOns.h"
+#include "gameAddOns.hpp"
 #include "Animation.hpp"
 #include "Vect.hpp"
 
