@@ -2,6 +2,8 @@
 
 // Game::Game(): score_{0}{}
 
+Game* Game::game_{nullptr};
+
 Game* Game::getInstance() {
 	if(game_ == nullptr) {
 		game_ = new Game();
@@ -357,6 +359,3 @@ void Game::pauseMenu(SDL_Renderer *renderer) {
     menu.deinit();
 }
 
-Game::~Game() {
-
-}

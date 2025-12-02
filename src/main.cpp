@@ -57,7 +57,7 @@ int main(int argc, char **argv){
 	
 	SDL_Event e;
 	SDL_PollEvent(&e);
-	Game g;
+	auto* game = Game::getInstance();
 	Player p;
 	InputState in;
 	vector<Ship*> vShip;
@@ -74,16 +74,16 @@ int main(int argc, char **argv){
 	Uint32 tick1 = 0;
 	Uint32 tick2 = 0;
 	
-	bool game = true;
+	bool gameContinue = true;
 	bool launchGame = false;
 	
-	while(game){
+	while(gameContinue){
 		tick1 = SDL_GetTicks();
 		SDL_PollEvent(&e);
 		in.setState(e);
 		p.doActions(in, vShip);
 		if(e.type == SDL_QUIT){
-			game = false;
+			gameContinue = false;
 		}
 		for(unsigned long int i = 0; i < vShip.size(); i++){
 			vShip[i]->move();
@@ -98,7 +98,7 @@ int main(int argc, char **argv){
 				//lance le jeu
 				launchGame = true;
 			} else if (SDL_HasIntersection(&cooS, &rOptQuit) == SDL_TRUE){
-				game = false;
+				gameContinue = false;
 			}
 		}
 		SDL_RenderClear(renderer);
@@ -116,9 +116,9 @@ int main(int argc, char **argv){
 				delete vShip[i];
 				vShip.erase(vShip.begin()+i);
 			}
-			g.setScore(0);
-			g.start(renderer);
-			snprintf(bufferScore, 29, "score : %d", g.getScore());
+			game->setScore(0);
+			game->start(renderer);
+			snprintf(bufferScore, 29, "score : %d", game->getScore());
 			SDL_FreeSurface(sScore);
 			SDL_DestroyTexture(tScore);
 			sScore = TTF_RenderText_Blended(font, bufferScore, {255, 255, 255, 255});

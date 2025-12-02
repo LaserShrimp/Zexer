@@ -23,10 +23,9 @@
 #include "Item.hpp"
 #include "SDLMenu.hpp"
 
-class Game{
+class Game {
 private:
 	int score_{0};
-	static Game *game_;
 
 	bool gameLoopActive_{true};
 	bool levelContinues_{true};
@@ -35,9 +34,10 @@ private:
 
 	void pauseMenu(SDL_Renderer *renderer);
 protected:
-	Game();
+	Game() = default;
+	static Game *game_;
 public:
-	Game* getInstance();
+	static Game* getInstance();
 	Game(Game& game) = delete;
 	void operator=(Game& game) = delete;
 	
